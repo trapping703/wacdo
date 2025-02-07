@@ -5,7 +5,52 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
-affectations
+
+
+<!--recherche d'affectations-->
+<div class="container">
+    <div class="row">
+        <hr>
+
+    </div>
+
+
+    <!--    Liste affectations-->
+    <hr>
+    <div class="row">
+        <table class="table align-middle bg-white">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Code postal</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="resto: ${restaurants}">
+                <td th:text="${resto.nom}"/>
+
+                <td th:text="${resto.adresse}"/>
+
+                <td th:text="${resto.codePostal}"/>
+
+                <td th:text="${resto.ville}"/>
+                <td>
+                    <a role="button" class="btn btn-secondary rounded" th:href="@{/restaurant/{id}(id=${resto.id})}">
+                        Edit
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
 </body>

@@ -1,8 +1,11 @@
 package com.gdu.wacdo.controllers;
 
+import com.gdu.wacdo.model.Employe;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Controller
 public class HelloController {
@@ -10,17 +13,6 @@ public class HelloController {
     @GetMapping("/")
     public String index() {
         return "index";
-    }
-
-    @GetMapping("/restaurants")
-    public String restaurants() {
-        return "restaurants";
-    }
-
-
-    @GetMapping("/employes")
-    public String employes() {
-        return "employes";
     }
 
     @GetMapping("/affectations")
@@ -32,7 +24,5 @@ public class HelloController {
     public String fonctions() {
         return "fonctions";
     }
-
-
 
 }

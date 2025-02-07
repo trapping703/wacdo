@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: page_head}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
+</nav>
+
+<form>
+    <!-- nom prenom -->
+    <div class="row ">
+        <div class="col">
+            <div  class="form-outline">
+                <label class="form-label" for="prenom">Prénom</label>
+                <input type="text" id="prenom" class="form-control"/>
+            </div>
+        </div>
+        <div class="col">
+            <div  class="form-outline">
+                <label class="form-label" for="nom">Nom</label>
+                <input type="text" id="nom" class="form-control"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- date embauche / isAdmin -->
+    <div class="row ">
+        <div class="col">
+            <div  class="form-outline">
+                <label class="form-label" for="dateEmbauche">Date d'embauche</label>
+                <input type="datetime-local" id="dateEmbauche" class="form-control"/>
+            </div>
+        </div>
+        <div class="col">
+            <div  class="form-outline">
+                <label class="form-check-label" for="admin">Administrateur</label>
+                <input class="form-check-input form-control" type="checkbox" value="" id="admin"/>
+            </div>
+        </div>
+    </div>
+
+    <!--    Liste affectations-->
+    <table class="table align-middle">
+        <thead >
+        <tr>
+            <th>Fonction</th>
+            <th>Restaurant</th>
+            <th>Date debut</th>
+            <th>Date fin</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                    <div class="">
+                        <p class="fw-bold">John Doe</p>
+                        <p class="text-muted">john.doe@gmail.com</p>
+                    </div>
+            </td>
+            <td>
+                <p class="fw-normal">Software engineer</p>
+                <p class="text-muted">IT department</p>
+            </td>
+            <td>
+                <span class="badge badge-success rounded-pill d-inline">Active</span>
+            </td>
+            <td>Senior</td>
+            <td>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                    Edit
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- Submit button -->
+    <button type="button" class="btn btn-secondary rounded">Place order</button>
+</form>
+
+<footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
+</footer>
+</body>
+
+</html>

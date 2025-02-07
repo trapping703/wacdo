@@ -1,10 +1,12 @@
 package com.gdu.wacdo.model;
 
 import jakarta.persistence.Entity;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
+@Data
 public class Restaurant extends AbstractPersistentEntity<Integer>{
 
     private String nom;
@@ -14,43 +16,15 @@ public class Restaurant extends AbstractPersistentEntity<Integer>{
 
     private List<Affectation> affectations;
 
-    public String getNom() {
-        return nom;
+    public Restaurant() {
+
     }
 
-    public void setNom(String nom) {
+    public Restaurant(Integer id, String nom, String adresse, int codePostal, String ville) {
+        setId(id);
         this.nom = nom;
-    }
-
-    public String getAdresse() {
-        return adresse;
-    }
-
-    public void setAdresse(String adresse) {
         this.adresse = adresse;
-    }
-
-    public int getCodePostal() {
-        return codePostal;
-    }
-
-    public void setCodePostal(int codePostal) {
         this.codePostal = codePostal;
-    }
-
-    public String getVille() {
-        return ville;
-    }
-
-    public void setVille(String ville) {
         this.ville = ville;
-    }
-
-    public List<Affectation> getAffectations() {
-        return affectations;
-    }
-
-    public void setAffectations(List<Affectation> affectations) {
-        this.affectations = affectations;
     }
 }

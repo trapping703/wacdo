@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: page_head}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
+</nav>
+
+<ul class="list-group center">
+    <li class="list-group-item" th:text="${restaurant.nom}"></li>
+    <li class="list-group-item" th:text="${restaurant.adresse}">A second item</li>
+    <li class="list-group-item" th:text="${restaurant.codePostal}">A third item</li>
+    <li class="list-group-item" th:text="${restaurant.ville}">A fourth item</li>
+    <ul th:each="affectation: ${restaurant.affectations}">
+        <li class="list-group-item"></li>
+    </ul>
+</ul>
+<footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
+</footer>
+</body>
+
+</html>
