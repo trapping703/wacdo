@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-public class Affectation extends  AbstractPersistentEntity<Integer> {
+public class Affectation extends AbstractPersistentEntity<Integer> {
 
     private LocalDate dateDebut;
     private LocalDate dateFin;
@@ -21,4 +21,16 @@ public class Affectation extends  AbstractPersistentEntity<Integer> {
     @ManyToOne
     private Fonction fonction;
 
+    public Affectation(int id, LocalDate dateDebut, LocalDate dateFin, Employe employe, Restaurant restaurant, Fonction fonction) {
+        this.setId(id);
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.employe = employe;
+        this.restaurant = restaurant;
+        this.fonction = fonction;
+    }
+
+    public Affectation() {
+
+    }
 }

@@ -6,15 +6,81 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
 
-<ul class="list-group center">
-    <li class="list-group-item" th:text="${restaurant.nom}"></li>
-    <li class="list-group-item" th:text="${restaurant.adresse}">A second item</li>
-    <li class="list-group-item" th:text="${restaurant.codePostal}">A third item</li>
-    <li class="list-group-item" th:text="${restaurant.ville}">A fourth item</li>
-    <ul th:each="affectation: ${restaurant.affectations}">
-        <li class="list-group-item"></li>
-    </ul>
-</ul>
+
+
+<form>
+    <!-- nom -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="nom">nom</label>
+                <input type="text" id="nom" class="form-control" th:value="${restaurant.getNom()}"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- adresse -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="adresse">Adresse</label>
+                <input aria-disabled="true" type="text" id="adresse" class="form-control disabled" th:value="${restaurant.adresse}"/>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="codePostal">Code Postal</label>
+                <input type="text" id="codePostal" class="form-control" th:value="${restaurant.codePostal}"/>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="ville">Ville</label>
+                <input type="text" id="ville" class="form-control" th:value="${restaurant.ville}"/>
+            </div>
+        </div>
+    </div>
+
+    <!--    &lt;!&ndash; Submit button &ndash;&gt;-->
+    <!--    <button type="button" class="btn btn-secondary rounded">Place order</button>-->
+
+    <!--    Liste affectations-->
+    <hr>
+    <table class="table align-middle bg-white">
+        <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">prenom</th>
+            <th scope="col">Date debut</th>
+            <th scope="col">Date fin</th>
+            <th scope="col">Fonction</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="affectation: ${restaurant.affectations}">
+            <td th:text="${affectation.employe.nom}"/>
+
+            <td th:text="${affectation.employe.prenom}"/>
+
+            <td th:text="${affectation.dateDebut}"/>
+
+            <td th:text="${affectation.dateFin}"/>
+
+            <td th:text="${affectation.fonction.libelle}"/>
+            <td>
+                <a role="button" class="btn btn-secondary rounded"> <!--th:href="@{/restaurant/{id}(id=${resto.id})}"-->
+                    Edit
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
 </body>

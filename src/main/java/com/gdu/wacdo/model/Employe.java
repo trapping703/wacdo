@@ -18,7 +18,19 @@ public class Employe extends AbstractPersistentEntity<Integer> {
     private boolean admin;
     private String motDePasse;
 
-    @OneToMany
+    @OneToMany(mappedBy = "employe")
     private List<Affectation> affectations;
 
+    public Employe(int id, String nom, String prenom, LocalDate dateEmbauche, boolean admin, String motDePasse) {
+        this.setId(id);
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateEmbauche = dateEmbauche;
+        this.admin = admin;
+        this.motDePasse = motDePasse;
+    }
+
+    public Employe() {
+
+    }
 }

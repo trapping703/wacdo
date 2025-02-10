@@ -1,6 +1,7 @@
 package com.gdu.wacdo.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class Restaurant extends AbstractPersistentEntity<Integer>{
     private int codePostal;
     private String ville;
 
+    @OneToMany(mappedBy = "restaurant")
     private List<Affectation> affectations;
 
     public Restaurant() {
