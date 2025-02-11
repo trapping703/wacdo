@@ -56,3 +56,4 @@ insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', CURRENT_DATE - INTERVAL '1 month', 3,1,3);
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 month', null, 1,1,2);
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 month', null, 1,1,3);
+commit;

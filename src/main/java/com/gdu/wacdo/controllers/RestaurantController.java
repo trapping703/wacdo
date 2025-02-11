@@ -4,6 +4,10 @@ import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.model.Employe;
 import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.model.Restaurant;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceUnit;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,15 @@ import java.util.stream.Stream;
 
 @Controller
 public class RestaurantController {
+
+
+    @PersistenceContext
+    private EntityManager em; // proxy relai vers l'entityManager du thread
+
+    @PersistenceUnit
+    private EntityManagerFactory emf;
+
+
 
     private final List<Restaurant> restaurants;
 
@@ -39,9 +52,11 @@ public class RestaurantController {
 
     @GetMapping("/restaurant/{id}")
     public String restaurant(Model model, @PathVariable int id) {
-        Restaurant resto = restaurants.stream().filter(r -> r.getId() == id).findAny().get();
-
-        rajouterAffectations(resto);
+//        Restaurant resto = restaurants.stream().filter(r -> r.getId() == id).findAny().get();
+//
+//        rajouterAffectations(resto);
+        Restaurant resto = em.find(Restaurant.class, id);
+        List<Restaurant> restaurants1 = em.createNativeQuery("select * from restaurant",Restaurant.class).getResultList();
 
         model.addAttribute("restaurant", resto);
         return "restaurant";
