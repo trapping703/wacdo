@@ -91,7 +91,7 @@ public class AffectationService {
     }
 
     public ReponseService findByVille(String ville) {
-        TypedQuery<Affectation> query = em.createQuery("select a from Affectation a inner join Restaurant b where b.ville like :ville", Affectation.class);
+        TypedQuery<Affectation> query = em.createQuery("select a from AffectationDTO a inner join Restaurant b where b.ville like :ville", Affectation.class);
         query.setParameter("ville", "%" + ville + "%");
         try {
             List<Affectation> affectations = query.getResultList();
