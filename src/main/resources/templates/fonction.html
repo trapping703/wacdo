@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: page_head}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
+</nav>
+
+<form>
+    <!-- Libelle -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="prenom">Libelle</label>
+                <input type="text" id="prenom" class="form-control" th:field="${fonction.libelle}"/>
+            </div>
+        </div>
+    </div>
+<hr>
+    <!-- date embauche / isAdmin -->
+        <!-- Submit button -->
+        <button type="button" class="btn btn-secondary rounded">Place order</button>
+    <hr>
+</form>
+
+<footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
+</footer>
+</body>
+
+</html>

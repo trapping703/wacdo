@@ -15,14 +15,4 @@ public class HelloController {
         return "index";
     }
 
-    @GetMapping("/affectations")
-    public String affectations() {
-        return "affectations";
-    }
-
-    @GetMapping("/fonctions")
-    public String fonctions() {
-        return "fonctions";
-    }
-
 }

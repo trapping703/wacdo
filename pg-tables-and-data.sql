@@ -54,5 +54,5 @@ insert into Employe(id, prenom, nom, email, motDePasse, dateEmbauche, admin) val
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', null, 1,1,1);
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', CURRENT_DATE - INTERVAL '1 month', 2,1,2);
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', CURRENT_DATE - INTERVAL '1 month', 3,1,3);
-insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 month', null, 1,1,2);
-insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 month', null, 1,1,3);
+insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 month', null, 2,1,2);
+insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 month', null, 3,1,3);

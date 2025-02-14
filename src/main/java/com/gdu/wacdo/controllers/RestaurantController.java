@@ -2,7 +2,6 @@ package com.gdu.wacdo.controllers;
 
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
-import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @Slf4j

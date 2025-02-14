@@ -6,7 +6,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
 
-<!--Recherche d'employé-->
+<!--Recherche de fonction-->
 <div class="container">
  <div class="row">
   <hr>
@@ -58,11 +58,10 @@
    </tr>
    </thead>
    <tbody>
-   <!--/*@thymesVar id="fonction" type="com.gdu.wacdo.model.Fonction"*/-->
    <tr th:each="fonction: ${fonctions}">
     <td th:text="${fonction.libelle}"/>
     <td>
-     <a role="button" class="btn btn-secondary rounded" th:href="@{/employe/{id}(id=${employe.id})}">
+     <a role="button" class="btn btn-secondary rounded" th:href="@{/fonction/{id}(id=${fonction.id})}">
       Voir Détails
      </a>
     </td>

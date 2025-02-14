@@ -67,6 +67,10 @@
             <artifactId>modelmapper-spring</artifactId>
             <version>3.2.2</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.thymeleaf.extras</groupId>-->
+<!--            <artifactId>thymeleaf-extras-java8time</artifactId>-->
+<!--        </dependency>-->
 
     </dependencies>
 

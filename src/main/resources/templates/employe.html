@@ -12,13 +12,13 @@
         <div class="col">
             <div  class="form-outline">
                 <label class="form-label" for="prenom">Prénom</label>
-                <input type="text" id="prenom" class="form-control"/>
+                <input type="text" id="prenom" class="form-control" th:field="${employe.prenom}"/>
             </div>
         </div>
         <div class="col">
             <div  class="form-outline">
                 <label class="form-label" for="nom">Nom</label>
-                <input type="text" id="nom" class="form-control"/>
+                <input type="text" id="nom" class="form-control" th:field="${employe.nom}"/>
             </div>
         </div>
     </div>
@@ -28,13 +28,13 @@
         <div class="col">
             <div  class="form-outline">
                 <label class="form-label" for="dateEmbauche">Date d'embauche</label>
-                <input type="datetime-local" id="dateEmbauche" class="form-control"/>
+                <input type="date" id="dateEmbauche" class="form-control" th:field="${employe.dateEmbauche}"/>
             </div>
         </div>
         <div class="col">
             <div  class="form-outline">
                 <label class="form-check-label" for="admin">Administrateur</label>
-                <input class="form-check-input form-control" type="checkbox" value="" id="admin"/>
+                <input class="form-check-input form-control" type="checkbox" id="admin" th:field="${employe.admin}"/>
             </div>
         </div>
     </div>
@@ -51,25 +51,18 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr><tr th:each="affectation: ${employe.affectations}">
+            <td th:text="${affectation.fonction.libelle}"/>
+
+            <td th:text="${affectation.restaurant.nom}"/>
+
+            <td th:text="${affectation.dateDebut}"/>
+
+            <td th:text="${affectation.dateFin}"/>
             <td>
-                    <div class="">
-                        <p class="fw-bold">John Doe</p>
-                        <p class="text-muted">john.doe@gmail.com</p>
-                    </div>
-            </td>
-            <td>
-                <p class="fw-normal">Software engineer</p>
-                <p class="text-muted">IT department</p>
-            </td>
-            <td>
-                <span class="badge badge-success rounded-pill d-inline">Active</span>
-            </td>
-            <td>Senior</td>
-            <td>
-                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                <a role="button" class="btn btn-secondary rounded" th:href="@{/affectation/{id}(id=${affectation.id})}">
                     Edit
-                </button>
+                </a>
             </td>
         </tr>
         </tbody>

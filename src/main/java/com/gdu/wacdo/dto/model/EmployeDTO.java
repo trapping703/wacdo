@@ -4,6 +4,7 @@ import com.gdu.wacdo.model.AbstractPersistentEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,7 @@ public class EmployeDTO {
     private String nom;
     private String prenom;
     private String email;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateEmbauche;
     private boolean admin;
     private String motDePasse;
