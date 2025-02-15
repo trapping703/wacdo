@@ -25,9 +25,9 @@ public class EmployeController {
 
     @GetMapping("/employes")
     public String employes(Model model) throws Exception {
-        ReponseService<List<Employe>> reponse = employeService.findAll();
+        ReponseService reponse = employeService.findAll();
         if (reponse.isOk()) {
-            List<EmployeDTO> employeDTOs = reponse.getData().stream()
+            List<EmployeDTO> employeDTOs = ((List<Employe>)reponse.getData()).stream()
                     .map(employe -> modelMapper.map(employe, EmployeDTO.class))
                     .toList();
             model.addAttribute("employes", employeDTOs);

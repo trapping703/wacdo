@@ -2,6 +2,7 @@ package com.gdu.wacdo.controllers;
 
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
+import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,12 +26,16 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants")
-    public String restaurants(Model model) {
-        List<RestaurantDTO> restaurantDTOS = restaurantService.findAll().getData().stream()
-                .map(r -> modelMapper.map(r, RestaurantDTO.class))
-                .toList();
-        model.addAttribute("restaurants", restaurantDTOS);
-        return "restaurants";
+    public String restaurants(Model model) throws Exception {
+        ReponseService reponse = restaurantService.findAll();
+        if (reponse.isOk()) {
+            List<RestaurantDTO> restaurantDTOS = ((List<Restaurant>) reponse.getData()).stream()
+                    .map(r -> modelMapper.map(r, RestaurantDTO.class))
+                    .toList();
+            model.addAttribute("restaurants", restaurantDTOS);
+            return "restaurants";
+        }
+        throw reponse.getException();
     }
 
     @GetMapping("/restaurant/{id}")

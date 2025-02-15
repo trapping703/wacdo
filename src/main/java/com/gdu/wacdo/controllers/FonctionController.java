@@ -2,6 +2,7 @@ package com.gdu.wacdo.controllers;
 
 import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
+import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.services.FonctionService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,12 +26,16 @@ public class FonctionController {
     }
 
     @GetMapping("/fonctions")
-    public String getAllFonctions(Model model) {
-        List<FonctionDTO> fonctionDTOS = fonctionService.findAll().getData().stream()
-                .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
-                .toList();
-        model.addAttribute("fonctions", fonctionDTOS);
-        return "fonctions";
+    public String getAllFonctions(Model model) throws Exception {
+        ReponseService reponse = fonctionService.findAll();
+        if (reponse.isOk()) {
+            List<FonctionDTO> fonctionDTOS = ((List<Fonction>) reponse.getData()).stream()
+                    .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
+                    .toList();
+            model.addAttribute("fonctions", fonctionDTOS);
+            return "fonctions";
+        }
+        throw reponse.getException();
     }
 
     @GetMapping("/fonction/{id}")

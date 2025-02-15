@@ -5,6 +5,17 @@ public enum CodeReponse {
 
     OK,
     ERROR,
-    IDK;
+    EMPTY;
 
+    public boolean isOK() {
+        return this == OK;
+    }
+
+    public boolean isError() {
+        return this == ERROR;
+    }
+
+    public boolean isEmpty() {
+        return this == EMPTY;
+    }
 }

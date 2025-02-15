@@ -22,7 +22,7 @@ public class FonctionService {
         this.fonctionRepository = fonctionRepository;
     }
 
-    public ReponseService<Fonction> save(Fonction fonction) {
+    public ReponseService save(Fonction fonction) {
         try {
             return reponse(OK, fonctionRepository.save(fonction));
         } catch (Exception e) {
@@ -30,24 +30,20 @@ public class FonctionService {
         }
     }
 
-    public ReponseService<List<Fonction>> findAll() {
+    public ReponseService findAll() {
         return reponse(OK, fonctionRepository.findAll());
     }
 
     public ReponseService findById(int id) {
         try {
             Optional<Fonction> fonction = fonctionRepository.findById(id);
-            if(fonction.isPresent()) {
-                return reponse(OK, fonction.get());
-            }else{
-                return reponse(IDK, id);
-            }
+            return fonction.map(value -> reponse(OK, value)).orElseGet(() -> reponse(EMPTY, id));
         } catch (Exception e) {
             return reponse(ERROR, id, e);
         }
     }
 
-    public ReponseService<Integer> delete(int id) {
+    public ReponseService delete(int id) {
         try {
             fonctionRepository.deleteById(id);
             return reponse(OK, id);

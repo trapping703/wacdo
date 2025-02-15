@@ -7,6 +7,8 @@ import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
+import com.gdu.wacdo.model.Employe;
+import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.EmployeService;
@@ -43,53 +45,63 @@ public class AffectationController {
 
 
     @GetMapping("/affectations")
-    public String getAllAffectations(Model model) {
-        List<AffectationDTO> affectationDTOS = affectationService.findAll().getData().stream()
-                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
-                .toList();
-        model.addAttribute("affectations", affectationDTOS);
-        return "affectations";
+    public String getAllAffectations(Model model) throws Exception {
+        ReponseService reponseService = affectationService.findAll();
+        if (reponseService.isOk()) {
+            List<AffectationDTO> affectationDTOS = ((List<Affectation>) reponseService.getData()).stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList();
+            model.addAttribute("affectations", affectationDTOS);
+            return "affectations";
+        } else {
+            throw reponseService.getException();
+        }
+
     }
 
     @GetMapping("/affectation/{id}")
-    public String getFonctionById(Model model, @PathVariable int id) {
+    public String getFonctionById(Model model, @PathVariable int id) throws Exception {
         ReponseService reponse = affectationService.findById(id);
         if (reponse.isOk()) {
             model.addAttribute("affectation", modelMapper.map(reponse.getData(), AffectationDTO.class));
             return "affectation";
         } else {
-            return "index";
+            throw reponse.getException();
         }
     }
 
     @PostMapping("/rechercheAffectations")
-    public String rechercheAffectations(RechercheAffectation rechercheAffectation, Model model) {
+    public String rechercheAffectations(RechercheAffectation rechercheAffectation, Model model) throws Exception {
         ReponseService reponseService = affectationService.findByRechercheAffectation(rechercheAffectation);
-        List<AffectationDTO> affectationDTOS = ((List<Affectation>)reponseService.getData()).stream()
-                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
-                .toList();
-        model.addAttribute("rechercheAffectations", rechercheAffectation);
-        model.addAttribute("affectations", affectationDTOS);
-        return "affectations";
+        if (reponseService.isOk()) {
+            List<AffectationDTO> affectationDTOS = ((List<Affectation>) reponseService.getData()).stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList();
+            model.addAttribute("rechercheAffectations", rechercheAffectation);
+            model.addAttribute("affectations", affectationDTOS);
+            return "affectations";
+        } else {
+            throw reponseService.getException();
+        }
     }
 
     @ModelAttribute(value = "restaurants")
     private List<RestaurantDTO> getAllRestaurants() {
-        return restaurantService.findAll().getData().stream()
+        return ((List<Restaurant>) restaurantService.findAll().getData()).stream()
                 .map(fonction -> modelMapper.map(fonction, RestaurantDTO.class))
                 .toList();
     }
 
     @ModelAttribute(value = "fonctions")
     private List<FonctionDTO> getAllFonctions() {
-        return fonctionService.findAll().getData().stream()
+        return ((List<Fonction>) fonctionService.findAll().getData()).stream()
                 .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
                 .toList();
     }
 
     @ModelAttribute(value = "employes")
     private List<EmployeDTO> getAllEmployes() {
-        return employeService.findAll().getData().stream()
+        return ((List<Employe>) employeService.findAll().getData()).stream()
                 .map(fonction -> modelMapper.map(fonction, EmployeDTO.class))
                 .toList();
     }

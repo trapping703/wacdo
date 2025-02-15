@@ -22,7 +22,7 @@ public class EmployeService {
         this.employeRepository = employeRepository;
     }
 
-    public ReponseService<Employe> save(Employe employe) {
+    public ReponseService save(Employe employe) {
         try {
             return reponse(OK, employeRepository.save(employe));
         } catch (Exception e) {
@@ -30,24 +30,20 @@ public class EmployeService {
         }
     }
 
-    public ReponseService<List<Employe>> findAll() {
+    public ReponseService findAll() {
         return reponse(OK, employeRepository.findAll());
     }
 
     public ReponseService findById(int id) {
         try {
             Optional<Employe> employe = employeRepository.findById(id);
-            if(employe.isPresent()) {
-                return reponse(OK, employe.get());
-            }else{
-                return reponse(IDK, id);
-            }
+            return employe.map(value -> reponse(OK, value)).orElseGet(() -> reponse(EMPTY, id));
         } catch (Exception e) {
             return reponse(ERROR, id, e);
         }
     }
 
-    public ReponseService<Integer> delete(int id) {
+    public ReponseService delete(int id) {
         try {
             employeRepository.deleteById(id);
             return reponse(OK, id);
