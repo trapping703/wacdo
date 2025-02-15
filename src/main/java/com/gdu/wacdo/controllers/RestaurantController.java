@@ -25,7 +25,7 @@ public class RestaurantController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/restaurants")
+    @GetMapping("/listeRestaurants")
     public String restaurants(Model model) throws Exception {
         ReponseService reponse = restaurantService.findAll();
         if (reponse.isOk()) {
@@ -38,7 +38,7 @@ public class RestaurantController {
         throw reponse.getException();
     }
 
-    @GetMapping("/restaurant/{id}")
+    @GetMapping("/detailRestaurant/{id}")
     public String restaurant(Model model, @PathVariable int id) {
         ReponseService reponse = restaurantService.findById(id);
         if (reponse.isOk()) {

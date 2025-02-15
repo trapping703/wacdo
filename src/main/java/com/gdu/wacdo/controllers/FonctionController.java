@@ -25,7 +25,7 @@ public class FonctionController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/fonctions")
+    @GetMapping("/listeFonctions")
     public String getAllFonctions(Model model) throws Exception {
         ReponseService reponse = fonctionService.findAll();
         if (reponse.isOk()) {
@@ -38,7 +38,7 @@ public class FonctionController {
         throw reponse.getException();
     }
 
-    @GetMapping("/fonction/{id}")
+    @GetMapping("/detailFonction/{id}")
     public String getFonctionById(Model model, @PathVariable int id) {
         ReponseService reponse = fonctionService.findById(id);
         if (reponse.isOk()) {

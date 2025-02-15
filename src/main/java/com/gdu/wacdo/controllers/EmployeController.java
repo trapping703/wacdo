@@ -23,7 +23,7 @@ public class EmployeController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/employes")
+    @GetMapping("/listeEmployes")
     public String employes(Model model) throws Exception {
         ReponseService reponse = employeService.findAll();
         if (reponse.isOk()) {
@@ -37,7 +37,7 @@ public class EmployeController {
         return "employes";
     }
 
-    @GetMapping("/employe/{id}")
+    @GetMapping("/detailEmploye/{id}")
     public String employes(Model model, @PathVariable int id) {
         ReponseService reponse = employeService.findById(id);
         if (reponse.isOk()) {

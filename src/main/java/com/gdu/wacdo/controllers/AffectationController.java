@@ -44,7 +44,7 @@ public class AffectationController {
     }
 
 
-    @GetMapping("/affectations")
+    @GetMapping("/listeAffectations")
     public String getAllAffectations(Model model) throws Exception {
         ReponseService reponseService = affectationService.findAll();
         if (reponseService.isOk()) {
@@ -59,7 +59,7 @@ public class AffectationController {
 
     }
 
-    @GetMapping("/affectation/{id}")
+    @GetMapping("/detailAffectation/{id}")
     public String getFonctionById(Model model, @PathVariable int id) throws Exception {
         ReponseService reponse = affectationService.findById(id);
         if (reponse.isOk()) {

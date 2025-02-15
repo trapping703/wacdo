@@ -61,7 +61,7 @@
    <tr th:each="fonction: ${fonctions}">
     <td th:text="${fonction.libelle}"/>
     <td>
-     <a role="button" class="btn btn-secondary rounded" th:href="@{/fonction/{id}(id=${fonction.id})}">
+     <a role="button" class="btn btn-secondary rounded" th:href="@{/detailFonction/{id}(id=${fonction.id})}">
       Voir Détails
      </a>
     </td>
