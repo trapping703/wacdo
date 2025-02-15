@@ -1,4 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
 -- https://mazeez.dev/posts/pg-trgm-similarity-search-and-fast-like
 
 

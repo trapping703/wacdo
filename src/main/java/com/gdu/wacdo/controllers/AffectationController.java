@@ -1,10 +1,13 @@
 package com.gdu.wacdo.controllers;
 
+import com.gdu.wacdo.dto.form.RechercheAffectation;
 import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
+import com.gdu.wacdo.model.Affectation;
+import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.EmployeService;
 import com.gdu.wacdo.services.FonctionService;
@@ -14,7 +17,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -40,7 +45,7 @@ public class AffectationController {
     @GetMapping("/affectations")
     public String getAllAffectations(Model model) {
         List<AffectationDTO> affectationDTOS = affectationService.findAll().getData().stream()
-                .map(fonction -> modelMapper.map(fonction, AffectationDTO.class))
+                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
                 .toList();
         model.addAttribute("affectations", affectationDTOS);
         return "affectations";
@@ -51,30 +56,46 @@ public class AffectationController {
         ReponseService reponse = affectationService.findById(id);
         if (reponse.isOk()) {
             model.addAttribute("affectation", modelMapper.map(reponse.getData(), AffectationDTO.class));
-            model.addAttribute("restaurants", getAllRestaurants());
-            model.addAttribute("fonctions", getAllFonctions());
-            model.addAttribute("employes", getAllEmployes());
             return "affectation";
         } else {
             return "index";
         }
     }
 
-    private Object[] getAllRestaurants() {
-        return restaurantService.findAll().getData().stream()
-                .map(fonction -> modelMapper.map(fonction, RestaurantDTO.class))
-                .toArray();
+    @PostMapping("/rechercheAffectations")
+    public String rechercheAffectations(RechercheAffectation rechercheAffectation, Model model) {
+        ReponseService reponseService = affectationService.findByRechercheAffectation(rechercheAffectation);
+        List<AffectationDTO> affectationDTOS = ((List<Affectation>)reponseService.getData()).stream()
+                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                .toList();
+        model.addAttribute("rechercheAffectations", rechercheAffectation);
+        model.addAttribute("affectations", affectationDTOS);
+        return "affectations";
     }
 
+    @ModelAttribute(value = "restaurants")
+    private List<RestaurantDTO> getAllRestaurants() {
+        return restaurantService.findAll().getData().stream()
+                .map(fonction -> modelMapper.map(fonction, RestaurantDTO.class))
+                .toList();
+    }
+
+    @ModelAttribute(value = "fonctions")
     private List<FonctionDTO> getAllFonctions() {
         return fonctionService.findAll().getData().stream()
                 .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
                 .toList();
     }
 
+    @ModelAttribute(value = "employes")
     private List<EmployeDTO> getAllEmployes() {
         return employeService.findAll().getData().stream()
                 .map(fonction -> modelMapper.map(fonction, EmployeDTO.class))
                 .toList();
+    }
+
+    @ModelAttribute(value = "rechercheAffectation")
+    private RechercheAffectation getRechercheAffectation() {
+        return new RechercheAffectation();
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -11,7 +12,10 @@ import java.time.LocalDate;
 @Data
 public class Affectation extends AbstractPersistentEntity<Integer> {
 
+
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate dateDebut;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate dateFin;
 
     @ManyToOne
