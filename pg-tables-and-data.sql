@@ -35,22 +35,22 @@ create table Affectation(
     fonction_id int references Fonction(id)
 );
 
-insert into Restaurant(id, nom, adresse, codePostal, ville) values (1,'Wacdo laMax', '4 rue de Nice',57000, 'Nice');
-insert into Restaurant(id, nom, adresse, codePostal, ville) values (2,'Wacdo yana', '5 rue de Paris',67000, 'Paris');
-insert into Restaurant(id, nom, adresse, codePostal, ville) values (3,'Wacdo adipiscing', '6 rue de Lyon',77000, 'Lyon');
-insert into Restaurant(id, nom, adresse, codePostal, ville) values (4,'Wacdo consectetur', '7 rue de Strasbourg',87000, 'Strasbourg');
-insert into Restaurant(id, nom, adresse, codePostal, ville) values (5,'Wacdo amet', '8 rue de Montpelier',97000, 'Montpelier');
+insert into Restaurant( nom, adresse, codePostal, ville) values ('Wacdo laMax', '4 rue de Nice',57000, 'Nice');
+insert into Restaurant( nom, adresse, codePostal, ville) values ('Wacdo yana', '5 rue de Paris',67000, 'Paris');
+insert into Restaurant( nom, adresse, codePostal, ville) values ('Wacdo adipiscing', '6 rue de Lyon',77000, 'Lyon');
+insert into Restaurant( nom, adresse, codePostal, ville) values ('Wacdo consectetur', '7 rue de Strasbourg',87000, 'Strasbourg');
+insert into Restaurant( nom, adresse, codePostal, ville) values ('Wacdo amet', '8 rue de Montpelier',97000, 'Montpelier');
 
-insert into Fonction(id, libelle) values (1,'manager');
-insert into Fonction(id, libelle) values (2,'cuisinier');
-insert into Fonction(id, libelle) values (3,'serveur');
+insert into Fonction( libelle) values ('manager');
+insert into Fonction( libelle) values ('cuisinier');
+insert into Fonction( libelle) values ('serveur');
 
-insert into Employe(id, prenom, nom, email, motDePasse, dateEmbauche, admin) values (1,'Victor', 'G.', 'victor-g@wacdo.fr', '', current_date,false);
-insert into Employe(id, prenom, nom, email, motDePasse, dateEmbauche, admin) values (2,'Mathieu', 'P.', 'mathieu-p@wacdo.fr', '', current_date,false);
-insert into Employe(id, prenom, nom, email, motDePasse, dateEmbauche, admin) values (3,'Quentin', 'F.', 'quentin-f@wacdo.fr', '', current_date,false);
-insert into Employe(id, prenom, nom, email, motDePasse, dateEmbauche, admin) values (4,'Julien', 'X.', 'julien-x@wacdo.fr', '', current_date,false);
-insert into Employe(id, prenom, nom, email, motDePasse, dateEmbauche, admin) values (5,'Charles', 'W.', 'charles-w@wacdo.fr', '', current_date,false);
-insert into Employe(id, prenom, nom, email, motDePasse, dateEmbauche, admin) values (6,'Victor', 'Z.', 'victor-z@wacdo.fr', '', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Victor', 'G.', 'victor-g@wacdo.fr', '', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Mathieu', 'P.', 'mathieu-p@wacdo.fr', '', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Quentin', 'F.', 'quentin-f@wacdo.fr', '', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Julien', 'X.', 'julien-x@wacdo.fr', '', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Charles', 'W.', 'charles-w@wacdo.fr', '', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Victor', 'Z.', 'victor-z@wacdo.fr', '', current_date,false);
 
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', null, 1,1,1);
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', CURRENT_DATE - INTERVAL '1 month', 2,1,2);
