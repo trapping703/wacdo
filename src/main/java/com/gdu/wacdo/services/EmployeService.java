@@ -51,28 +51,4 @@ public class EmployeService {
             return reponse(ERROR, id, e);
         }
     }
-
-    public ReponseService findByNom(String nom) {
-        try {
-            return reponse(OK, employeRepository.findByNom(nom));
-        } catch (Exception e) {
-            return reponse(ERROR, nom, e);
-        }
-    }
-
-    public ReponseService findByPrenom(String prenom) {
-        try {
-            return reponse(OK, employeRepository.findByPrenom(prenom));
-        } catch (Exception e) {
-            return reponse(ERROR, prenom, e);
-        }
-    }
-
-    public ReponseService findByEmail(String email) {
-        try {
-            return reponse(OK, employeRepository.findByEmail(email));
-        } catch (Exception e) {
-            return reponse(ERROR, email, e);
-        }
-    }
 }

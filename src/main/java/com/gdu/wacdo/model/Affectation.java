@@ -14,16 +14,19 @@ import java.time.LocalDate;
 public class Affectation extends AbstractPersistentEntity<Integer> {
 
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateDebut;
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateFin;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employe_id")
     private Employe employe;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fonction_id")
     private Fonction fonction;
 
     public Affectation(int id, LocalDate dateDebut, LocalDate dateFin, Employe employe, Restaurant restaurant, Fonction fonction) {

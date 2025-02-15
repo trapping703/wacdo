@@ -51,28 +51,4 @@ public class RestaurantService {
             return reponse(ERROR, id, e);
         }
     }
-
-    public ReponseService findByNom(String name) {
-        try {
-            return reponse(OK, restaurantRepository.findByNom(name));
-        } catch (Exception e) {
-            return reponse(ERROR, name, e);
-        }
-    }
-
-    public ReponseService findByVille(String ville) {
-        try {
-            return reponse(OK, restaurantRepository.findByVille(ville));
-        } catch (Exception e) {
-            return reponse(ERROR, ville, e);
-        }
-    }
-
-    public ReponseService findByCodePostal(int codePostal) {
-        try {
-            return reponse(OK, restaurantRepository.findByCodePostal(codePostal));
-        } catch (Exception e) {
-            return reponse(ERROR, codePostal, e);
-        }
-    }
 }
