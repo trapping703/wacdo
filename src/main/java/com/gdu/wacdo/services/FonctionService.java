@@ -1,16 +1,15 @@
 package com.gdu.wacdo.services;
 
+import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.repositories.FonctionRepository;
-import com.gdu.wacdo.dto.response.ReponseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
-import static com.gdu.wacdo.status.CodeReponse.*;
 import static com.gdu.wacdo.dto.response.ReponseService.reponse;
+import static com.gdu.wacdo.status.CodeReponse.*;
 
 @Service
 @Slf4j
@@ -24,7 +23,12 @@ public class FonctionService {
 
     public ReponseService save(Fonction fonction) {
         try {
-            return reponse(OK, fonctionRepository.save(fonction));
+            fonctionRepository.save(fonction);
+            if (fonction.getId() != null) {
+                return reponse(OK, fonction);
+            } else {
+                return reponse(ERROR, fonction);
+            }
         } catch (Exception e) {
             return reponse(ERROR, fonction, e);
         }

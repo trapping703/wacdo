@@ -4,19 +4,18 @@ import com.gdu.wacdo.status.CodeReponse;
 import lombok.Data;
 
 @Data
-public class ReponseService {
+public class ReponseService<T extends Object> {
 
     private CodeReponse status;
-    private Object data;
-    private Object parameter;
+    private T data;
     private Exception exception;
 
-    public ReponseService(CodeReponse status, Object data) {
+    public ReponseService(CodeReponse status, T data) {
         this.status = status;
         this.data = data;
     }
 
-    public ReponseService(CodeReponse status, Object data, Exception exception) {
+    public ReponseService(CodeReponse status, T data, Exception exception) {
         this.status = status;
         this.data = data;
         this.exception = exception;
