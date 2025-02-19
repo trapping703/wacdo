@@ -1,4 +1,4 @@
-package com.gdu.wacdo;
+package com.gdu.wacdo.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,5 @@
 package com.gdu.wacdo.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

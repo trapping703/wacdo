@@ -45,12 +45,13 @@ insert into Fonction( libelle) values ('manager');
 insert into Fonction( libelle) values ('cuisinier');
 insert into Fonction( libelle) values ('serveur');
 
-insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Victor', 'G.', 'victor-g@wacdo.fr', '', current_date,false);
-insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Mathieu', 'P.', 'mathieu-p@wacdo.fr', '', current_date,false);
-insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Quentin', 'F.', 'quentin-f@wacdo.fr', '', current_date,false);
-insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Julien', 'X.', 'julien-x@wacdo.fr', '', current_date,false);
-insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Charles', 'W.', 'charles-w@wacdo.fr', '', current_date,false);
-insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Victor', 'Z.', 'victor-z@wacdo.fr', '', current_date,false);
+-- mdp = test
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Victor', 'G.', 'victor-g@wacdo.fr', '$2y$10$MLqiUPAH7NQR8cK0mcQPVOvxoikpAmia43OmwfogmG0Y3Uuw/fwmW', current_date,true);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Mathieu', 'P.', 'mathieu-p@wacdo.fr', '$2y$10$MLqiUPAH7NQR8cK0mcQPVOvxoikpAmia43OmwfogmG0Y3Uuw/fwmW', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Quentin', 'F.', 'quentin-f@wacdo.fr', '$2y$10$MLqiUPAH7NQR8cK0mcQPVOvxoikpAmia43OmwfogmG0Y3Uuw/fwmW', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Julien', 'X.', 'julien-x@wacdo.fr', '$2y$10$MLqiUPAH7NQR8cK0mcQPVOvxoikpAmia43OmwfogmG0Y3Uuw/fwmW', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Charles', 'W.', 'charles-w@wacdo.fr', '$2y$10$MLqiUPAH7NQR8cK0mcQPVOvxoikpAmia43OmwfogmG0Y3Uuw/fwmW', current_date,false);
+insert into Employe( prenom, nom, email, motDePasse, dateEmbauche, admin) values ('Victor', 'Z.', 'victor-z@wacdo.fr', '$2y$10$MLqiUPAH7NQR8cK0mcQPVOvxoikpAmia43OmwfogmG0Y3Uuw/fwmW', current_date,false);
 
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', null, 1,1,1);
 insert into Affectation(dateDebut, dateFin, employe_id, restaurant_id, fonction_id) values (CURRENT_DATE - INTERVAL '1 year', CURRENT_DATE - INTERVAL '1 month', 2,1,2);
