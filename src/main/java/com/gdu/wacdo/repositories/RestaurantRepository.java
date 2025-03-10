@@ -12,5 +12,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
             "where (:nom is null or a.nom like %:nom%) " +
             "and (:ville is null or a.ville like %:ville%) " +
             "and (:CodePostal is null or a.codePostal = :CodePostal)")
-    List<Restaurant> getRestaurantsPourRecherche(String nom, String ville, int CodePostal);
+    List<Restaurant> getRestaurantsPourRecherche(String nom, String ville, Integer CodePostal);
 }

@@ -54,7 +54,7 @@ public class EmployeController {
     }
 
     @PostMapping("/rechercheEmployes")
-    public String rechercheEmployes(RechercheEmploye rechercheEmployes, Model model, BindingResult result) throws Exception {
+    public String rechercheEmployes(RechercheEmploye rechercheEmployes, Model model) throws Exception {
         ReponseService reponseService = employeService.findByRechercheEmploye(rechercheEmployes);
         return switch (reponseService.getStatus()) {
             case OK -> {
@@ -62,7 +62,7 @@ public class EmployeController {
                 yield "employes";
             }
             case EMPTY -> {
-                mappingQuandRechecheEmpty(rechercheEmployes, model, result);
+                mappingQuandRechecheEmpty(rechercheEmployes, model);
                 yield "employes";
             }
             case ERROR -> throw reponseService.getException();
@@ -83,7 +83,7 @@ public class EmployeController {
     /**
      * Réattribut l'objet de recherche d'employé, fournit une liste vide d'employé et passe le message d'erreur.
      */
-    private void mappingQuandRechecheEmpty(RechercheEmploye rechercheEmployes, Model model, BindingResult result) throws Exception {
+    private void mappingQuandRechecheEmpty(RechercheEmploye rechercheEmployes, Model model) {
         model.addAttribute("rechercheEmployes", rechercheEmployes);
         model.addAttribute("employes", emptyList());
         model.addAttribute("recherchevide", "Aucun employé trouvé");
