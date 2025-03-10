@@ -14,9 +14,7 @@ public interface EmployeRepository extends JpaRepository<Employe, Integer> {
     @Query("select a from Employe a " +
             "where (:nom is null or a.nom like %:nom%) " +
             "and (:prenom is null or a.prenom like %:prenom%) " +
-            "and (:email is null or a.email = :email)")
+            "and (:email is null or a.email like %:email%)")
     List<Employe> getEmployesPourRecherche(String nom, String prenom, String email);
-
-
 
 }
