@@ -23,7 +23,7 @@ public class CustomUserDetailService implements UserDetailsService {
                         .builder()
                         .username(employe.getEmail())
                         .password(employe.getMotDePasse())
-                        .authorities(employe.isAdmin() ? "ROLE_ADMIN" : "ROLE_SER")
+                        .authorities(employe.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER")
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
