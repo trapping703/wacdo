@@ -3,6 +3,7 @@ package com.gdu.wacdo.services;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.repositories.FonctionRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class FonctionService {
             if (fonction.getId() != null) {
                 return reponse(OK, fonction);
             } else {
-                return reponse(ERROR, fonction);
+                return reponse(EMPTY, fonction);
             }
         } catch (Exception e) {
             return reponse(ERROR, fonction, e);

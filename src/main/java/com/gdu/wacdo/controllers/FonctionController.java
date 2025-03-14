@@ -70,6 +70,29 @@ public class FonctionController {
         };
     }
 
+
+    @GetMapping("/creerFonction")
+    public String getCreerFonction() {
+        return "creationFonction";
+    }
+
+    @PostMapping("creerFonction")
+    public String enregistrementFonction(FonctionDTO fonctionDTO, Model model) throws Exception {
+        ReponseService reponseService = fonctionService.save(modelMapper.map(fonctionDTO, Fonction.class));
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingFonctionEnregistree((Fonction) reponseService.getData(), model);
+                yield "fonction";
+            }
+            case EMPTY -> {
+                mappingFonctionNonEnregistree(fonctionDTO, model);
+                yield "creationFonction";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
+
+
     /**
      * Réattribut l'objet de recherche de fonction, fournit la liste de fonction trouvé par la recherche.
      */
@@ -90,8 +113,30 @@ public class FonctionController {
         model.addAttribute("recherchevide", "Aucune fonction trouvée");
     }
 
+
+    /**
+     * Réattribut l'objet fonction enregistrée et un message de validation.
+     */
+    private void mappingFonctionEnregistree(Fonction fonction, Model model) {
+        model.addAttribute("fonction", modelMapper.map(fonction, FonctionDTO.class));
+        model.addAttribute("messageEnregistrement", "Fonction Enregistrée");
+    }
+
+    /**
+     *
+     */
+    private void mappingFonctionNonEnregistree(FonctionDTO fonctionDTO, Model model) throws Exception {
+        model.addAttribute("fonctionDTO", fonctionDTO);
+        model.addAttribute("messageNonEnregistrement", "Fonction non enregistrée");
+    }
+
     @ModelAttribute(value = "rechercheFonctions")
     private RechercheFonction getrechercheFonction() {
         return new RechercheFonction();
+    }
+
+    @ModelAttribute(value = "fonctionDTO")
+    private FonctionDTO getFonctionDTO() {
+        return new FonctionDTO();
     }
 }

@@ -48,14 +48,14 @@ class FonctionServiceTest {
     }
 
     @Test
-    void givenFonctionSansID_whenSaveFail_thenReturnFonctionSansIdEtReponsError() {
+    void givenFonctionSansID_whenSaveFail_thenReturnFonctionSansIdEtReponseEmpty() {
         //given
         Fonction fonction = new Fonction();
         Mockito.doReturn(fonction).when(fonctionRepository).save(fonction);
         //when
         ReponseService<Fonction> reponse = fonctionService.save(fonction);
         //then
-        assertThat(reponse.isError()).isTrue();
+        assertThat(reponse.isEmpty()).isTrue();
         assertThat(reponse.getData().getId()).isNull();
         verify(fonctionRepository, Mockito.times(1)).save(fonction);
         verifyNoMoreInteractions(fonctionRepository);
@@ -136,12 +136,12 @@ class FonctionServiceTest {
         //given
         Fonction fonction = new Fonction();
         String libelle = "libelle";
-        doReturn(fonction).when(fonctionRepository).findByLibelleContaining(libelle);
+        doReturn(List.of(fonction)).when(fonctionRepository).findByLibelleContaining(libelle);
         //when
-        ReponseService<Fonction> reponse = fonctionService.findByLibelle(libelle);
+        ReponseService<List<Fonction>> reponse = fonctionService.findByLibelle(libelle);
         //then
         assertThat(reponse.isOk()).isTrue();
-        assertThat(reponse.getData()).isEqualTo(fonction);
+        assertThat(reponse.getData()).containsOnly(fonction);
         verify(fonctionRepository, Mockito.times(1)).findByLibelleContaining(libelle);
         verifyNoMoreInteractions(fonctionRepository);
     }

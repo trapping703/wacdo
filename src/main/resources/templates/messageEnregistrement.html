@@ -1,0 +1,13 @@
+<div th:fragment="message_enregistrement" th:if="${messageEnregistrement != null and !#strings.isEmpty(messageEnregistrement)}">
+  <ul>
+    <label style="color:green" th:text="${messageEnregistrement}"></label>
+  </ul>
+  <hr>
+</div>
+
+<div th:fragment="message_non_enregistrement" th:if="${messageNonEnregistrement != null and !#strings.isEmpty(messageNonEnregistrement)}">
+  <ul>
+    <label style="color:red" th:text="${messageNonEnregistrement}"></label>
+  </ul>
+  <hr>
+</div>

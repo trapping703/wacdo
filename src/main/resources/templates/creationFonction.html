@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="~{layout :: page_head}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
+</nav>
+
+<hr>
+<div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
+<form action="#" method="post" th:action="@{/creerFonction}" th:object="${fonctionDTO}">
+  <!-- Libelle -->
+  <div class="row ">
+    <div class="col">
+      <div class="form-outline">
+        <label class="form-label" for="libelle">Libelle</label>
+        <input type="text" id="libelle" class="form-control" th:field="${fonctionDTO.libelle}"/>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <button type="submit" class="btn btn-secondary rounded">Créer</button>
+  <hr>
+</form>
+<footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
+</footer>
+</body>
+
+</html>
