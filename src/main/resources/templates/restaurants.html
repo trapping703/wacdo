@@ -75,7 +75,7 @@
             <th scope="col">Adresse</th>
             <th scope="col">Code postal</th>
             <th scope="col">Ville</th>
-            <th scope="col">Action</th>
+            <th scope="col"><a role="button" class="btn btn-secondary rounded" th:href="@{/creerRestaurant}">créer</a></th>
         </tr>
         </thead>
         <tbody>
@@ -89,13 +89,12 @@
             <td th:text="${resto.ville}"/>
             <td>
                 <a role="button" class="btn btn-secondary rounded" th:href="@{/detailRestaurant/{id}(id=${resto.id})}">
-                    Edit
+                    details
                 </a>
             </td>
         </tr>
         </tbody>
     </table>
-</div>
 </div>
 
 
