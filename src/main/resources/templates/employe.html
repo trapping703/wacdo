@@ -10,13 +10,13 @@
     <!-- nom prenom -->
     <div class="row ">
         <div class="col">
-            <div  class="form-outline">
+            <div class="form-outline">
                 <label class="form-label" for="prenom">Prénom</label>
                 <input type="text" id="prenom" class="form-control" th:field="${employe.prenom}"/>
             </div>
         </div>
         <div class="col">
-            <div  class="form-outline">
+            <div class="form-outline">
                 <label class="form-label" for="nom">Nom</label>
                 <input type="text" id="nom" class="form-control" th:field="${employe.nom}"/>
             </div>
@@ -26,13 +26,13 @@
     <!-- date embauche / isAdmin -->
     <div class="row ">
         <div class="col">
-            <div  class="form-outline">
+            <div class="form-outline">
                 <label class="form-label" for="dateEmbauche">Date d'embauche</label>
                 <input type="date" id="dateEmbauche" class="form-control" th:field="${employe.dateEmbauche}"/>
             </div>
         </div>
         <div class="col">
-            <div  class="form-outline">
+            <div class="form-outline">
                 <label class="form-check-label" for="admin">Administrateur</label>
                 <input class="form-check-input form-control" type="checkbox" id="admin" th:field="${employe.admin}"/>
             </div>
@@ -41,7 +41,7 @@
 
     <!--    Liste affectations-->
     <table class="table align-middle">
-        <thead >
+        <thead>
         <tr>
             <th>Fonction</th>
             <th>Restaurant</th>
@@ -51,7 +51,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr><tr th:each="affectation: ${employe.affectations}">
+        <tr>
+        <tr th:each="affectation: ${employe.affectations}">
             <td th:text="${affectation.fonction.libelle}"/>
 
             <td th:text="${affectation.restaurant.nom}"/>

@@ -26,9 +26,9 @@ public class AffectationService {
     public ReponseService save(Affectation affectation) {
         try {
             affectationRepository.save(affectation);
-            if(affectation.getId() != null) {
+            if (affectation.getId() != null) {
                 return reponse(OK, affectation);
-            }else{
+            } else {
                 return reponse(ERROR, affectation);
             }
         } catch (Exception e) {

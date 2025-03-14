@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class RechercheEmploye {
 
-    private String nom,prenom,email;
+    private String nom, prenom, email;
 }

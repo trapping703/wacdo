@@ -14,14 +14,16 @@
         <div class="col-lg-12">
             <div class="card search-form">
                 <div class="card-body">
-                    <form action="#" method="post" th:action="@{/rechercheAffectations}" th:object="${rechercheAffectation}">
+                    <form action="#" method="post" th:action="@{/rechercheAffectations}"
+                          th:object="${rechercheAffectation}">
                         <div class="row">
                             <div>
                                 <div class="row no-gutters">
                                     <div class="col-lg-3 col-md-6 col-sm-12">
                                         <div class="form-outline">
                                             <label class="form-label" for="dateDebut">Date debut</label>
-                                            <input type="date" id="dateDebut" class="form-control" th:field="*{dateDebut}"/>
+                                            <input type="date" id="dateDebut" class="form-control"
+                                                   th:field="*{dateDebut}"/>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6 col-sm-12">
@@ -104,7 +106,8 @@
                 <td th:text="${affectation.dateDebut}"/>
                 <td th:text="${affectation.dateFin}"/>
                 <td>
-                    <a role="button" class="btn btn-secondary rounded" th:href="@{/detailAffectation/{id}(id=${affectation.id})}">
+                    <a role="button" class="btn btn-secondary rounded"
+                       th:href="@{/detailAffectation/{id}(id=${affectation.id})}">
                         Edit
                     </a>
                 </td>
@@ -113,8 +116,6 @@
         </table>
     </div>
 </div>
-
-
 
 
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">

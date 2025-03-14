@@ -1,8 +1,5 @@
 package com.gdu.wacdo.dto.model;
 
-import com.gdu.wacdo.model.AbstractPersistentEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 

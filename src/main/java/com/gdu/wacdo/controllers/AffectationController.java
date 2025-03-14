@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 @Controller
 @Slf4j
 public class AffectationController {
@@ -73,16 +75,38 @@ public class AffectationController {
     @PostMapping("/rechercheAffectations")
     public String rechercheAffectations(RechercheAffectation rechercheAffectation, Model model) throws Exception {
         ReponseService reponseService = affectationService.findByRechercheAffectation(rechercheAffectation);
-        if (reponseService.isOk()) {
-            List<AffectationDTO> affectationDTOS = ((List<Affectation>) reponseService.getData()).stream()
-                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
-                    .toList();
-            model.addAttribute("rechercheAffectations", rechercheAffectation);
-            model.addAttribute("affectations", affectationDTOS);
-            return "affectations";
-        } else {
-            throw reponseService.getException();
-        }
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingListeAffectationsQuandRechercheOK(rechercheAffectation, model, reponseService);
+                yield "restaurants";
+            }
+            case EMPTY -> {
+                mappingQuandRechecheEmpty(rechercheAffectation, model);
+                yield "restaurants";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
+
+    /**
+     * Réattribut l'objet de recherche de restaurant, fournit la liste de restaurant trouvé par la recherche.
+     */
+    private void mappingListeAffectationsQuandRechercheOK(RechercheAffectation rechercheAffectation, Model model, ReponseService reponseService) {
+        List<AffectationDTO> affectationDTOS = ((List<Affectation>) reponseService.getData()).stream()
+                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                .toList();
+        model.addAttribute("rechercheAffectations", rechercheAffectation);
+        model.addAttribute("affectations", affectationDTOS);
+    }
+
+
+    /**
+     * Réattribut l'objet de recherche de affectation, fournit une liste vide d'affectation et passe le message d'erreur.
+     */
+    private void mappingQuandRechecheEmpty(RechercheAffectation rechercheAffectations, Model model) throws Exception {
+        model.addAttribute("rechercheAffectations", rechercheAffectations);
+        model.addAttribute("affectations", emptyList());
+        model.addAttribute("recherchevide", "Aucune affectation trouvée");
     }
 
     @ModelAttribute(value = "restaurants")

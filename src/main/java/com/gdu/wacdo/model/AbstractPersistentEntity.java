@@ -9,10 +9,10 @@ import java.io.Serializable;
 
 
 @MappedSuperclass
-public class AbstractPersistentEntity <T> implements Serializable {
+public class AbstractPersistentEntity<T> implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private T id;
 
     public T getId() {

@@ -1,11 +1,8 @@
 package com.gdu.wacdo.controllers;
 
-import com.gdu.wacdo.dto.form.RechercheEmploye;
 import com.gdu.wacdo.dto.form.RechercheRestaurant;
-import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
-import com.gdu.wacdo.model.Employe;
 import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.RestaurantService;
 import jakarta.validation.Valid;
@@ -63,7 +60,7 @@ public class RestaurantController {
     @PostMapping("/rechercheRestaurants")
     public String rechercheRestaurants(@Valid @ModelAttribute("rechercheRestaurants") RechercheRestaurant rechercheRestaurants, BindingResult result, Model model) throws Exception {
         ReponseService reponseService = restaurantService.findByRechercheRestaurant(rechercheRestaurants);
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return "restaurants";
         }
         return switch (reponseService.getStatus()) {

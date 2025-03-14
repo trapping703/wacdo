@@ -57,35 +57,35 @@
     </div>
 </div>
 
-    <!-- Liste des employées-->
+<!-- Liste des employées-->
 
-    <hr>
-    <div class="row">
-        <table class="table align-middle bg-white">
-            <thead>
-            <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Prénom</th>
-                <th scope="col">Email</th>
-                <th scope="col">Rajouter un employé</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="employe: ${employes}">
-                <td th:text="${employe.nom}"/>
+<hr>
+<div class="row">
+    <table class="table align-middle bg-white">
+        <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Email</th>
+            <th scope="col">Rajouter un employé</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employe: ${employes}">
+            <td th:text="${employe.nom}"/>
 
-                <td th:text="${employe.prenom}"/>
+            <td th:text="${employe.prenom}"/>
 
-                <td th:text="${employe.email}"/>
-                <td>
-                    <a role="button" class="btn btn-secondary rounded" th:href="@{/detailEmploye/{id}(id=${employe.id})}">
-                        Voir Détails
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+            <td th:text="${employe.email}"/>
+            <td>
+                <a role="button" class="btn btn-secondary rounded" th:href="@{/detailEmploye/{id}(id=${employe.id})}">
+                    Voir Détails
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </div>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
