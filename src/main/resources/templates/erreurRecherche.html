@@ -1,0 +1,6 @@
+<div th:fragment="erreur_recherche" th:if="${recherchevide != null and !#strings.isEmpty(recherchevide)}">
+    <ul>
+        <label style="color:red" th:text="${recherchevide}"></label>
+    </ul>
+    <hr>
+</div>

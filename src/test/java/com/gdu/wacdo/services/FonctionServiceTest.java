@@ -136,13 +136,13 @@ class FonctionServiceTest {
         //given
         Fonction fonction = new Fonction();
         String libelle = "libelle";
-        doReturn(fonction).when(fonctionRepository).findByLibelle(libelle);
+        doReturn(fonction).when(fonctionRepository).findByLibelleContaining(libelle);
         //when
         ReponseService<Fonction> reponse = fonctionService.findByLibelle(libelle);
         //then
         assertThat(reponse.isOk()).isTrue();
         assertThat(reponse.getData()).isEqualTo(fonction);
-        verify(fonctionRepository, Mockito.times(1)).findByLibelle(libelle);
+        verify(fonctionRepository, Mockito.times(1)).findByLibelleContaining(libelle);
         verifyNoMoreInteractions(fonctionRepository);
     }
 
@@ -151,13 +151,13 @@ class FonctionServiceTest {
         //given
         Exception exception = new RuntimeException();
         String libelle = "libelle";
-        doThrow(exception).when(fonctionRepository).findByLibelle(libelle);
+        doThrow(exception).when(fonctionRepository).findByLibelleContaining(libelle);
         //when
         ReponseService reponse = fonctionService.findByLibelle(libelle);
         //then
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getException()).isEqualTo(exception);
-        verify(fonctionRepository, Mockito.times(1)).findByLibelle(libelle);
+        verify(fonctionRepository, Mockito.times(1)).findByLibelleContaining(libelle);
         verifyNoMoreInteractions(fonctionRepository);
     }
 }

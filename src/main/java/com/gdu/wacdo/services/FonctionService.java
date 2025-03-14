@@ -6,6 +6,7 @@ import com.gdu.wacdo.repositories.FonctionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.gdu.wacdo.dto.response.ReponseService.reponse;
@@ -56,9 +57,17 @@ public class FonctionService {
         }
     }
 
+    /**
+     * Utilisé pour la recherche des fonctions pour la vue /fonctions
+     */
     public ReponseService findByLibelle(String libelle) {
         try {
-            return reponse(OK, fonctionRepository.findByLibelle(libelle));
+            List<Fonction> fonctions = fonctionRepository.findByLibelleContaining(libelle);
+            if (fonctions.isEmpty()) {
+                return reponse(EMPTY, libelle);
+            } else {
+                return reponse(OK, fonctions);
+            }
         } catch (Exception e) {
             return reponse(ERROR, libelle, e);
         }
