@@ -11,12 +11,7 @@
 <div class="container">
     <div class="row">
         <hr>
-        <div th:if="${recherchevide != null and !#strings.isEmpty(recherchevide)}">
-            <ul>
-                <label style="color:red" th:text="${recherchevide}"></label>
-            </ul>
-            <hr>
-        </div>
+        <div th:replace="~{erreurRecherche :: erreur_recherche}"></div>
         <div class="col-lg-12">
             <div class="card search-form">
                 <div class="card-body">
