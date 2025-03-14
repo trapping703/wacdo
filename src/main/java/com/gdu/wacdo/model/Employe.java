@@ -3,6 +3,7 @@ package com.gdu.wacdo.model;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +14,7 @@ public class Employe extends AbstractPersistentEntity<Integer> {
     private String nom;
     private String prenom;
     private String email;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateEmbauche;
     private boolean admin;
     private String motDePasse;

@@ -70,13 +70,12 @@ public class FonctionController {
         };
     }
 
-
     @GetMapping("/creerFonction")
     public String getCreerFonction() {
         return "creationFonction";
     }
 
-    @PostMapping("creerFonction")
+    @PostMapping("/creerFonction")
     public String enregistrementFonction(FonctionDTO fonctionDTO, Model model) throws Exception {
         ReponseService reponseService = fonctionService.save(modelMapper.map(fonctionDTO, Fonction.class));
         return switch (reponseService.getStatus()) {
@@ -91,7 +90,6 @@ public class FonctionController {
             case ERROR -> throw reponseService.getException();
         };
     }
-
 
     /**
      * Réattribut l'objet de recherche de fonction, fournit la liste de fonction trouvé par la recherche.
@@ -112,7 +110,6 @@ public class FonctionController {
         model.addAttribute("fonctions", emptyList());
         model.addAttribute("recherchevide", "Aucune fonction trouvée");
     }
-
 
     /**
      * Réattribut l'objet fonction enregistrée et un message de validation.

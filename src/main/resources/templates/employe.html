@@ -6,19 +6,37 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
 
+<hr>
+<div th:replace="~{messageEnregistrement :: message_enregistrement}"></div>
 <form>
     <!-- nom prenom -->
     <div class="row ">
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="prenom">Prénom</label>
-                <input type="text" id="prenom" class="form-control" th:field="${employe.prenom}"/>
+                <input th:disabled="${employe.id != null}" type="text" id="prenom" class="form-control" th:field="${employe.prenom}"/>
             </div>
         </div>
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="nom">Nom</label>
-                <input type="text" id="nom" class="form-control" th:field="${employe.nom}"/>
+                <input th:disabled="${employe.id != null}" type="text" id="nom" class="form-control" th:field="${employe.nom}"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- nom prenom -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="email">E-Mail</label>
+                <input th:disabled="${employe.id != null}" type="text" id="email" class="form-control" th:field="${employe.email}"/>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="motDePasse">mot de passe</label>
+                <input th:disabled="${employe.id != null}" type="password" id="motDePasse" class="form-control" th:field="${employe.motDePasse}"/>
             </div>
         </div>
     </div>
@@ -28,13 +46,13 @@
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="dateEmbauche">Date d'embauche</label>
-                <input type="date" id="dateEmbauche" class="form-control" th:field="${employe.dateEmbauche}"/>
+                <input th:disabled="${employe.id != null}" type="date" id="dateEmbauche" class="form-control" th:field="${employe.dateEmbauche}"/>
             </div>
         </div>
         <div class="col">
             <div class="form-outline">
                 <label class="form-check-label" for="admin">Administrateur</label>
-                <input class="form-check-input form-control" type="checkbox" id="admin" th:field="${employe.admin}"/>
+                <input th:disabled="${employe.id != null}" class="form-check-input form-control" type="checkbox" id="admin" th:field="${employe.admin}"/>
             </div>
         </div>
     </div>
