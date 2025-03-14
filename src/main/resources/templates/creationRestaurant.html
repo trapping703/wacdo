@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="~{layout :: page_head}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
+</nav>
+
+<hr>
+<div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
+<form action="#" method="post" th:action="@{/creerRestaurant}" th:object="${restaurantDTO}">
+    <!-- Affichage des erreurs du formulaire-->
+    <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+    </div>
+
+    <!-- nom -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="nom">nom</label>
+                <input type="text" id="nom" class="form-control" th:field="*{nom}"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- adresse -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="adresse">Adresse</label>
+                <input aria-disabled="true" type="text" id="adresse" class="form-control disabled"
+                       th:field="*{adresse}"/>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="codePostal">Code Postal</label>
+                <input type="text" id="codePostal" class="form-control" th:field="*{codePostal}"/>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="ville">Ville</label>
+                <input type="text" id="ville" class="form-control" th:field="*{ville}"/>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <button type="submit" class="btn btn-secondary rounded">Créer</button>
+    <hr>
+</form>
+<footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
+</footer>
+</body>
+
+</html>

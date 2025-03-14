@@ -7,13 +7,15 @@
 </nav>
 
 
+<hr>
+<div th:replace="~{messageEnregistrement :: message_enregistrement}"></div>
 <form>
     <!-- nom -->
     <div class="row ">
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="nom">nom</label>
-                <input type="text" id="nom" class="form-control" th:value="${restaurant.getNom()}"/>
+                <input th:disabled="${restaurant.id != null}" type="text" id="nom" class="form-control" th:value="${restaurant.getNom()}"/>
             </div>
         </div>
     </div>
@@ -23,7 +25,7 @@
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="adresse">Adresse</label>
-                <input aria-disabled="true" type="text" id="adresse" class="form-control disabled"
+                <input th:disabled="${restaurant.id != null}" type="text" id="adresse" class="form-control disabled"
                        th:value="${restaurant.adresse}"/>
             </div>
         </div>
@@ -31,14 +33,14 @@
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="codePostal">Code Postal</label>
-                <input type="text" id="codePostal" class="form-control" th:value="${restaurant.codePostal}"/>
+                <input th:disabled="${restaurant.id != null}" type="text" id="codePostal" class="form-control" th:value="${restaurant.codePostal}"/>
             </div>
         </div>
 
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="ville">Ville</label>
-                <input type="text" id="ville" class="form-control" th:value="${restaurant.ville}"/>
+                <input th:disabled="${restaurant.id != null}" type="text" id="ville" class="form-control" th:value="${restaurant.ville}"/>
             </div>
         </div>
     </div>

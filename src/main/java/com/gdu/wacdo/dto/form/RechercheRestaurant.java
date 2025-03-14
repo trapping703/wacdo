@@ -8,7 +8,7 @@ import lombok.Data;
 public class RechercheRestaurant {
 
     private String nom, ville;
-    @Size(min = 0, max = 5, message = "code postal incompatible")
+    @Size(min = 5, max = 5, message = "code postal incompatible")
     @Pattern(regexp = "^(\\s*|\\d+)$", message = "code postal incompatible")
     private String codePostal;
 }

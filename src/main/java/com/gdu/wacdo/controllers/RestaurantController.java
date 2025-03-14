@@ -59,10 +59,10 @@ public class RestaurantController {
 
     @PostMapping("/rechercheRestaurants")
     public String rechercheRestaurants(@Valid @ModelAttribute("rechercheRestaurants") RechercheRestaurant rechercheRestaurants, BindingResult result, Model model) throws Exception {
-        ReponseService reponseService = restaurantService.findByRechercheRestaurant(rechercheRestaurants);
         if (result.hasErrors()) {
             return "restaurants";
         }
+        ReponseService reponseService = restaurantService.findByRechercheRestaurant(rechercheRestaurants);
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingListeRestaurantQuandRechercheOK(rechercheRestaurants, model, reponseService);
@@ -71,6 +71,30 @@ public class RestaurantController {
             case EMPTY -> {
                 mappingQuandRechecheEmpty(rechercheRestaurants, model);
                 yield "restaurants";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
+
+    @GetMapping("/creerRestaurant")
+    public String getCreerRestaurant() {
+        return "creationRestaurant";
+    }
+
+    @PostMapping("/creerRestaurant")
+    public String enregistrementRestaurant(@Valid @ModelAttribute("restaurantDTO") RestaurantDTO restaurantDTO, BindingResult result, Model model) throws Exception {
+        if (result.hasErrors()) {
+            return "creationRestaurant";
+        }
+        ReponseService reponseService = restaurantService.save(modelMapper.map(restaurantDTO, Restaurant.class));
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingRestaurantEnregistree((Restaurant) reponseService.getData(), model);
+                yield "restaurant";
+            }
+            case EMPTY -> {
+                mappingRestaurantNonEnregistree(restaurantDTO, model);
+                yield "creationRestaurant";
             }
             case ERROR -> throw reponseService.getException();
         };
@@ -96,8 +120,29 @@ public class RestaurantController {
         model.addAttribute("recherchevide", "Aucun restaurant trouvé");
     }
 
+    /**
+     * Réattribut l'objet restaurant enregistrée et un message de validation.
+     */
+    private void mappingRestaurantEnregistree(Restaurant restaurant, Model model) {
+        model.addAttribute("restaurant", modelMapper.map(restaurant, RestaurantDTO.class));
+        model.addAttribute("messageEnregistrement", "Restaurant Enregistrée");
+    }
+
+    /**
+     * Réattribut l'objet restaurantDTO avec un message d'erreur
+     */
+    private void mappingRestaurantNonEnregistree(RestaurantDTO restaurantDTO, Model model) throws Exception {
+        model.addAttribute("restaurantDTO", restaurantDTO);
+        model.addAttribute("messageNonEnregistrement", "Restaurant non enregistrée");
+    }
+
     @ModelAttribute(value = "rechercheRestaurants")
     private RechercheRestaurant getrechercheRestaurant() {
         return new RechercheRestaurant();
+    }
+
+    @ModelAttribute(value = "restaurantDTO")
+    private RestaurantDTO getRestaurantDTO() {
+        return new RestaurantDTO();
     }
 }

@@ -1,5 +1,7 @@
 package com.gdu.wacdo.dto.model;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,10 +13,13 @@ import java.util.List;
 public class EmployeDTO {
 
     private Integer id;
+    @NotEmpty
     private String nom;
+    @NotEmpty
     private String prenom;
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "Mail incompatible")
     private String email;
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateEmbauche;
     private boolean admin;

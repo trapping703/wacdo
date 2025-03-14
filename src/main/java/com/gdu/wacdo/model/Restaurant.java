@@ -3,6 +3,8 @@ package com.gdu.wacdo.model;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -11,7 +13,9 @@ public class Restaurant extends AbstractPersistentEntity<Integer> {
 
     private String nom;
     private String adresse;
-    private int codePostal;
+    @Size(min = 0, max = 5, message = "code postal incompatible")
+    @Pattern(regexp = "^(\\s*|\\d+)$", message = "code postal incompatible")
+    private String codePostal;
     private String ville;
 
     @OneToMany(mappedBy = "restaurant")
@@ -22,7 +26,7 @@ public class Restaurant extends AbstractPersistentEntity<Integer> {
 
     }
 
-    public Restaurant(Integer id, String nom, String adresse, int codePostal, String ville) {
+    public Restaurant(Integer id, String nom, String adresse, String codePostal, String ville) {
         setId(id);
         this.nom = nom;
         this.adresse = adresse;
@@ -46,11 +50,11 @@ public class Restaurant extends AbstractPersistentEntity<Integer> {
         this.adresse = adresse;
     }
 
-    public int getCodePostal() {
+    public String getCodePostal() {
         return codePostal;
     }
 
-    public void setCodePostal(int codePostal) {
+    public void setCodePostal(String codePostal) {
         this.codePostal = codePostal;
     }
 
