@@ -54,11 +54,11 @@
         <thead>
         <tr>
             <th scope="col">Nom</th>
-            <th scope="col">prenom</th>
+            <th scope="col">Prenom</th>
             <th scope="col">Date debut</th>
             <th scope="col">Date fin</th>
             <th scope="col">Fonction</th>
-            <th scope="col">Action</th>
+            <th scope="col"><a role="button" class="btn btn-secondary rounded" th:href="@{'/creerAffectation?restaurant='+${restaurant.id}}">créer</a></th>
         </tr>
         </thead>
         <tbody>
@@ -73,8 +73,8 @@
 
             <td th:text="${affectation.fonction.libelle}"/>
             <td>
-                <a role="button" class="btn btn-secondary rounded"> <!--th:href="@{/restaurant/{id}(id=${resto.id})}"-->
-                    Edit
+                <a role="button" class="btn btn-secondary rounded" th:href="@{/detailAffectation/{id}(id=${affectation.id})}">
+                    details
                 </a>
             </td>
         </tr>

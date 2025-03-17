@@ -5,14 +5,14 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
-
 <form method="post" th:action="@{/updateAffectation}" th:object="${affectation}">
+    <hr>
     <!-- fonction  employe Restaurant -->
     <div class="row ">
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="fonction">Fonction</label>
-                <select id="fonction" name="fonction">
+                <select th:disabled="${affectation.id != null}" id="fonction" name="fonction">
                     <option th:each="fonction : ${fonctions}"
                             th:value="${fonction.id}"
                             th:text="${fonction.libelle}"
@@ -23,7 +23,7 @@
         <div class="col">
             <div class="form-outline">
                 <label class="form-label">Employe</label>
-                <select id="employe" name="employe">
+                <select th:disabled="${affectation.id != null}" id="employe" name="employe">
                     <option th:each="employe : ${employes}"
                             th:value="${employe.id}"
                             th:text="${employe.nom + ''+ employe.prenom}"
@@ -34,7 +34,7 @@
         <div class="col">
             <div class="form-outline">
                 <label class="form-check-label" for="restaurant">Restaurant</label>
-                <select id="restaurant" name="restaurant">
+                <select th:disabled="${affectation.id != null}" id="restaurant" name="restaurant">
                     <option th:each="restaurant : ${restaurants}"
                             th:value="${restaurant.id}"
                             th:text="${restaurant.nom}"
@@ -49,13 +49,13 @@
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="dateDebut">Date debut</label>
-                <input type="date" id="dateDebut" class="form-control" th:value="${affectation.dateDebut}"/>
+                <input th:disabled="${affectation.id != null}" type="date" id="dateDebut" class="form-control" th:value="${affectation.dateDebut}"/>
             </div>
         </div>
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="dateFin">Date fin</label>
-                <input type="date" id="dateFin" class="form-control" th:value="${affectation.dateFin}"/>
+                <input th:disabled="${affectation.id != null}" type="date" id="dateFin" class="form-control" th:value="${affectation.dateFin}"/>
             </div>
         </div>
     </div>

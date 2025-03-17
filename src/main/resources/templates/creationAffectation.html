@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: page_head}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
+</nav>
+
+<form method="post" th:action="@{/updateAffectation}" th:object="${affectation}">
+  <!-- fonction  employe Restaurant -->
+  <div class="row ">
+    <div class="col">
+      <div class="form-outline">
+        <label class="form-label" for="fonction">Fonction</label>
+        <select id="fonction" name="fonction">
+          <option th:each="fonction : ${fonctions}"
+                  th:value="${fonction.id}"
+                  th:text="${fonction.libelle}"
+                  th:selected="${fonction.id eq affectation.fonction.id}"/>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-outline">
+        <label class="form-label">Employe</label>
+        <select id="employe" name="employe">
+          <option th:each="employe : ${employes}"
+                  th:value="${employe.id}"
+                  th:text="${employe.nom + ''+ employe.prenom}"
+                  th:selected="${employe.id eq affectation.employe.id}"/>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-outline">
+        <label class="form-check-label" for="restaurant">Restaurant</label>
+        <select id="restaurant" name="restaurant">
+          <option th:each="restaurant : ${restaurants}"
+                  th:value="${restaurant.id}"
+                  th:text="${restaurant.nom}"
+                  th:selected="${restaurant.id eq affectation.restaurant.id}"/>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- date embauche / isAdmin -->
+  <div class="row ">
+    <div class="col">
+      <div class="form-outline">
+        <label class="form-label" for="dateDebut">Date debut</label>
+        <input type="date" id="dateDebut" class="form-control" th:value="${affectation.dateDebut}"/>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-outline">
+        <label class="form-label" for="dateFin">Date fin</label>
+        <input type="date" id="dateFin" class="form-control" th:value="${affectation.dateFin}"/>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!-- Submit button -->
+  <button type="button" class="btn btn-secondary rounded">Place order</button>
+</form>
+
+<footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
+</footer>
+</body>
+
+</html>

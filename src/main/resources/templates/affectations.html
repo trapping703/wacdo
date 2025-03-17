@@ -5,7 +5,6 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
-<hr>
 <!--Recherche d'affectations-->
 <div class="container">
     <div class="row">
@@ -53,14 +52,9 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-1 col-md-3 col-sm-12">
-                                        <button type="submit" class="btn btn-base">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                 class="feather feather-search">
-                                                <circle cx="11" cy="11" r="8"></circle>
-                                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                            </svg>
+                                        <label class="form-label"></label>
+                                        <button type="submit" class="btn btn-secondary rounded">
+                                            rechercher
                                         </button>
                                     </div>
                                 </div>
@@ -72,11 +66,8 @@
         </div>
     </div>
 </div>
-<hr>
-<!--recherche d'affectations-->
 <div class="container">
     <div class="row">
-        <hr>
 
     </div>
 
@@ -90,9 +81,9 @@
                 <th scope="col">Employe</th>
                 <th scope="col">Restaurant</th>
                 <th scope="col">Poste</th>
-                <th scope="col">date debut</th>
-                <th scope="col">date fin</th>
-                <th scope="col"><a role="button" class="btn btn-secondary rounded" th:href="@{/creerAffectation}">créer</a></th>
+                <th scope="col">Date debut</th>
+                <th scope="col">Date fin</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>

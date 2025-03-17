@@ -18,7 +18,7 @@
                         <div class="row">
                             <div>
                                 <div class="row no-gutters">
-                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                    <div class="col-lg-3 col-md-6 col-sm-12">
                                         <div class="form-outline">
                                             <label class="form-label" for="libelle">Libelle:</label>
                                             <input type="text" id="libelle" class="form-control" th:field="*{libelle}"/>
@@ -26,13 +26,10 @@
                                     </div>
                                     <div class="col-lg-1 col-md-3 col-sm-12">
                                         <button type="submit" class="btn btn-base">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                 class="feather feather-search">
-                                                <circle cx="11" cy="11" r="8"></circle>
-                                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                            </svg>
+                                            <label class="form-label"></label>
+                                            <button type="submit" class="btn btn-secondary rounded">
+                                                rechercher
+                                            </button>
                                         </button>
                                     </div>
                                 </div>
@@ -47,27 +44,34 @@
 
 
 <!-- Liste des employées-->
+<div class="container">
+    <div class="row">
 
-<hr>
-<div class="row">
-    <table class="table align-middle bg-white">
-        <thead>
-        <tr>
-            <th scope="col">Poste</th>
-            <th scope="col"><a role="button" class="btn btn-secondary rounded" th:href="@{/creerFonction}">créer</a></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="fonction: ${fonctions}">
-            <td th:text="${fonction.libelle}"/>
-            <td>
-                <a role="button" class="btn btn-secondary rounded" th:href="@{/detailFonction/{id}(id=${fonction.id})}">
-                    détails
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    </div>
+
+    <hr>
+    <div class="row">
+        <table class="table align-middle bg-white">
+            <thead>
+            <tr>
+                <th scope="col">Poste</th>
+                <th scope="col"><a role="button" class="btn btn-secondary rounded" th:href="@{/creerFonction}">créer</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="fonction: ${fonctions}">
+                <td th:text="${fonction.libelle}"/>
+                <td>
+                    <a role="button" class="btn btn-secondary rounded"
+                       th:href="@{/detailFonction/{id}(id=${fonction.id})}">
+                        détails
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
