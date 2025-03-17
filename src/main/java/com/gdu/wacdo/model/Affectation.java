@@ -31,8 +31,16 @@ public class Affectation extends AbstractPersistentEntity<Integer> {
     @JsonIncludeProperties(value = {"id"})
     private Fonction fonction;
 
-    public Affectation(int id, LocalDate dateDebut, LocalDate dateFin, Employe employe, Restaurant restaurant, Fonction fonction) {
+    public Affectation(Integer id, LocalDate dateDebut, LocalDate dateFin, Employe employe, Restaurant restaurant, Fonction fonction) {
         this.setId(id);
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.employe = employe;
+        this.restaurant = restaurant;
+        this.fonction = fonction;
+    }
+
+    public Affectation(LocalDate dateDebut, LocalDate dateFin, Employe employe, Restaurant restaurant, Fonction fonction) {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.employe = employe;

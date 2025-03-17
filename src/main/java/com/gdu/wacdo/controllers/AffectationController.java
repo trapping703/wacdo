@@ -1,5 +1,6 @@
 package com.gdu.wacdo.controllers;
 
+import com.gdu.wacdo.dto.form.CreationAffectation;
 import com.gdu.wacdo.dto.form.RechercheAffectation;
 import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
@@ -14,14 +15,13 @@ import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.EmployeService;
 import com.gdu.wacdo.services.FonctionService;
 import com.gdu.wacdo.services.RestaurantService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -88,8 +88,56 @@ public class AffectationController {
         };
     }
 
+    @GetMapping("/creerAffectation")
+    public String getCreerAffectation(@RequestParam(value = "restaurant", required = false) Integer idRestaurant, @RequestParam(value = "employe", required = false) Integer idEmploye, Model model) throws Exception {
+        if (idRestaurant != null) {
+            model.addAttribute("affectationDTO", new CreationAffectation().creationDepuisRestaurant(idRestaurant));
+        }
+        if (idEmploye != null) {
+            model.addAttribute("affectationDTO", new CreationAffectation().creationDepuisEmploye(idEmploye));
+        }
+        return "creationAffectation";
+    }
+
+
+    @PostMapping("/creerAffectation")
+    public String enregistrementAffectation(@Valid @ModelAttribute("affectationDTO") CreationAffectation creationAffectation, BindingResult result, Model model) throws Exception {
+        if (result.hasErrors()) {
+            return "creationAffectation";
+        }
+
+        ReponseService reponseService = affectationService.save(creationAffectation.toAffectation((Employe) employeService.findById(creationAffectation.getEmploye()).getData(), (Restaurant) restaurantService.findById(creationAffectation.getRestaurant()).getData(), (Fonction) fonctionService.findById(creationAffectation.getFonction()).getData()));
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingAffectationEnregistree((Affectation) reponseService.getData(), model);
+                yield "affectation";
+            }
+            case EMPTY -> {
+                mappingAffectationNonEnregistree(creationAffectation, model);
+                yield "creationAffectation";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
+
     /**
-     * Réattribut l'objet de recherche de restaurant, fournit la liste de restaurant trouvé par la recherche.
+     * Réattribut l'objet affectation enregistrée et un message de validation.
+     */
+    private void mappingAffectationEnregistree(Affectation affectation, Model model) {
+        model.addAttribute("affectation", modelMapper.map(affectation, AffectationDTO.class));
+        model.addAttribute("messageEnregistrement", "Affectation Enregistrée");
+    }
+
+    /**
+     * Réattribut l'objet affectationDTO avec un message d'erreur
+     */
+    private void mappingAffectationNonEnregistree(CreationAffectation affectationDTO, Model model) throws Exception {
+        model.addAttribute("affectationDTO", affectationDTO);
+        model.addAttribute("messageNonEnregistrement", "Affectation non enregistrée");
+    }
+
+    /**
+     * Réattribut l'objet de recherche d'affectation , fournit la liste d'affectaion trouvé par la recherche.
      */
     private void mappingListeAffectationsQuandRechercheOK(RechercheAffectation rechercheAffectation, Model model, ReponseService reponseService) {
         List<AffectationDTO> affectationDTOS = ((List<Affectation>) reponseService.getData()).stream()
@@ -98,7 +146,6 @@ public class AffectationController {
         model.addAttribute("rechercheAffectations", rechercheAffectation);
         model.addAttribute("affectations", affectationDTOS);
     }
-
 
     /**
      * Réattribut l'objet de recherche de affectation, fournit une liste vide d'affectation et passe le message d'erreur.
