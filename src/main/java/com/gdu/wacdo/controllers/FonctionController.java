@@ -5,10 +5,12 @@ import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.services.FonctionService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,18 +96,19 @@ public class FonctionController {
         return "editionFonction";
     }
 
-
-
     @PostMapping("/editerFonction")
-    public String editerFonction(FonctionDTO fonctionDTO, Model model) throws Exception {
-        ReponseService reponseService = fonctionService.save(modelMapper.map(fonctionDTO, Fonction.class));
+    public String editerFonction(@Valid @ModelAttribute("fonction") FonctionDTO fonction, BindingResult result, Model model) throws Exception {
+        if (result.hasErrors()) {
+            return "editionFonction";
+        }
+        ReponseService reponseService = fonctionService.save(modelMapper.map(fonction, Fonction.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingFonctionEnregistree((Fonction) reponseService.getData(), model);
                 yield "fonction";
             }
             case EMPTY -> {
-                mappingFonctionNonEditee(fonctionDTO, model);
+                mappingFonctionNonEditee(fonction, model);
                 yield "editionFonction";
             }
             case ERROR -> throw reponseService.getException();

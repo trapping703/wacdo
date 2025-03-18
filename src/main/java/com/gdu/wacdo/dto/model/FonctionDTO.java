@@ -7,7 +7,7 @@ import lombok.Data;
 public class FonctionDTO {
 
     private Integer id;
-    @NotEmpty
+    @NotEmpty(message = "libelle incompatible")
     private String libelle;
 
 }

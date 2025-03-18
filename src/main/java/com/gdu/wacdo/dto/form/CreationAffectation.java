@@ -16,18 +16,18 @@ public class CreationAffectation {
     private Integer id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull
+    @NotNull(message = "dateDebut incompatible")
     private LocalDate dateDebut;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateFin;
     private boolean depuisEmploye;
     private boolean depuisRestaurant;
 
-    @NotNull
+    @NotNull(message = "employe incompatible")
     private Integer employe;
-    @NotNull
+    @NotNull(message = "restaurant incompatible")
     private Integer restaurant;
-    @NotNull
+    @NotNull(message = "fonction incompatible")
     private Integer fonction;
 
     public CreationAffectation(Integer id, LocalDate dateDebut, LocalDate dateFin, Integer employe, Integer restaurant, Integer fonction) {

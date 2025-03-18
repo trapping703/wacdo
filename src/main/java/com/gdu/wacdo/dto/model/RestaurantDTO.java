@@ -11,14 +11,14 @@ import java.util.List;
 public class RestaurantDTO {
 
     private Integer id;
-    @NotEmpty
+    @NotEmpty(message = "nom incompatible")
     private String nom;
-    @NotEmpty
+    @NotEmpty(message = "adresse incompatible")
     private String adresse;
     @Size(min = 5, max = 5, message = "code postal incompatible")
     @Pattern(regexp = "^(\\s*|\\d+)$", message = "code postal incompatible")
     private String codePostal;
-    @NotEmpty
+    @NotEmpty(message = "ville incompatible")
     private String ville;
 
     private List<AffectationDTO> affectations;

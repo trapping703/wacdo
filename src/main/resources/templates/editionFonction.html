@@ -8,8 +8,12 @@
 
 <hr>
 <div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
-<form action="#" method="post" th:action="@{/creerFonction}" th:object="${fonction}">
+<form action="#" method="post" th:action="@{/editerFonction}" th:object="${fonction}">
     <input type="hidden" id="id" th:field="*{id}">
+    <!-- Affichage des erreurs du formulaire-->
+    <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+    </div>
     <!-- Libelle -->
     <div class="container">
         <div class="row ">

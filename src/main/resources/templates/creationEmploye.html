@@ -9,59 +9,66 @@
 <hr>
 <div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
 <form action="#" method="post" th:action="@{/creerEmploye}" th:object="${employeDTO}">
-    <!-- Affichage des erreurs du formulaire-->
-    <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-    </div>
-    <!-- nom prenom -->
-    <div class="row ">
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="prenom">Prénom</label>
-                <input type="text" id="prenom" class="form-control" th:field="*{prenom}"/>
+    <div class="container">
+        <!-- Affichage des erreurs du formulaire-->
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
+        <!-- nom prenom -->
+        <div class="row ">
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="prenom">Prénom</label>
+                    <input type="text" id="prenom" class="form-control" th:field="*{prenom}"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="nom">Nom</label>
+                    <input type="text" id="nom" class="form-control" th:field="*{nom}"/>
+                </div>
             </div>
         </div>
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="nom">Nom</label>
-                <input type="text" id="nom" class="form-control" th:field="*{nom}"/>
+        <!-- mail password -->
+        <div class="row ">
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="email">E-Mail</label>
+                    <input type="text" id="email" class="form-control" th:field="*{email}"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="motDePasse">mot de passe</label>
+                    <input type="password" id="motDePasse" class="form-control" th:field="*{motDePasse}"/>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- mail password -->
-    <div class="row ">
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="email">E-Mail</label>
-                <input type="text" id="email" class="form-control" th:field="*{email}"/>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="motDePasse">mot de passe</label>
-                <input type="password" id="motDePasse" class="form-control" th:field="*{motDePasse}"/>
-            </div>
-        </div>
-    </div>
 
-    <!-- date embauche / isAdmin -->
-    <div class="row ">
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="dateEmbauche">Date d'embauche</label>
-                <input type="date" id="dateEmbauche" class="form-control" th:field="*{dateEmbauche}"/>
+        <!-- date embauche / isAdmin -->
+        <div class="row ">
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="dateEmbauche">Date d'embauche</label>
+                    <input type="date" id="dateEmbauche" class="form-control" th:field="*{dateEmbauche}"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-check-label" for="admin">Administrateur</label>
+                    <input class="form-check-input form-control" type="checkbox" id="admin" th:field="*{admin}"/>
+                </div>
             </div>
         </div>
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-check-label" for="admin">Administrateur</label>
-                <input class="form-check-input form-control" type="checkbox" id="admin" th:field="*{admin}"/>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <div class="form-outline text-center">
+                    <button type="submit" class="btn btn-secondary rounded">Créer</button>
+                </div>
             </div>
         </div>
     </div>
-    <hr>
-    <button type="submit" class="btn btn-secondary rounded">Créer</button>
-    <hr>
 </form>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>

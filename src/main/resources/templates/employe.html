@@ -8,55 +8,64 @@
 
 <hr>
 <div th:replace="~{messageEnregistrement :: message_enregistrement}"></div>
+
 <form>
-    <!-- nom prenom -->
-    <div class="row ">
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="prenom">Prénom</label>
-                <input th:disabled="${employe.id != null}" type="text" id="prenom" class="form-control" th:field="${employe.prenom}"/>
+
+    <div class="container">
+        <!-- nom prenom -->
+        <div class="row ">
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="prenom">Prénom</label>
+                    <input th:disabled="${employe.id != null}" type="text" id="prenom" class="form-control"
+                           th:field="${employe.prenom}"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="nom">Nom</label>
+                    <input th:disabled="${employe.id != null}" type="text" id="nom" class="form-control"
+                           th:field="${employe.nom}"/>
+                </div>
             </div>
         </div>
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="nom">Nom</label>
-                <input th:disabled="${employe.id != null}" type="text" id="nom" class="form-control" th:field="${employe.nom}"/>
+
+        <!-- nom prenom -->
+        <div class="row ">
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="email">E-Mail</label>
+                    <input th:disabled="${employe.id != null}" type="text" id="email" class="form-control"
+                           th:field="${employe.email}"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="motDePasse">mot de passe</label>
+                    <input th:disabled="${employe.id != null}" type="password" id="motDePasse" class="form-control"
+                           th:field="${employe.motDePasse}"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- date embauche / isAdmin -->
+        <div class="row ">
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-label" for="dateEmbauche">Date d'embauche</label>
+                    <input th:disabled="${employe.id != null}" type="date" id="dateEmbauche" class="form-control"
+                           th:field="${employe.dateEmbauche}"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-outline">
+                    <label class="form-check-label" for="admin">Administrateur</label>
+                    <input th:disabled="${employe.id != null}" class="form-check-input form-control" type="checkbox"
+                           id="admin" th:field="${employe.admin}"/>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- nom prenom -->
-    <div class="row ">
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="email">E-Mail</label>
-                <input th:disabled="${employe.id != null}" type="text" id="email" class="form-control" th:field="${employe.email}"/>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="motDePasse">mot de passe</label>
-                <input th:disabled="${employe.id != null}" type="password" id="motDePasse" class="form-control" th:field="${employe.motDePasse}"/>
-            </div>
-        </div>
-    </div>
-
-    <!-- date embauche / isAdmin -->
-    <div class="row ">
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-label" for="dateEmbauche">Date d'embauche</label>
-                <input th:disabled="${employe.id != null}" type="date" id="dateEmbauche" class="form-control" th:field="${employe.dateEmbauche}"/>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-outline">
-                <label class="form-check-label" for="admin">Administrateur</label>
-                <input th:disabled="${employe.id != null}" class="form-check-input form-control" type="checkbox" id="admin" th:field="${employe.admin}"/>
-            </div>
-        </div>
-    </div>
-
     <!--    Liste affectations-->
     <table class="table align-middle">
         <thead>
@@ -65,7 +74,8 @@
             <th>Restaurant</th>
             <th>Date debut</th>
             <th>Date fin</th>
-            <th><a role="button" class="btn btn-secondary rounded" th:href="@{'/creerAffectation?employe='+${employe.id}}">créer</a></th>
+            <th><a role="button" class="btn btn-secondary rounded"
+                   th:href="@{'/creerAffectation?employe='+${employe.id}}">créer</a></th>
         </tr>
         </thead>
         <tbody>
@@ -87,7 +97,15 @@
         </tbody>
     </table>
     <!-- Submit button -->
-    <button type="button" class="btn btn-secondary rounded">Place order</button>
+    <div class="row">
+        <div class="col">
+            <div class="form-outline text-center">
+                <a role="button" class="btn btn-secondary rounded text-center"
+                   th:href="@{/editerEmploye/{id}(id=${employe.id})}">modifier
+                </a>
+            </div>
+        </div>
+    </div>
 </form>
 
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">

@@ -45,7 +45,7 @@ public class EmployeController {
     }
 
     @GetMapping("/detailEmploye/{id}")
-    public String employes(Model model, @PathVariable int id) {
+    public String getEmploye(Model model, @PathVariable int id) {
         ReponseService reponse = employeService.findById(id);
         if (reponse.isOk()) {
             model.addAttribute("employe", modelMapper.map(reponse.getData(), EmployeDTO.class));
@@ -93,6 +93,31 @@ public class EmployeController {
         };
     }
 
+    @GetMapping("/editerEmploye/{id}")
+    public String getEmployePourEdition(Model model, @PathVariable int id) {
+        model.addAttribute("employe", modelMapper.map(employeService.findById(id).getData(), EmployeDTO.class));
+        return "editionEmploye";
+    }
+
+
+    @PostMapping("/editerEmploye")
+    public String editionEmploye(@Valid @ModelAttribute("employe") EmployeDTO employeDTO, BindingResult result, Model model) throws Exception {
+        if (result.hasErrors()) {
+            return "editionEmploye";
+        }
+        ReponseService reponseService = employeService.save(modelMapper.map(employeDTO.pourEdition((Employe) employeService.findById(employeDTO.getId()).getData()), Employe.class));
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingEmployeEnregistree((Employe) reponseService.getData(), model);
+                yield "employe";
+            }
+            case EMPTY -> {
+                mappingEmployeNonEnregistree(employeDTO, model);
+                yield "editionEmploye";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
     /**
      * Réattribut l'objet de recherche d'employé, fournit la liste d'employé trouvé par la recherche.
      */
@@ -126,6 +151,14 @@ public class EmployeController {
      */
     private void mappingEmployeNonEnregistree(EmployeDTO employeDTO, Model model) throws Exception {
         model.addAttribute("employeDTO", employeDTO);
+        model.addAttribute("messageNonEnregistrement", "Employe non enregistrée");
+    }
+
+    /**
+     * Réattribut l'objet employeDTO avec un message d'erreur
+     */
+    private void mappingEmployeNonEditer(EmployeDTO employeDTO, Model model) throws Exception {
+        model.addAttribute("employe", employeDTO);
         model.addAttribute("messageNonEnregistrement", "Employe non enregistrée");
     }
 
