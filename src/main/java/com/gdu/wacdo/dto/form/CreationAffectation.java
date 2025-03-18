@@ -14,7 +14,6 @@ import java.time.LocalDate;
 public class CreationAffectation {
 
     private Integer id;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "dateDebut incompatible")
     private LocalDate dateDebut;
@@ -39,6 +38,15 @@ public class CreationAffectation {
         this.fonction = fonction;
     }
 
+    public CreationAffectation(Affectation affectation) {
+        this.id = affectation.getId();
+        this.dateDebut = affectation.getDateDebut();
+        this.dateFin = affectation.getDateFin();
+        this.employe = affectation.getEmploye().getId();
+        this.restaurant = affectation.getRestaurant().getId();
+        this.fonction = affectation.getFonction().getId();
+    }
+
     public CreationAffectation() {
 
     }
@@ -57,5 +65,14 @@ public class CreationAffectation {
 
     public Affectation toAffectation(Employe employe, Restaurant restaurant, Fonction fonction) {
         return new Affectation(dateDebut, dateFin, employe, restaurant, fonction);
+    }
+
+    public Affectation pourEdition(Affectation affectation, Employe employe, Restaurant restaurant, Fonction fonction) {
+        affectation.setEmploye(employe);
+        affectation.setRestaurant(restaurant);
+        affectation.setFonction(fonction);
+        affectation.setDateDebut(dateDebut);
+        affectation.setDateFin(dateFin);
+        return affectation;
     }
 }

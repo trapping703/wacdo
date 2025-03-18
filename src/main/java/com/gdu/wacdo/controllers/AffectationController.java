@@ -120,6 +120,31 @@ public class AffectationController {
         };
     }
 
+    @GetMapping("/editerAffectation/{id}")
+    public String getAffectationPourEdition(Model model, @PathVariable int id) throws Exception {
+        model.addAttribute("affectationDTO", new CreationAffectation((Affectation) affectationService.findById(id).getData()));
+        return "editionAffectation";
+    }
+
+    @PostMapping("/editerAffectation")
+    public String editionAffectation(@Valid @ModelAttribute("affectationDTO") CreationAffectation creationAffectation, BindingResult result, Model model) throws Exception {
+        if (result.hasErrors()) {
+            return "editionAffectation";
+        }
+        ReponseService reponseService = affectationService.save(creationAffectation.pourEdition((Affectation) affectationService.findById(creationAffectation.getId()).getData(), (Employe) employeService.findById(creationAffectation.getEmploye()).getData(), (Restaurant) restaurantService.findById(creationAffectation.getRestaurant()).getData(), (Fonction) fonctionService.findById(creationAffectation.getFonction()).getData()));
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingAffectationEnregistree((Affectation) reponseService.getData(), model);
+                yield "affectation";
+            }
+            case EMPTY -> {
+                mappingAffectationNonEnregistree(creationAffectation, model);
+                yield "editionAffectation";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
+
     /**
      * Réattribut l'objet affectation enregistrée et un message de validation.
      */

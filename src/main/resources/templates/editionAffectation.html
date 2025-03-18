@@ -5,79 +5,80 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
+
 <hr>
-<div th:replace="~{messageEnregistrement :: message_enregistrement}"></div>
-<form method="post" th:action="@{/updateAffectation}" th:object="${affectation}">
-    <hr>
+<div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
+<form method="post" th:action="@{/editerAffectation}" th:object="${affectationDTO}">
+    <!-- Affichage des erreurs du formulaire-->
+    <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+    </div>
+    <input th:type="hidden" id="depuisRestaurant" th:field="*{depuisRestaurant}">
+    <input th:type="hidden" id="depuisEmploye" th:field="*{depuisEmploye}">
+    <input th:type="hidden" id="id" th:field="*{id}">
     <!-- fonction  employe Restaurant -->
     <div class="container">
-        <div class="row ">
+        <div class="row">
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="fonction">Fonction</label>
-                    <select th:disabled="${affectation.id != null}" id="fonction" name="fonction">
+                    <select id="fonction" name="fonction">
                         <option th:each="fonction : ${fonctions}"
                                 th:value="${fonction.id}"
                                 th:text="${fonction.libelle}"
-                                th:selected="${fonction.id eq affectation.fonction.id}"/>
+                                th:selected="${affectationDTO.fonction !=null and fonction.id eq affectationDTO.fonction}"/>
                     </select>
                 </div>
             </div>
             <div class="col">
                 <div class="form-outline">
-                    <label class="form-label">Employe</label>
-                    <select th:disabled="${affectation.id != null}" id="employe" name="employe">
+                    <label class="form-label" for="employe">Employe</label>
+                    <select th:readonly="${!affectationDTO.depuisEmploye}" id="employe" name="employe">
                         <option th:each="employe : ${employes}"
                                 th:value="${employe.id}"
                                 th:text="${employe.nom + ''+ employe.prenom}"
-                                th:selected="${employe.id eq affectation.employe.id}"/>
+                                th:selected="${affectationDTO.employe !=null and employe.id eq affectationDTO.employe}"/>
                     </select>
                 </div>
             </div>
             <div class="col">
                 <div class="form-outline">
                     <label class="form-check-label" for="restaurant">Restaurant</label>
-                    <select th:disabled="${affectation.id != null}" id="restaurant" name="restaurant">
+                    <select th:readonly="${!affectationDTO.depuisRestaurant}" id="restaurant" name="restaurant">
                         <option th:each="restaurant : ${restaurants}"
                                 th:value="${restaurant.id}"
                                 th:text="${restaurant.nom}"
-                                th:selected="${restaurant.id eq affectation.restaurant.id}"/>
+                                th:selected="${affectationDTO.restaurant !=null and restaurant.id eq affectationDTO.restaurant}"/>
                     </select>
                 </div>
             </div>
         </div>
 
         <!-- date embauche / isAdmin -->
-        <div class="row ">
+        <div class="row">
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="dateDebut">Date debut</label>
-                    <input th:disabled="${affectation.id != null}" type="date" id="dateDebut" class="form-control"
-                           th:value="${affectation.dateDebut}"/>
+                    <input type="date" id="dateDebut" class="form-control" th:field="*{dateDebut}"/>
                 </div>
             </div>
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="dateFin">Date fin</label>
-                    <input th:disabled="${affectation.id != null}" type="date" id="dateFin" class="form-control"
-                           th:value="${affectation.dateFin}"/>
+                    <input type="date" id="dateFin" class="form-control" th:field="*{dateFin}"/>
                 </div>
             </div>
         </div>
         <hr>
-        <!-- Submit button -->
         <div class="row">
             <div class="col">
                 <div class="form-outline text-center">
-                    <a role="button" class="btn btn-secondary rounded text-center"
-                       th:href="@{/editerAffectation/{id}(id=${affectation.id})}">modifier
-                    </a>
+                    <button type="submit" class="btn btn-secondary rounded">Créer</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
-
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
 </body>
