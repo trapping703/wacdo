@@ -8,7 +8,8 @@
 
 <hr>
 <div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
-<form action="#" method="post" th:action="@{/creerFonction}" th:object="${fonctionDTO}">
+<form action="#" method="post" th:action="@{/creerFonction}" th:object="${fonction}">
+    <input type="hidden" id="id" th:field="*{id}">
     <!-- Libelle -->
     <div class="container">
         <div class="row ">
@@ -24,11 +25,11 @@
     <div class="row">
         <div class="col">
             <div class="form-outline text-center">
-                <button type="submit" class="btn btn-secondary rounded">Créer</button>
+                <button type="submit" class="btn btn-secondary rounded">éditer</button>
             </div>
         </div>
     </div>
-  
+
 
 </form>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">

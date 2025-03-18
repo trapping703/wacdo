@@ -16,7 +16,8 @@
     <input th:type="hidden" id="depuisRestaurant" th:field="*{depuisRestaurant}">
     <input th:type="hidden" id="depuisEmploye" th:field="*{depuisEmploye}">
     <!-- fonction  employe Restaurant -->
-    <div class="row ">
+    <div class="container">
+    <div class="row">
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="fonction">Fonction</label>
@@ -35,7 +36,6 @@
                     <option th:each="employe : ${employes}"
                             th:value="${employe.id}"
                             th:text="${employe.nom + ''+ employe.prenom}"
-                            th:readonly="${!affectationDTO.depuisEmploye}"
                             th:selected="${affectationDTO.employe !=null and employe.id eq affectationDTO.employe}"/>
                 </select>
             </div>
@@ -47,7 +47,6 @@
                     <option th:each="restaurant : ${restaurants}"
                             th:value="${restaurant.id}"
                             th:text="${restaurant.nom}"
-                            th:readonly="${!affectationDTO.depuisRestaurant}"
                             th:selected="${affectationDTO.restaurant !=null and restaurant.id eq affectationDTO.restaurant}"/>
                 </select>
             </div>
@@ -55,7 +54,7 @@
     </div>
 
     <!-- date embauche / isAdmin -->
-    <div class="row ">
+    <div class="row">
         <div class="col">
             <div class="form-outline">
                 <label class="form-label" for="dateDebut">Date debut</label>
@@ -68,14 +67,15 @@
                 <input type="date" id="dateFin" class="form-control" th:field="*{dateFin}"/>
             </div>
         </div>
-        <div class="row ">
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-label"></label>
-                    <button type="submit" class="btn btn-secondary rounded">Créer</button>
-                </div>
+    </div>
+        <hr>
+    <div class="row">
+        <div class="col">
+            <div class="form-outline text-center">
+                <button type="submit" class="btn btn-secondary rounded">Créer</button>
             </div>
         </div>
+    </div>
     </div>
 </form>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">

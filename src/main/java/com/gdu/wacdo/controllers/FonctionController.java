@@ -46,12 +46,8 @@ public class FonctionController {
     @GetMapping("/detailFonction/{id}")
     public String getFonctionById(Model model, @PathVariable int id) {
         ReponseService reponse = fonctionService.findById(id);
-        if (reponse.isOk()) {
-            model.addAttribute("fonction", modelMapper.map(reponse.getData(), FonctionDTO.class));
-            return "fonction";
-        } else {
-            return "index";
-        }
+        model.addAttribute("fonction", modelMapper.map(reponse.getData(), FonctionDTO.class));
+        return "fonction";
     }
 
     @PostMapping("/rechercheFonctions")
@@ -91,6 +87,31 @@ public class FonctionController {
         };
     }
 
+    @GetMapping("/editerFonction/{id}")
+    public String editerFonction(Model model, @PathVariable int id) {
+        ReponseService reponse = fonctionService.findById(id);
+        model.addAttribute("fonction", modelMapper.map(reponse.getData(), FonctionDTO.class));
+        return "editionFonction";
+    }
+
+
+
+    @PostMapping("/editerFonction")
+    public String editerFonction(FonctionDTO fonctionDTO, Model model) throws Exception {
+        ReponseService reponseService = fonctionService.save(modelMapper.map(fonctionDTO, Fonction.class));
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingFonctionEnregistree((Fonction) reponseService.getData(), model);
+                yield "fonction";
+            }
+            case EMPTY -> {
+                mappingFonctionNonEditee(fonctionDTO, model);
+                yield "editionFonction";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
+
     /**
      * Réattribut l'objet de recherche de fonction, fournit la liste de fonction trouvé par la recherche.
      */
@@ -120,10 +141,18 @@ public class FonctionController {
     }
 
     /**
-     *
+     * Réattribut l'objet fonction non enregistrée et d'erreur
      */
     private void mappingFonctionNonEnregistree(FonctionDTO fonctionDTO, Model model) throws Exception {
         model.addAttribute("fonctionDTO", fonctionDTO);
+        model.addAttribute("messageNonEnregistrement", "Fonction non enregistrée");
+    }
+
+    /**
+     * Réattribut l'objet fonction non éditer et d'erreur
+     */
+    private void mappingFonctionNonEditee(FonctionDTO fonctionDTO, Model model) throws Exception {
+        model.addAttribute("fonction", fonctionDTO);
         model.addAttribute("messageNonEnregistrement", "Fonction non enregistrée");
     }
 
