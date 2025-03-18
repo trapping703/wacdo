@@ -14,6 +14,7 @@
         <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
     </div>
 
+    <div class="container">
     <!-- nom -->
     <div class="row ">
         <div class="col">
@@ -49,8 +50,14 @@
         </div>
     </div>
     <hr>
-    <button type="submit" class="btn btn-secondary rounded">Créer</button>
-    <hr>
+        <div class="row">
+            <div class="col">
+                <div class="form-outline text-center">
+                    <button type="submit" class="btn btn-secondary rounded">Créer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>

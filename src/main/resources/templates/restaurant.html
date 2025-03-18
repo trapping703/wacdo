@@ -9,7 +9,7 @@
 
 <hr>
 <div th:replace="~{messageEnregistrement :: message_enregistrement}"></div>
-<form>
+<div class="container">
     <!-- nom -->
     <div class="row ">
         <div class="col">
@@ -45,8 +45,7 @@
         </div>
     </div>
 
-    <!--    &lt;!&ndash; Submit button &ndash;&gt;-->
-    <!--    <button type="button" class="btn btn-secondary rounded">Place order</button>-->
+</div>
 
     <!--    Liste affectations-->
     <hr>
@@ -80,9 +79,16 @@
         </tr>
         </tbody>
     </table>
-</form>
 
-
+<div class="row">
+    <div class="col">
+        <div class="form-outline text-center">
+            <a role="button" class="btn btn-secondary rounded text-center"
+               th:href="@{/editerRestaurant/{id}(id=${restaurant.id})}">modifier
+            </a>
+        </div>
+    </div>
+</div>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
 </body>

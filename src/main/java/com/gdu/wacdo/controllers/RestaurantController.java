@@ -46,7 +46,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/detailRestaurant/{id}")
-    public String restaurant(Model model, @PathVariable int id) {
+    public String getRestaurant(Model model, @PathVariable int id) {
         ReponseService reponse = restaurantService.findById(id);
         if (reponse.isOk()) {
             model.addAttribute("restaurant", modelMapper.map(reponse.getData(), RestaurantDTO.class));
@@ -95,6 +95,32 @@ public class RestaurantController {
             case EMPTY -> {
                 mappingRestaurantNonEnregistree(restaurantDTO, model);
                 yield "creationRestaurant";
+            }
+            case ERROR -> throw reponseService.getException();
+        };
+    }
+
+    @GetMapping("/editerRestaurant/{id}")
+    public String getEditerRestaurant(Model model, @PathVariable int id) {
+        model.addAttribute("restaurantDTO", modelMapper.map(restaurantService.findById(id).getData(), RestaurantDTO.class));
+        return "editionRestaurant";
+    }
+
+
+    @PostMapping("/editerRestaurant")
+    public String editerRestaurant(@Valid @ModelAttribute("restaurantDTO") RestaurantDTO restaurantDTO, BindingResult result, Model model) throws Exception {
+        if (result.hasErrors()) {
+            return "editionRestaurant";
+        }
+        ReponseService reponseService = restaurantService.save(modelMapper.map(restaurantDTO.pourEdition((Restaurant) restaurantService.findById(restaurantDTO.getId()).getData()), Restaurant.class));
+        return switch (reponseService.getStatus()) {
+            case OK -> {
+                mappingRestaurantEnregistree((Restaurant) reponseService.getData(), model);
+                yield "restaurant";
+            }
+            case EMPTY -> {
+                mappingRestaurantNonEnregistree(restaurantDTO, model);
+                yield "editionRestaurant";
             }
             case ERROR -> throw reponseService.getException();
         };

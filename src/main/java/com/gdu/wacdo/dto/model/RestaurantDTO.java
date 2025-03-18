@@ -1,5 +1,6 @@
 package com.gdu.wacdo.dto.model;
 
+import com.gdu.wacdo.model.Restaurant;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -33,5 +34,13 @@ public class RestaurantDTO {
         this.adresse = adresse;
         this.codePostal = codePostal;
         this.ville = ville;
+    }
+
+    public Restaurant pourEdition(Restaurant restaurant) {
+        restaurant.setNom(nom);
+        restaurant.setAdresse(adresse);
+        restaurant.setCodePostal(codePostal);
+        restaurant.setVille(ville);
+        return restaurant;
     }
 }
