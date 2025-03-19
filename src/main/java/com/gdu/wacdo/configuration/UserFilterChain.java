@@ -40,6 +40,7 @@ public class UserFilterChain {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
+//                .authorizeHttpRequests(auth -> auth.requestMatchers("/actuator/**").permitAll())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/").permitAll())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/**").hasAnyAuthority("ROLE_ADMIN"))
                 .formLogin(Customizer.withDefaults())
