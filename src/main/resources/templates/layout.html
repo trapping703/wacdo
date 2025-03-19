@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:fragment="page_head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,15 +33,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/listeAffectations">Affectations</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true" href="/Affectations">Affectations</a>
-                </li>
             </ul>
+            <div class="text-right" sec:authorize="isAnonymous()">
+                <a class="btn btn-primary text-right" href="/login">login</a>
+            </div>
+            <div class="text-right" sec:authorize="isAuthenticated()">
+                <a class="btn btn-secondary text-right" href="/byebye">logout</a>
+            </div>
         </div>
     </div>
 </nav>
 
-<footer class="border-top bg-light text-muted text-center" th:fragment="page_footer">
+<footer class="border-top align-bottom bg-light text-muted text-center" th:fragment="page_footer">
     <div class="container pb-5">
         &copy; [[${#dates.format(#dates.createNow(), 'yyyy')}]] - Wacdo
     </div>

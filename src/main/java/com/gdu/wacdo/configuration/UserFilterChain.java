@@ -41,10 +41,13 @@ public class UserFilterChain {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
 //                .authorizeHttpRequests(auth -> auth.requestMatchers("/actuator/**").permitAll())
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/").permitAll())
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/**").hasAnyAuthority("ROLE_ADMIN"))
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/").permitAll())
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/**").hasAnyAuthority("ROLE_ADMIN"))
                 .formLogin(Customizer.withDefaults())
-                .logout(logoutConfig -> logoutConfig.logoutUrl("/byebye")
+                .logout(logoutConfig -> logoutConfig
+                        .logoutUrl("/byebye")
                         .logoutRequestMatcher(new AntPathRequestMatcher("/byebye"))
                         .logoutSuccessUrl("/?logout=true")
                         .invalidateHttpSession(true)
