@@ -6,6 +6,7 @@ import jakarta.persistence.OneToMany;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class Employe extends AbstractPersistentEntity<Integer> {
 
     @OneToMany(mappedBy = "employe")
     @JsonIncludeProperties(value = {"id"})
-    private List<Affectation> affectations;
+    private List<Affectation> affectations = new ArrayList<Affectation>();
 
     public Employe(int id, String nom, String prenom, LocalDate dateEmbauche, boolean admin, String motDePasse) {
         this.setId(id);

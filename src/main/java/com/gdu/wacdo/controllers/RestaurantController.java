@@ -46,14 +46,13 @@ public class RestaurantController {
     }
 
     @GetMapping("/detailRestaurant/{id}")
-    public String getRestaurant(Model model, @PathVariable int id) {
+    public String getRestaurant(Model model, @PathVariable int id) throws Exception {
         ReponseService reponse = restaurantService.findById(id);
         if (reponse.isOk()) {
             model.addAttribute("restaurant", modelMapper.map(reponse.getData(), RestaurantDTO.class));
             return "restaurant";
-        } else {
-            return "index";
         }
+        throw reponse.getException();
     }
 
 

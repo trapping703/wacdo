@@ -22,7 +22,6 @@ public class PasswordEncodeur {
      * Check si le mot de passe est crypté, si il ne l'est pas il le devient.
      */
     public void encrypte(Employe employe) {
-
         if (employe.getMotDePasse() != null && !employe.getMotDePasse().isEmpty() && !BCRYPT_PATTERN.matcher(employe.getMotDePasse()).matches()) {
             employe.setMotDePasse(passwordEncoder.encode(employe.getMotDePasse()));
         }

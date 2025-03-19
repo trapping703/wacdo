@@ -4,6 +4,7 @@ import com.gdu.wacdo.dto.form.RechercheEmploye;
 import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Employe;
+import com.gdu.wacdo.services.EmployeNonAffecteService;
 import com.gdu.wacdo.services.EmployeService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -23,33 +24,36 @@ import static java.util.Collections.emptyList;
 public class EmployeController {
 
     private final EmployeService employeService;
+    private final EmployeNonAffecteService employeNonAffecteService;
     private final ModelMapper modelMapper;
 
-    public EmployeController(EmployeService employeService, ModelMapper modelMapper) {
+    public EmployeController(EmployeService employeService, EmployeNonAffecteService employeNonAffecteService, ModelMapper modelMapper) {
         this.employeService = employeService;
+        this.employeNonAffecteService = employeNonAffecteService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping("/listeEmployes")
     public String employes(Model model) throws Exception {
-        ReponseService reponse = employeService.findAll();
-        if (reponse.isOk()) {
-            List<EmployeDTO> employeDTOs = ((List<Employe>) reponse.getData()).stream()
-                    .map(employe -> modelMapper.map(employe, EmployeDTO.class))
-                    .toList();
-            model.addAttribute("employes", employeDTOs);
-        } else {
-            throw reponse.getException();
-        }
+        List<EmployeDTO> employeDTOs = ((List<Employe>) employeService.findAll().getData()).stream()
+                .map(employe -> modelMapper.map(employe, EmployeDTO.class))
+                .toList();
+        model.addAttribute("employes", employeDTOs);
+        return "employes";
+    }
+
+    @GetMapping("/listeEmployesNA")
+    public String getListeEmployesNonAffectes(Model model) throws Exception {
+        List<EmployeDTO> employeDTOs = employeNonAffecteService.filtrerEmployesNonAffecte((List<Employe>) employeService.findAll().getData()).stream()
+                .map(employe -> modelMapper.map(employe, EmployeDTO.class))
+                .toList();
+        model.addAttribute("employes", employeDTOs);
         return "employes";
     }
 
     @GetMapping("/detailEmploye/{id}")
     public String getEmploye(Model model, @PathVariable int id) {
-        ReponseService reponse = employeService.findById(id);
-        if (reponse.isOk()) {
-            model.addAttribute("employe", modelMapper.map(reponse.getData(), EmployeDTO.class));
-        }
+        model.addAttribute("employe", modelMapper.map(employeService.findById(id), EmployeDTO.class));
         return "employe";
     }
 
@@ -118,6 +122,7 @@ public class EmployeController {
             case ERROR -> throw reponseService.getException();
         };
     }
+
     /**
      * Réattribut l'objet de recherche d'employé, fournit la liste d'employé trouvé par la recherche.
      */
