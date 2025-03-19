@@ -25,6 +25,8 @@ class EmployeServiceTest {
     private ModelMapper modelMapper;
     @Mock
     private EmployeRepository employeRepository;
+    @Mock
+    private PasswordEncodeur passwordEncodeur;
     @InjectMocks
     private EmployeService employeService;
 
@@ -44,7 +46,8 @@ class EmployeServiceTest {
         assertThat(reponse.isOk()).isTrue();
         assertThat(reponse.getData().getId()).isEqualTo(idAttendu);
         verify(employeRepository, Mockito.times(1)).save(employe);
-        verifyNoMoreInteractions(employeRepository);
+        verify(passwordEncodeur, Mockito.times(1)).encrypte(employe);
+        verifyNoMoreInteractions(employeRepository, passwordEncodeur);
     }
 
     @Test
@@ -58,7 +61,8 @@ class EmployeServiceTest {
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getData().getId()).isNull();
         verify(employeRepository, Mockito.times(1)).save(employe);
-        verifyNoMoreInteractions(employeRepository);
+        verify(passwordEncodeur, Mockito.times(1)).encrypte(employe);
+        verifyNoMoreInteractions(employeRepository, passwordEncodeur);
     }
 
     @Test
@@ -73,7 +77,8 @@ class EmployeServiceTest {
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getException()).isEqualTo(exception);
         verify(employeRepository, Mockito.times(1)).save(employe);
-        verifyNoMoreInteractions(employeRepository);
+        verify(passwordEncodeur, Mockito.times(1)).encrypte(employe);
+        verifyNoMoreInteractions(employeRepository, passwordEncodeur);
     }
 
     @Test

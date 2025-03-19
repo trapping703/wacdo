@@ -18,13 +18,16 @@ import static com.gdu.wacdo.status.CodeReponse.*;
 public class EmployeService {
 
     private final EmployeRepository employeRepository;
+    private final PasswordEncodeur passwordEncodeur;
 
-    public EmployeService(EmployeRepository employeRepository) {
+    public EmployeService(EmployeRepository employeRepository, PasswordEncodeur passwordEncodeur) {
         this.employeRepository = employeRepository;
+        this.passwordEncodeur = passwordEncodeur;
     }
 
     public ReponseService save(Employe employe) {
         try {
+            passwordEncodeur.encrypte(employe);
             employeRepository.save(employe);
             if (employe.getId() != null) {
                 return reponse(OK, employe);
