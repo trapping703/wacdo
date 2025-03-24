@@ -44,7 +44,7 @@ public class AffectationRepositoryIntegrationTest {
     @Test
     @Transactional
     @Rollback
-    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecAllCritere_thenAffectationsCorrectesTrouvee() {
+    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecAllCritere_thenAffectationsCorrectesTrouveeVueListeAffection() {
         //given
         Restaurant restaurantBerlin = creerRestaurant("Berlin");
         Restaurant restaurantMoscow = creerRestaurant("Moscow");
@@ -58,7 +58,7 @@ public class AffectationRepositoryIntegrationTest {
         Affectation affectation5 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction2, restaurantBerlin, employe);
         Affectation affectation6 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction1, restaurantMoscow, employe);
         //then
-        List<Affectation> affectations = affectationRepository.findAffectationsPourRecherche(restaurantBerlin.getVille(), LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction1.getId());
+        List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueListeAffection(restaurantBerlin.getVille(), LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction1.getId());
         //when
         assertThat(affectations).containsOnly(affectation1, affectation2);
     }
@@ -66,7 +66,7 @@ public class AffectationRepositoryIntegrationTest {
     @Test
     @Transactional
     @Rollback
-    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereDateDebut_thenAffectationsCorrectesTrouvee() {
+    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereDateDebut_thenAffectationsCorrectesTrouveeVueListeAffection() {
         //given
         Restaurant restaurantBerlin = creerRestaurant("Berlin");
         Restaurant restaurantMoscow = creerRestaurant("Moscow");
@@ -80,7 +80,7 @@ public class AffectationRepositoryIntegrationTest {
         Affectation affectation5 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction2, restaurantBerlin, employe);
         Affectation affectation6 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction1, restaurantMoscow, employe);
         //then
-        List<Affectation> affectations = affectationRepository.findAffectationsPourRecherche("", LocalDate.of(2020, 1, 1), null, 0);
+        List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueListeAffection("", LocalDate.of(2020, 1, 1), null, 0);
         //when
         assertThat(affectations).containsOnly(affectation1, affectation2, affectation6, affectation4, affectation5);
     }
@@ -88,7 +88,7 @@ public class AffectationRepositoryIntegrationTest {
     @Test
     @Transactional
     @Rollback
-    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereDateFin_thenAffectationsCorrectesTrouvee() {
+    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereDateFin_thenAffectationsCorrectesTrouveeVueListeAffection() {
         //given
         Restaurant restaurantBerlin = creerRestaurant("Berlin");
         Restaurant restaurantMoscow = creerRestaurant("Moscow");
@@ -102,7 +102,7 @@ public class AffectationRepositoryIntegrationTest {
         Affectation affectation5 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction2, restaurantBerlin, employe);
         Affectation affectation6 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction1, restaurantMoscow, employe);
         //then
-        List<Affectation> affectations = affectationRepository.findAffectationsPourRecherche("", null, LocalDate.of(2022, 1, 1), 0);
+        List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueListeAffection("", null, LocalDate.of(2022, 1, 1), 0);
         //when
         assertThat(affectations).containsOnly(affectation4);
     }
@@ -110,7 +110,7 @@ public class AffectationRepositoryIntegrationTest {
     @Test
     @Transactional
     @Rollback
-    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereVille_thenAffectationsCorrectesTrouvee() {
+    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereVille_thenAffectationsCorrectesTrouveeVueListeAffection() {
         //given
         Restaurant restaurantBerlin = creerRestaurant("Berlin");
         Restaurant restaurantMoscow = creerRestaurant("Moscow");
@@ -124,7 +124,7 @@ public class AffectationRepositoryIntegrationTest {
         Affectation affectation5 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction2, restaurantBerlin, employe);
         Affectation affectation6 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction1, restaurantMoscow, employe);
         //then
-        List<Affectation> affectations = affectationRepository.findAffectationsPourRecherche("Berlin", null, null, 0);
+        List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueListeAffection("Berlin", null, null, 0);
         //when
         assertThat(affectations).containsOnly(affectation1, affectation2, affectation3, affectation4, affectation5);
     }
@@ -133,7 +133,7 @@ public class AffectationRepositoryIntegrationTest {
     @Test
     @Transactional
     @Rollback
-    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereFonction_thenAffectationsCorrectesTrouvee() {
+    public void givenPlusieursAffectations_whenFindAffectationsPourRechercheAvecCritereFonction_thenAffectationsCorrectesTrouveeVueListeAffection() {
         //given
         Restaurant restaurantBerlin = creerRestaurant("Berlin");
         Restaurant restaurantMoscow = creerRestaurant("Moscow");
@@ -147,7 +147,7 @@ public class AffectationRepositoryIntegrationTest {
         Affectation affectation5 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction2, restaurantBerlin, employe);
         Affectation affectation6 = creerAffectation(LocalDate.of(2020, 1, 1), LocalDate.of(2021, 1, 1), fonction1, restaurantMoscow, employe);
         //then
-        List<Affectation> affectations = affectationRepository.findAffectationsPourRecherche("", null, null, fonction2.getId());
+        List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueListeAffection("", null, null, fonction2.getId());
         //when
         assertThat(affectations).containsOnly(affectation5);
     }

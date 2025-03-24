@@ -8,19 +8,9 @@ import java.time.LocalDate;
 @Data
 public class RechercheAffectationDetailEmploye {
 
-    private String ville;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateDebut;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateFin;
     private int fonction_id;
-
-    public RechercheAffectationDetailEmploye(String ville, LocalDate dateDebut, LocalDate dateFin, int fonction_id) {
-        this.ville = ville;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.fonction_id = fonction_id;
-    }
 
     public RechercheAffectationDetailEmploye() {
     }

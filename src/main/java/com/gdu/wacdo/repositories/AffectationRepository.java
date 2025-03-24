@@ -14,5 +14,12 @@ public interface AffectationRepository extends JpaRepository<Affectation, Intege
             "and (cast(:dateDebut as date) is null or a.dateDebut=:dateDebut) " +
             "and (cast(:dateFin as date) is null or a.dateFin=:dateFin) " +
             "and (:fonction_id is null or :fonction_id = 0 or a.fonction.id=:fonction_id)")
-    List<Affectation> findAffectationsPourRecherche(String ville, LocalDate dateDebut, LocalDate dateFin, int fonction_id);
+    List<Affectation> findAffectationsPourRechercheVueListeAffection(String ville, LocalDate dateDebut, LocalDate dateFin, int fonction_id);
+
+    @Query("select a from Affectation a inner join Restaurant b on a.restaurant.id=b.id " +
+            "where (cast(:dateDebut as date) is null or a.dateDebut=:dateDebut) " +
+            "and (:fonction_id is null or :fonction_id = 0 or a.fonction.id=:fonction_id)"+
+            "and (:employe_id is null  or a.employe.id=:employe_id)")
+    List<Affectation> findAffectationsPourRechercheVueDetailsEmploye(LocalDate dateDebut, int fonction_id, int employe_id);
+
 }

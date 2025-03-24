@@ -1,6 +1,7 @@
 package com.gdu.wacdo.services;
 
 import com.gdu.wacdo.dto.form.RechercheAffectation;
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailEmploye;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.repositories.AffectationRepository;
@@ -52,9 +53,25 @@ public class AffectationService {
     /**
      * Utilisé pour la recherche des affectations pour la vue /affectations
      */
-    public ReponseService findByRechercheAffectation(RechercheAffectation rechercheAffectation) {
+    public ReponseService findByRechercheAffectationVueListeAffection(RechercheAffectation rechercheAffectation) {
         try {
-            List<Affectation> affectations = affectationRepository.findAffectationsPourRecherche(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
+            List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
+            if (!affectations.isEmpty()) {
+                return reponse(OK, affectations);
+            } else {
+                return reponse(EMPTY, rechercheAffectation);
+            }
+        } catch (Exception e) {
+            return reponse(ERROR, rechercheAffectation, e);
+        }
+    }
+
+    /**
+     * Utilisé pour la recherche des affectations pour la vue /affectations
+     */
+    public ReponseService findByRechercheAffectationVueDetailsEmploye(RechercheAffectationDetailEmploye rechercheAffectation, Integer idEmploye) {
+        try {
+            List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueDetailsEmploye(rechercheAffectation.getDateDebut(), rechercheAffectation.getFonction_id(), idEmploye);
             if (!affectations.isEmpty()) {
                 return reponse(OK, affectations);
             } else {

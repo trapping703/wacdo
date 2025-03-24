@@ -74,7 +74,7 @@ public class AffectationController {
 
     @PostMapping("/rechercheAffectations")
     public String rechercheAffectations(RechercheAffectation rechercheAffectation, Model model) throws Exception {
-        ReponseService reponseService = affectationService.findByRechercheAffectation(rechercheAffectation);
+        ReponseService reponseService = affectationService.findByRechercheAffectationVueListeAffection(rechercheAffectation);
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingListeAffectationsQuandRechercheOK(rechercheAffectation, model, reponseService);

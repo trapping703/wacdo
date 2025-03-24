@@ -9,104 +9,141 @@
 <hr>
 <div th:replace="~{messageEnregistrement :: message_enregistrement}"></div>
 
-<form>
-
-    <div class="container">
-        <!-- nom prenom -->
-        <div class="row ">
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-label" for="prenom">Prénom</label>
-                    <input th:disabled="${employe.id != null}" type="text" id="prenom" class="form-control"
-                           th:field="${employe.prenom}"/>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-label" for="nom">Nom</label>
-                    <input th:disabled="${employe.id != null}" type="text" id="nom" class="form-control"
-                           th:field="${employe.nom}"/>
-                </div>
-            </div>
-        </div>
-
-        <!-- nom prenom -->
-        <div class="row ">
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-label" for="email">E-Mail</label>
-                    <input th:disabled="${employe.id != null}" type="text" id="email" class="form-control"
-                           th:field="${employe.email}"/>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-label" for="motDePasse">mot de passe</label>
-                    <input th:disabled="${employe.id != null}" type="password" id="motDePasse" class="form-control"
-                           th:field="${employe.motDePasse}"/>
-                </div>
-            </div>
-        </div>
-
-        <!-- date embauche / isAdmin -->
-        <div class="row ">
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-label" for="dateEmbauche">Date d'embauche</label>
-                    <input th:disabled="${employe.id != null}" type="date" id="dateEmbauche" class="form-control"
-                           th:field="${employe.dateEmbauche}"/>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <label class="form-check-label" for="admin">Administrateur</label>
-                    <input th:disabled="${employe.id != null}" class="form-check-input form-control" type="checkbox"
-                           id="admin" th:field="${employe.admin}"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--    Liste affectations-->
-    <table class="table align-middle">
-        <thead>
-        <tr>
-            <th>Fonction</th>
-            <th>Restaurant</th>
-            <th>Date debut</th>
-            <th>Date fin</th>
-            <th><a role="button" class="btn btn-secondary rounded"
-                   th:href="@{'/creerAffectation?employe='+${employe.id}}">créer</a></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-        <tr th:each="affectation: ${employe.affectations}">
-            <td th:text="${affectation.fonction.libelle}"/>
-
-            <td th:text="${affectation.restaurant.nom}"/>
-
-            <td th:text="${affectation.dateDebut}"/>
-
-            <td th:text="${affectation.dateFin}"/>
-            <td>
-                <a role="button" class="btn btn-secondary rounded" th:href="@{/affectation/{id}(id=${affectation.id})}">
-                    Edit
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!-- Submit button -->
-    <div class="row">
+<div class="container">
+    <!-- nom prenom -->
+    <div class="row ">
         <div class="col">
-            <div class="form-outline text-center">
-                <a role="button" class="btn btn-secondary rounded text-center"
-                   th:href="@{/editerEmploye/{id}(id=${employe.id})}">modifier
-                </a>
+            <div class="form-outline">
+                <label class="form-label" for="prenom">Prénom</label>
+                <input th:disabled="${employe.id != null}" type="text" id="prenom" class="form-control"
+                       th:field="${employe.prenom}"/>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="nom">Nom</label>
+                <input th:disabled="${employe.id != null}" type="text" id="nom" class="form-control"
+                       th:field="${employe.nom}"/>
             </div>
         </div>
     </div>
+
+    <!-- nom prenom -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="email">E-Mail</label>
+                <input th:disabled="${employe.id != null}" type="text" id="email" class="form-control"
+                       th:field="${employe.email}"/>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="motDePasse">mot de passe</label>
+                <input th:disabled="${employe.id != null}" type="password" id="motDePasse" class="form-control"
+                       th:field="${employe.motDePasse}"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- date embauche / isAdmin -->
+    <div class="row ">
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-label" for="dateEmbauche">Date d'embauche</label>
+                <input th:disabled="${employe.id != null}" type="date" id="dateEmbauche" class="form-control"
+                       th:field="${employe.dateEmbauche}"/>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-outline">
+                <label class="form-check-label" for="admin">Administrateur</label>
+                <input th:disabled="${employe.id != null}" class="form-check-input form-control" type="checkbox"
+                       id="admin" th:field="${employe.admin}"/>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Formulaire recherche affectation -->
+
+<form action="#" method="post" th:action="@{/detailEmploye/{id}(id=${employe.id})}"
+      th:object="${rechercheAffectation}">
+<div class="container pt-4">
+            <div class="card search-form" >
+                <div class="card-body" >
+                        <div class="row">
+                            <div class="col col-lg-3 pl-2">
+                                <div class="form-outline">
+                                    <label class="form-label" for="dateDebut">Date debut</label>
+                                    <input type="date" id="dateDebut" class="form-control"
+                                           th:field="*{dateDebut}"/>
+                                </div>
+                            </div>
+                            <div class="col col-lg-2 pl-3">
+                                <div class="form-outline">
+                                    <label class="form-label" for="fonction_id">Fonction</label>
+                                    <select id="fonction_id" name="fonction_id">
+                                        <option value="0"></option>
+                                        <option th:each="fonction : ${fonctions}"
+                                                th:value="${fonction.id}"
+                                                th:text="${fonction.libelle}"
+                                                th:selected="${fonction.id eq rechercheAffectation.fonction_id}"/>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-lg-2 mt-3">
+                                <label class="form-label"></label>
+                                <button type="submit" class="btn btn-secondary rounded">
+                                    rechercher
+                                </button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
 </form>
+<!--    Liste affectations-->
+<table class="table align-middle">
+    <thead>
+    <tr>
+        <th>Fonction</th>
+        <th>Restaurant</th>
+        <th>Date debut</th>
+        <th>Date fin</th>
+        <th><a role="button" class="btn btn-secondary rounded"
+               th:href="@{'/creerAffectation?employe='+${employe.id}}">créer</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <tr th:each="affectation: ${employe.affectations}">
+        <td th:text="${affectation.fonction.libelle}"/>
+
+        <td th:text="${affectation.restaurant.nom}"/>
+
+        <td th:text="${affectation.dateDebut}"/>
+
+        <td th:text="${affectation.dateFin}"/>
+        <td>
+            <a role="button" class="btn btn-secondary rounded" th:href="@{/affectation/{id}(id=${affectation.id})}"
+               th:if="${affectation.dateFin == null}">
+                Edit
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!-- Submit button -->
+<div class="row">
+    <div class="col">
+        <div class="form-outline pb-3 text-center">
+            <a role="button" class="btn btn-secondary rounded text-center"
+               th:href="@{/editerEmploye/{id}(id=${employe.id})}">modifier
+            </a>
+        </div>
+    </div>
+</div>
 
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>

@@ -1,11 +1,18 @@
 package com.gdu.wacdo.controllers;
 
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailEmploye;
 import com.gdu.wacdo.dto.form.RechercheEmploye;
+import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
+import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
+import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.model.Employe;
+import com.gdu.wacdo.model.Fonction;
+import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.EmployeNonAffecteService;
 import com.gdu.wacdo.services.EmployeService;
+import com.gdu.wacdo.services.FonctionService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -25,11 +33,15 @@ public class EmployeController {
 
     private final EmployeService employeService;
     private final EmployeNonAffecteService employeNonAffecteService;
+    private final FonctionService fonctionService;
+    private final AffectationService affectationService;
     private final ModelMapper modelMapper;
 
-    public EmployeController(EmployeService employeService, EmployeNonAffecteService employeNonAffecteService, ModelMapper modelMapper) {
+    public EmployeController(EmployeService employeService, EmployeNonAffecteService employeNonAffecteService, FonctionService fonctionService, AffectationService affectationService, ModelMapper modelMapper) {
         this.employeService = employeService;
         this.employeNonAffecteService = employeNonAffecteService;
+        this.fonctionService = fonctionService;
+        this.affectationService = affectationService;
         this.modelMapper = modelMapper;
     }
 
@@ -53,8 +65,29 @@ public class EmployeController {
 
     @GetMapping("/detailEmploye/{id}")
     public String getEmploye(Model model, @PathVariable int id) {
-        model.addAttribute("employe", modelMapper.map(employeService.findById(id), EmployeDTO.class));
+        model.addAttribute("employe", modelMapper.map(employeService.findById(id).getData(), EmployeDTO.class));
         return "employe";
+    }
+
+    @PostMapping("/detailEmploye/{id}")
+    public String detailEmployeAvecFiltreAffectation(RechercheAffectationDetailEmploye rechercheAffectation, Model model, @PathVariable int id) throws Exception {
+        EmployeDTO employeDTO = modelMapper.map(employeService.findById(id).getData(), EmployeDTO.class);
+        ReponseService reponseService = affectationService.findByRechercheAffectationVueDetailsEmploye(rechercheAffectation, id);
+        employeDTO.setAffectations(mappingListeAffectation(reponseService));
+        model.addAttribute("employe", employeDTO);
+        model.addAttribute("rechercheAffectation", rechercheAffectation);
+        return "employe";
+    }
+
+    private List<AffectationDTO> mappingListeAffectation(ReponseService reponseService) throws Exception {
+        return switch (reponseService.getStatus()) {
+            case OK -> ((List<Affectation>) reponseService.getData()).stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList();
+            case EMPTY -> new ArrayList<>();
+
+            case ERROR -> throw reponseService.getException();
+        };
     }
 
     @PostMapping("/rechercheEmployes")
@@ -168,13 +201,26 @@ public class EmployeController {
     }
 
     @ModelAttribute(value = "rechercheEmployes")
-    private RechercheEmploye getrechercheEmploye() {
+    private RechercheEmploye getRechercheEmploye() {
         return new RechercheEmploye();
     }
 
     @ModelAttribute(value = "employeDTO")
     private EmployeDTO getEmployeDTO() {
         return new EmployeDTO();
+    }
+
+    @ModelAttribute(value = "rechercheAffectation")
+    private RechercheAffectationDetailEmploye getRechercheAffectation() {
+        return new RechercheAffectationDetailEmploye();
+    }
+
+
+    @ModelAttribute(value = "fonctions")
+    private List<FonctionDTO> getAllFonctions() {
+        return ((List<Fonction>) fonctionService.findAll().getData()).stream()
+                .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
+                .toList();
     }
 
 }
