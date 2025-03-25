@@ -1,6 +1,7 @@
 package com.gdu.wacdo.repositories;
 
 import com.gdu.wacdo.model.Affectation;
+import com.gdu.wacdo.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,4 +23,5 @@ public interface AffectationRepository extends JpaRepository<Affectation, Intege
             "and (:employe_id is null  or a.employe.id=:employe_id)")
     List<Affectation> findAffectationsPourRechercheVueDetailsEmploye(LocalDate dateDebut, int fonction_id, int employe_id);
 
+    List<Affectation> findByDateFinIsNullAndRestaurantIs(Restaurant restaurant);
 }

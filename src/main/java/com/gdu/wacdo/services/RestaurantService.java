@@ -23,7 +23,7 @@ public class RestaurantService {
         this.restaurantRepository = restaurantRepository;
     }
 
-    public ReponseService save(Restaurant restaurant) {
+    public ReponseService<Restaurant> save(Restaurant restaurant) {
         try {
             restaurantRepository.save(restaurant);
             if (restaurant.getId() != null) {
@@ -36,11 +36,11 @@ public class RestaurantService {
         }
     }
 
-    public ReponseService findAll() {
+    public ReponseService<List<Restaurant>> findAll() {
         return reponse(OK, restaurantRepository.findAll());
     }
 
-    public ReponseService findById(int id) {
+    public ReponseService<Restaurant> findById(int id) {
         try {
             Optional<Restaurant> restaurant = restaurantRepository.findById(id);
             return restaurant.map(value -> reponse(OK, value)).orElseGet(() -> reponse(EMPTY, id));
@@ -52,7 +52,7 @@ public class RestaurantService {
     /**
      * Utilisé pour la recherche des restaurants pour la vue /restaurants
      */
-    public ReponseService findByRechercheRestaurant(RechercheRestaurant rechercheRestaurant) {
+    public ReponseService<List<Restaurant>> findByRechercheRestaurant(RechercheRestaurant rechercheRestaurant) {
         try {
             List<Restaurant> restaurants = getRestaurantsPourRecherche(rechercheRestaurant);
             if (!restaurants.isEmpty()) {

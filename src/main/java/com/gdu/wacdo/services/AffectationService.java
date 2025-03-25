@@ -4,6 +4,7 @@ import com.gdu.wacdo.dto.form.RechercheAffectation;
 import com.gdu.wacdo.dto.form.RechercheAffectationDetailEmploye;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
+import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.repositories.AffectationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class AffectationService {
         this.affectationRepository = affectationRepository;
     }
 
-    public ReponseService save(Affectation affectation) {
+    public ReponseService<Affectation> save(Affectation affectation) {
         try {
             affectationRepository.save(affectation);
             if (affectation.getId() != null) {
@@ -37,11 +38,11 @@ public class AffectationService {
         }
     }
 
-    public ReponseService findAll() {
+    public ReponseService<List<Affectation>> findAll() {
         return reponse(OK, affectationRepository.findAll());
     }
 
-    public ReponseService findById(int id) {
+    public ReponseService<Affectation> findById(int id) {
         try {
             Optional<Affectation> affectation = affectationRepository.findById(id);
             return affectation.map(a -> reponse(OK, a)).orElseGet(() -> reponse(EMPTY, id));
@@ -53,7 +54,7 @@ public class AffectationService {
     /**
      * Utilisé pour la recherche des affectations pour la vue /affectations
      */
-    public ReponseService findByRechercheAffectationVueListeAffection(RechercheAffectation rechercheAffectation) {
+    public ReponseService<List<Affectation>> findByRechercheAffectationVueListeAffection(RechercheAffectation rechercheAffectation) {
         try {
             List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
             if (!affectations.isEmpty()) {
@@ -69,7 +70,7 @@ public class AffectationService {
     /**
      * Utilisé pour la recherche des affectations pour la vue /affectations
      */
-    public ReponseService findByRechercheAffectationVueDetailsEmploye(RechercheAffectationDetailEmploye rechercheAffectation, Integer idEmploye) {
+    public ReponseService<List<Affectation>> findByRechercheAffectationVueDetailsEmploye(RechercheAffectationDetailEmploye rechercheAffectation, Integer idEmploye) {
         try {
             List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheVueDetailsEmploye(rechercheAffectation.getDateDebut(), rechercheAffectation.getFonction_id(), idEmploye);
             if (!affectations.isEmpty()) {
@@ -79,6 +80,23 @@ public class AffectationService {
             }
         } catch (Exception e) {
             return reponse(ERROR, rechercheAffectation, e);
+        }
+    }
+
+
+    /**
+     * Retourne la liste d'affectation en cours d'un restaurant.
+     */
+    public ReponseService<List<Affectation>> findByDateFinIsNullAndRestaurantIs(Restaurant restaurant){
+        try {
+            List<Affectation> affectations = affectationRepository.findByDateFinIsNullAndRestaurantIs(restaurant);
+            if (!affectations.isEmpty()) {
+                return reponse(OK, affectations);
+            } else {
+                return reponse(EMPTY, restaurant);
+            }
+        } catch (Exception e) {
+            return reponse(ERROR, restaurant, e);
         }
     }
 }

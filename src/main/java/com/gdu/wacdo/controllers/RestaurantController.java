@@ -1,9 +1,11 @@
 package com.gdu.wacdo.controllers;
 
 import com.gdu.wacdo.dto.form.RechercheRestaurant;
+import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Restaurant;
+import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +27,19 @@ import static java.util.Collections.emptyList;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+    private final AffectationService affectationService;
     private final ModelMapper modelMapper;
 
-    public RestaurantController(RestaurantService restaurantService, ModelMapper modelMapper) {
+    public RestaurantController(RestaurantService restaurantService, AffectationService affectationService, ModelMapper modelMapper) {
         this.restaurantService = restaurantService;
+        this.affectationService = affectationService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping("/listeRestaurants")
     public String restaurants(Model model) throws Exception {
         ReponseService reponse = restaurantService.findAll();
-        if (reponse.isOk()) {
+        if (!reponse.isError()) {
             List<RestaurantDTO> restaurantDTOS = ((List<Restaurant>) reponse.getData()).stream()
                     .map(r -> modelMapper.map(r, RestaurantDTO.class))
                     .toList();
@@ -47,9 +51,13 @@ public class RestaurantController {
 
     @GetMapping("/detailRestaurant/{id}")
     public String getRestaurant(Model model, @PathVariable int id) throws Exception {
-        ReponseService reponse = restaurantService.findById(id);
-        if (reponse.isOk()) {
+        ReponseService<Restaurant> reponse = restaurantService.findById(id);
+        if (!reponse.isError()) {
             model.addAttribute("restaurant", modelMapper.map(reponse.getData(), RestaurantDTO.class));
+            model.addAttribute("affectationsEnCours", affectationService.findByDateFinIsNullAndRestaurantIs(reponse.getObjetRetour()).getObjetRetour()
+                    .stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList());
             return "restaurant";
         }
         throw reponse.getException();
@@ -61,7 +69,7 @@ public class RestaurantController {
         if (result.hasErrors()) {
             return "restaurants";
         }
-        ReponseService reponseService = restaurantService.findByRechercheRestaurant(rechercheRestaurants);
+        ReponseService<List<Restaurant>> reponseService = restaurantService.findByRechercheRestaurant(rechercheRestaurants);
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingListeRestaurantQuandRechercheOK(rechercheRestaurants, model, reponseService);
@@ -85,10 +93,10 @@ public class RestaurantController {
         if (result.hasErrors()) {
             return "creationRestaurant";
         }
-        ReponseService reponseService = restaurantService.save(modelMapper.map(restaurantDTO, Restaurant.class));
+        ReponseService<Restaurant> reponseService = restaurantService.save(modelMapper.map(restaurantDTO, Restaurant.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
-                mappingRestaurantEnregistree((Restaurant) reponseService.getData(), model);
+                mappingRestaurantEnregistree(reponseService.getObjetRetour(), model);
                 yield "restaurant";
             }
             case EMPTY -> {
@@ -111,10 +119,10 @@ public class RestaurantController {
         if (result.hasErrors()) {
             return "editionRestaurant";
         }
-        ReponseService reponseService = restaurantService.save(modelMapper.map(restaurantDTO.pourEdition((Restaurant) restaurantService.findById(restaurantDTO.getId()).getData()), Restaurant.class));
+        ReponseService<Restaurant> reponseService = restaurantService.save(modelMapper.map(restaurantDTO.pourEdition(restaurantService.findById(restaurantDTO.getId()).getObjetRetour()), Restaurant.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
-                mappingRestaurantEnregistree((Restaurant) reponseService.getData(), model);
+                mappingRestaurantEnregistree(reponseService.getObjetRetour(), model);
                 yield "restaurant";
             }
             case EMPTY -> {
@@ -128,8 +136,8 @@ public class RestaurantController {
     /**
      * Réattribut l'objet de recherche de restaurant, fournit la liste de restaurant trouvé par la recherche.
      */
-    private void mappingListeRestaurantQuandRechercheOK(RechercheRestaurant rechercheRestaurants, Model model, ReponseService reponseService) {
-        List<RestaurantDTO> restaurantDTOS = ((List<Restaurant>) reponseService.getData()).stream()
+    private void mappingListeRestaurantQuandRechercheOK(RechercheRestaurant rechercheRestaurants, Model model, ReponseService<List<Restaurant>> reponseService) {
+        List<RestaurantDTO> restaurantDTOS = reponseService.getObjetRetour().stream()
                 .map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class))
                 .toList();
         model.addAttribute("rechercheRestaurants", rechercheRestaurants);
@@ -150,6 +158,10 @@ public class RestaurantController {
      */
     private void mappingRestaurantEnregistree(Restaurant restaurant, Model model) {
         model.addAttribute("restaurant", modelMapper.map(restaurant, RestaurantDTO.class));
+        model.addAttribute("affectationsEnCours", affectationService.findByDateFinIsNullAndRestaurantIs(restaurant).getObjetRetour()
+                .stream()
+                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                .toList());
         model.addAttribute("messageEnregistrement", "Restaurant Enregistrée");
     }
 
