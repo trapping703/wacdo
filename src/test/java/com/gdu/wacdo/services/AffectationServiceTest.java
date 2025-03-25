@@ -44,7 +44,7 @@ class AffectationServiceTest {
         ReponseService<Affectation> reponse = affectationService.save(affectation);
         //then
         assertThat(reponse.isOk()).isTrue();
-        assertThat(reponse.getData().getId()).isEqualTo(idAttendu);
+        assertThat(reponse.getObjetRetour().getId()).isEqualTo(idAttendu);
         verify(affectationRepository, Mockito.times(1)).save(affectation);
         verifyNoMoreInteractions(affectationRepository);
     }
@@ -58,7 +58,7 @@ class AffectationServiceTest {
         ReponseService<Affectation> reponse = affectationService.save(affectation);
         //then
         assertThat(reponse.isError()).isTrue();
-        assertThat(reponse.getData().getId()).isNull();
+        assertThat(reponse.getObjetRetour().getId()).isNull();
         verify(affectationRepository, Mockito.times(1)).save(affectation);
         verifyNoMoreInteractions(affectationRepository);
     }
@@ -111,7 +111,7 @@ class AffectationServiceTest {
         //given
         doReturn(Optional.empty()).when(affectationRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = affectationService.findById(1);
+        ReponseService reponse = affectationService.findById(1);
         //then
         assertThat(reponse.isEmpty()).isTrue();
         assertThat(reponse.getData()).isEqualTo(1);
@@ -125,7 +125,7 @@ class AffectationServiceTest {
         Exception exception = new RuntimeException();
         Mockito.doThrow(exception).when(affectationRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = affectationService.findById(1);
+        ReponseService reponse = affectationService.findById(1);
         //then
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getException()).isEqualTo(exception);
@@ -138,13 +138,13 @@ class AffectationServiceTest {
         //given
         List<Affectation> affectations = List.of(new Affectation(), new Affectation());
         RechercheAffectation rechercheAffectation = new RechercheAffectation("ville", LocalDate.now(), LocalDate.now(), 1);
-        doReturn(affectations).when(affectationRepository).findAffectationsPourRechercheVueListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
+        doReturn(affectations).when(affectationRepository).findAffectationsPourRechercheListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
         //when
-        ReponseService<List<Affectation>> reponse = affectationService.findByRechercheAffectationVueListeAffection(rechercheAffectation);
+        ReponseService<List<Affectation>> reponse = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);
         //then
         assertThat(reponse.isOk()).isTrue();
         assertThat(reponse.getData()).isEqualTo(affectations);
-        verify(affectationRepository, Mockito.times(1)).findAffectationsPourRechercheVueListeAffection("ville", LocalDate.now(), LocalDate.now(), 1);
+        verify(affectationRepository, Mockito.times(1)).findAffectationsPourRechercheListeAffection("ville", LocalDate.now(), LocalDate.now(), 1);
         verifyNoMoreInteractions(affectationRepository);
     }
 
@@ -152,13 +152,13 @@ class AffectationServiceTest {
     void givenAffectationsNonExistante_whenFindByRechercheAffectation_thenReturnRechercheAffectationVueListeAffectionEtReponseEmpty() {
         //given
         RechercheAffectation rechercheAffectation = new RechercheAffectation("ville", LocalDate.now(), LocalDate.now(), 1);
-        doReturn(List.of()).when(affectationRepository).findAffectationsPourRechercheVueListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
+        doReturn(List.of()).when(affectationRepository).findAffectationsPourRechercheListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
         //when
-        ReponseService<RechercheAffectation> reponse = affectationService.findByRechercheAffectationVueListeAffection(rechercheAffectation);
+        ReponseService reponse = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);
         //then
         assertThat(reponse.isEmpty()).isTrue();
         assertThat(reponse.getData()).isEqualTo(rechercheAffectation);
-        verify(affectationRepository, Mockito.times(1)).findAffectationsPourRechercheVueListeAffection("ville", LocalDate.now(), LocalDate.now(), 1);
+        verify(affectationRepository, Mockito.times(1)).findAffectationsPourRechercheListeAffection("ville", LocalDate.now(), LocalDate.now(), 1);
         verifyNoMoreInteractions(affectationRepository);
     }
 
@@ -167,14 +167,14 @@ class AffectationServiceTest {
         //given
         Exception exception = new RuntimeException();
         RechercheAffectation rechercheAffectation = new RechercheAffectation("ville", LocalDate.now(), LocalDate.now(), 1);
-        doThrow(exception).when(affectationRepository).findAffectationsPourRechercheVueListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
+        doThrow(exception).when(affectationRepository).findAffectationsPourRechercheListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
         //when
-        ReponseService<RechercheAffectation> reponse = affectationService.findByRechercheAffectationVueListeAffection(rechercheAffectation);
+        ReponseService reponse = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);
         //then
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getData()).isEqualTo(rechercheAffectation);
         assertThat(reponse.getException()).isEqualTo(exception);
-        verify(affectationRepository, Mockito.times(1)).findAffectationsPourRechercheVueListeAffection("ville", LocalDate.now(), LocalDate.now(), 1);
+        verify(affectationRepository, Mockito.times(1)).findAffectationsPourRechercheListeAffection("ville", LocalDate.now(), LocalDate.now(), 1);
         verifyNoMoreInteractions(affectationRepository);
     }
 }

@@ -42,7 +42,7 @@ class RestaurantServiceTest {
         ReponseService<Restaurant> reponse = restaurantService.save(restaurant);
         //then
         assertThat(reponse.isOk()).isTrue();
-        assertThat(reponse.getData().getId()).isEqualTo(idAttendu);
+        assertThat(reponse.getObjetRetour().getId()).isEqualTo(idAttendu);
         verify(restaurantRepository, Mockito.times(1)).save(restaurant);
         verifyNoMoreInteractions(restaurantRepository);
     }
@@ -56,7 +56,7 @@ class RestaurantServiceTest {
         ReponseService<Restaurant> reponse = restaurantService.save(restaurant);
         //then
         assertThat(reponse.isError()).isTrue();
-        assertThat(reponse.getData().getId()).isNull();
+        assertThat(reponse.getObjetRetour().getId()).isNull();
         verify(restaurantRepository, Mockito.times(1)).save(restaurant);
         verifyNoMoreInteractions(restaurantRepository);
     }
@@ -109,7 +109,7 @@ class RestaurantServiceTest {
         //given
         doReturn(Optional.empty()).when(restaurantRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = restaurantService.findById(1);
+        ReponseService reponse = restaurantService.findById(1);
         //then
         assertThat(reponse.isEmpty()).isTrue();
         assertThat(reponse.getData()).isEqualTo(1);
@@ -123,7 +123,7 @@ class RestaurantServiceTest {
         Exception exception = new RuntimeException();
         Mockito.doThrow(exception).when(restaurantRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = restaurantService.findById(1);
+        ReponseService reponse = restaurantService.findById(1);
         //then
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getException()).isEqualTo(exception);

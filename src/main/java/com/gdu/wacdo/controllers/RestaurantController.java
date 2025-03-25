@@ -1,11 +1,18 @@
 package com.gdu.wacdo.controllers;
 
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurant;
 import com.gdu.wacdo.dto.form.RechercheRestaurant;
 import com.gdu.wacdo.dto.model.AffectationDTO;
+import com.gdu.wacdo.dto.model.EmployeDTO;
+import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
+import com.gdu.wacdo.model.Employe;
+import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.AffectationService;
+import com.gdu.wacdo.services.EmployeService;
+import com.gdu.wacdo.services.FonctionService;
 import com.gdu.wacdo.services.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -28,19 +35,23 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
     private final AffectationService affectationService;
+    private final FonctionService fonctionService;
+    private final EmployeService employeService;
     private final ModelMapper modelMapper;
 
-    public RestaurantController(RestaurantService restaurantService, AffectationService affectationService, ModelMapper modelMapper) {
+    public RestaurantController(RestaurantService restaurantService, AffectationService affectationService, FonctionService fonctionService, EmployeService employeService, ModelMapper modelMapper) {
         this.restaurantService = restaurantService;
         this.affectationService = affectationService;
+        this.fonctionService = fonctionService;
+        this.employeService = employeService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping("/listeRestaurants")
     public String restaurants(Model model) throws Exception {
-        ReponseService reponse = restaurantService.findAll();
+        ReponseService<List<Restaurant>> reponse = restaurantService.findAll();
         if (!reponse.isError()) {
-            List<RestaurantDTO> restaurantDTOS = ((List<Restaurant>) reponse.getData()).stream()
+            List<RestaurantDTO> restaurantDTOS = reponse.getObjetRetour().stream()
                     .map(r -> modelMapper.map(r, RestaurantDTO.class))
                     .toList();
             model.addAttribute("restaurants", restaurantDTOS);
@@ -54,7 +65,7 @@ public class RestaurantController {
         ReponseService<Restaurant> reponse = restaurantService.findById(id);
         if (!reponse.isError()) {
             model.addAttribute("restaurant", modelMapper.map(reponse.getData(), RestaurantDTO.class));
-            model.addAttribute("affectationsEnCours", affectationService.findByDateFinIsNullAndRestaurantIs(reponse.getObjetRetour()).getObjetRetour()
+            model.addAttribute("affectationsDuRestaurant", affectationService.findByDateFinIsNullAndRestaurantIs(reponse.getObjetRetour()).getObjetRetour()
                     .stream()
                     .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
                     .toList());
@@ -63,6 +74,17 @@ public class RestaurantController {
         throw reponse.getException();
     }
 
+
+    @PostMapping("/detailRestaurant/{id}")
+    public String detailRestaurantAvecFiltreAffectation(RechercheAffectationDetailsRestaurant rechercheAffectation, Model model, @PathVariable int id) throws Exception {
+        RestaurantDTO RestaurantDTO = modelMapper.map(restaurantService.findById(id).getData(), RestaurantDTO.class);
+        model.addAttribute("affectationsDuRestaurant", affectationService.findAffectationsPourRechercheDetailsRestaurant(rechercheAffectation, id).getObjetRetour().stream()
+                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                .toList());
+        model.addAttribute("restaurant", RestaurantDTO);
+        model.addAttribute("rechercheAffectationDuRestaurant", rechercheAffectation);
+        return "restaurant";
+    }
 
     @PostMapping("/rechercheRestaurants")
     public String rechercheRestaurants(@Valid @ModelAttribute("rechercheRestaurants") RechercheRestaurant rechercheRestaurants, BindingResult result, Model model) throws Exception {
@@ -158,7 +180,7 @@ public class RestaurantController {
      */
     private void mappingRestaurantEnregistree(Restaurant restaurant, Model model) {
         model.addAttribute("restaurant", modelMapper.map(restaurant, RestaurantDTO.class));
-        model.addAttribute("affectationsEnCours", affectationService.findByDateFinIsNullAndRestaurantIs(restaurant).getObjetRetour()
+        model.addAttribute("affectationsDuRestaurant", affectationService.findByDateFinIsNullAndRestaurantIs(restaurant).getObjetRetour()
                 .stream()
                 .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
                 .toList());
@@ -181,5 +203,24 @@ public class RestaurantController {
     @ModelAttribute(value = "restaurantDTO")
     private RestaurantDTO getRestaurantDTO() {
         return new RestaurantDTO();
+    }
+
+    @ModelAttribute(value = "fonctions")
+    private List<FonctionDTO> getAllFonctions() {
+        return ((List<Fonction>) fonctionService.findAll().getData()).stream()
+                .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
+                .toList();
+    }
+
+    @ModelAttribute(value = "employes")
+    private List<EmployeDTO> getAllEmployes() {
+        return ((List<Employe>) employeService.findAll().getData()).stream()
+                .map(fonction -> modelMapper.map(fonction, EmployeDTO.class))
+                .toList();
+    }
+
+    @ModelAttribute(value = "rechercheAffectationDuRestaurant")
+    private RechercheAffectationDetailsRestaurant getRechercheAffectationDuRestaurant() {
+        return new RechercheAffectationDetailsRestaurant();
     }
 }

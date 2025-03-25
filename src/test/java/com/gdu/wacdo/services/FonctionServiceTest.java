@@ -42,7 +42,7 @@ class FonctionServiceTest {
         ReponseService<Fonction> reponse = fonctionService.save(fonction);
         //then
         assertThat(reponse.isOk()).isTrue();
-        assertThat(reponse.getData().getId()).isEqualTo(idAttendu);
+        assertThat(reponse.getObjetRetour().getId()).isEqualTo(idAttendu);
         verify(fonctionRepository, Mockito.times(1)).save(fonction);
         verifyNoMoreInteractions(fonctionRepository);
     }
@@ -56,7 +56,7 @@ class FonctionServiceTest {
         ReponseService<Fonction> reponse = fonctionService.save(fonction);
         //then
         assertThat(reponse.isEmpty()).isTrue();
-        assertThat(reponse.getData().getId()).isNull();
+        assertThat(reponse.getObjetRetour().getId()).isNull();
         verify(fonctionRepository, Mockito.times(1)).save(fonction);
         verifyNoMoreInteractions(fonctionRepository);
     }
@@ -141,7 +141,7 @@ class FonctionServiceTest {
         ReponseService<List<Fonction>> reponse = fonctionService.findByLibelle(libelle);
         //then
         assertThat(reponse.isOk()).isTrue();
-        assertThat(reponse.getData()).containsOnly(fonction);
+        assertThat(reponse.getObjetRetour()).containsOnly(fonction);
         verify(fonctionRepository, Mockito.times(1)).findByLibelleContaining(libelle);
         verifyNoMoreInteractions(fonctionRepository);
     }

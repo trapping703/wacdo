@@ -1,6 +1,6 @@
 package com.gdu.wacdo.controllers;
 
-import com.gdu.wacdo.dto.form.RechercheAffectationDetailEmploye;
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailsEmploye;
 import com.gdu.wacdo.dto.form.RechercheEmploye;
 import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
@@ -70,9 +70,9 @@ public class EmployeController {
     }
 
     @PostMapping("/detailEmploye/{id}")
-    public String detailEmployeAvecFiltreAffectation(RechercheAffectationDetailEmploye rechercheAffectation, Model model, @PathVariable int id) throws Exception {
+    public String detailEmployeAvecFiltreAffectation(RechercheAffectationDetailsEmploye rechercheAffectation, Model model, @PathVariable int id) throws Exception {
         EmployeDTO employeDTO = modelMapper.map(employeService.findById(id).getData(), EmployeDTO.class);
-        ReponseService reponseService = affectationService.findByRechercheAffectationVueDetailsEmploye(rechercheAffectation, id);
+        ReponseService reponseService = affectationService.findAffectationsPourRechercheDetailsEmploye(rechercheAffectation, id);
         employeDTO.setAffectations(mappingListeAffectation(reponseService));
         model.addAttribute("employe", employeDTO);
         model.addAttribute("rechercheAffectation", rechercheAffectation);
@@ -211,8 +211,8 @@ public class EmployeController {
     }
 
     @ModelAttribute(value = "rechercheAffectation")
-    private RechercheAffectationDetailEmploye getRechercheAffectation() {
-        return new RechercheAffectationDetailEmploye();
+    private RechercheAffectationDetailsEmploye getRechercheAffectation() {
+        return new RechercheAffectationDetailsEmploye();
     }
 
 

@@ -15,13 +15,21 @@ public interface AffectationRepository extends JpaRepository<Affectation, Intege
             "and (cast(:dateDebut as date) is null or a.dateDebut=:dateDebut) " +
             "and (cast(:dateFin as date) is null or a.dateFin=:dateFin) " +
             "and (:fonction_id is null or :fonction_id = 0 or a.fonction.id=:fonction_id)")
-    List<Affectation> findAffectationsPourRechercheVueListeAffection(String ville, LocalDate dateDebut, LocalDate dateFin, int fonction_id);
+    List<Affectation> findAffectationsPourRechercheListeAffection(String ville, LocalDate dateDebut, LocalDate dateFin, int fonction_id);
 
-    @Query("select a from Affectation a inner join Restaurant b on a.restaurant.id=b.id " +
+    @Query("select a from Affectation a " +
             "where (cast(:dateDebut as date) is null or a.dateDebut=:dateDebut) " +
             "and (:fonction_id is null or :fonction_id = 0 or a.fonction.id=:fonction_id)"+
             "and (:employe_id is null  or a.employe.id=:employe_id)")
-    List<Affectation> findAffectationsPourRechercheVueDetailsEmploye(LocalDate dateDebut, int fonction_id, int employe_id);
+    List<Affectation> findAffectationsPourRechercheDetailsEmploye(LocalDate dateDebut, int fonction_id, int employe_id);
+
+    @Query("select a from Affectation a " +
+            "where a.restaurant.id = :restaurant_id " +
+            "and a.dateFin is null " +
+            "and (cast(:dateDebut as date) is null or a.dateDebut=:dateDebut) " +
+            "and (:fonction_id is null or :fonction_id = 0 or a.fonction.id = :fonction_id) "+
+            "and (:employe_id is null  or :employe_id = 0 or a.employe.id = :employe_id)")
+    List<Affectation> findAffectationsPourRechercheDetailsRestaurant(LocalDate dateDebut, int fonction_id, int employe_id, int restaurant_id);
 
     List<Affectation> findByDateFinIsNullAndRestaurantIs(Restaurant restaurant);
 }

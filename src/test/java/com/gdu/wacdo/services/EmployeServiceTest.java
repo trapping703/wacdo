@@ -44,7 +44,7 @@ class EmployeServiceTest {
         ReponseService<Employe> reponse = employeService.save(employe);
         //then
         assertThat(reponse.isOk()).isTrue();
-        assertThat(reponse.getData().getId()).isEqualTo(idAttendu);
+        assertThat(reponse.getObjetRetour().getId()).isEqualTo(idAttendu);
         verify(employeRepository, Mockito.times(1)).save(employe);
         verify(passwordEncodeur, Mockito.times(1)).encrypte(employe);
         verifyNoMoreInteractions(employeRepository, passwordEncodeur);
@@ -59,7 +59,7 @@ class EmployeServiceTest {
         ReponseService<Employe> reponse = employeService.save(employe);
         //then
         assertThat(reponse.isError()).isTrue();
-        assertThat(reponse.getData().getId()).isNull();
+        assertThat(reponse.getObjetRetour().getId()).isNull();
         verify(employeRepository, Mockito.times(1)).save(employe);
         verify(passwordEncodeur, Mockito.times(1)).encrypte(employe);
         verifyNoMoreInteractions(employeRepository, passwordEncodeur);
