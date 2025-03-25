@@ -3,7 +3,7 @@ package com.gdu.wacdo.dto.form;
 import lombok.Data;
 
 @Data
-public class RechercheEmploye {
+public class RechercheEmployeDTO {
 
     private String nom, prenom, email;
 }

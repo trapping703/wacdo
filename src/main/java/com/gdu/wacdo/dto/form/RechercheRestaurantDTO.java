@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class RechercheRestaurant {
+public class RechercheRestaurantDTO {
 
     private String nom, ville;
     @Size(min = 5, max = 5, message = "code postal incompatible")

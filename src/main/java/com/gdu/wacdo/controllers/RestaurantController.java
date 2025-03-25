@@ -1,12 +1,13 @@
 package com.gdu.wacdo.controllers;
 
-import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurant;
-import com.gdu.wacdo.dto.form.RechercheRestaurant;
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurantDTO;
+import com.gdu.wacdo.dto.form.RechercheRestaurantDTO;
 import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
+import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.model.Employe;
 import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.model.Restaurant;
@@ -65,10 +66,14 @@ public class RestaurantController {
         ReponseService<Restaurant> reponse = restaurantService.findById(id);
         if (!reponse.isError()) {
             model.addAttribute("restaurant", modelMapper.map(reponse.getData(), RestaurantDTO.class));
-            model.addAttribute("affectationsDuRestaurant", affectationService.findByDateFinIsNullAndRestaurantIs(reponse.getObjetRetour()).getObjetRetour()
-                    .stream()
-                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
-                    .toList());
+            ReponseService<List<Affectation>> reponseService = affectationService.findByDateFinIsNullAndRestaurantIs(reponse.getObjetRetour());
+            if (!reponseService.isEmpty()) {
+                model.addAttribute("affectationsDuRestaurant", reponseService.getObjetRetour().stream()
+                        .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                        .toList());
+            } else {
+                model.addAttribute("affectationsDuRestaurant", emptyList());
+            }
             return "restaurant";
         }
         throw reponse.getException();
@@ -76,18 +81,23 @@ public class RestaurantController {
 
 
     @PostMapping("/detailRestaurant/{id}")
-    public String detailRestaurantAvecFiltreAffectation(RechercheAffectationDetailsRestaurant rechercheAffectation, Model model, @PathVariable int id) throws Exception {
+    public String detailRestaurantAvecFiltreAffectation(RechercheAffectationDetailsRestaurantDTO rechercheAffectation, Model model, @PathVariable int id) throws Exception {
         RestaurantDTO RestaurantDTO = modelMapper.map(restaurantService.findById(id).getData(), RestaurantDTO.class);
-        model.addAttribute("affectationsDuRestaurant", affectationService.findAffectationsPourRechercheDetailsRestaurant(rechercheAffectation, id).getObjetRetour().stream()
-                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
-                .toList());
+        ReponseService<List<Affectation>> reponseService = affectationService.findAffectationsPourRechercheDetailsRestaurant(rechercheAffectation, id);
+        if (!reponseService.isEmpty()) {
+            model.addAttribute("affectationsDuRestaurant", reponseService.getObjetRetour().stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList());
+        } else {
+            model.addAttribute("affectationsDuRestaurant", emptyList());
+        }
         model.addAttribute("restaurant", RestaurantDTO);
         model.addAttribute("rechercheAffectationDuRestaurant", rechercheAffectation);
         return "restaurant";
     }
 
     @PostMapping("/rechercheRestaurants")
-    public String rechercheRestaurants(@Valid @ModelAttribute("rechercheRestaurants") RechercheRestaurant rechercheRestaurants, BindingResult result, Model model) throws Exception {
+    public String rechercheRestaurants(@Valid @ModelAttribute("rechercheRestaurants") RechercheRestaurantDTO rechercheRestaurants, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {
             return "restaurants";
         }
@@ -158,7 +168,7 @@ public class RestaurantController {
     /**
      * Réattribut l'objet de recherche de restaurant, fournit la liste de restaurant trouvé par la recherche.
      */
-    private void mappingListeRestaurantQuandRechercheOK(RechercheRestaurant rechercheRestaurants, Model model, ReponseService<List<Restaurant>> reponseService) {
+    private void mappingListeRestaurantQuandRechercheOK(RechercheRestaurantDTO rechercheRestaurants, Model model, ReponseService<List<Restaurant>> reponseService) {
         List<RestaurantDTO> restaurantDTOS = reponseService.getObjetRetour().stream()
                 .map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class))
                 .toList();
@@ -169,7 +179,7 @@ public class RestaurantController {
     /**
      * Réattribut l'objet de recherche de restaurant, fournit une liste vide de restaurant et passe le message d'erreur.
      */
-    private void mappingQuandRechecheEmpty(RechercheRestaurant rechercheRestaurants, Model model) throws Exception {
+    private void mappingQuandRechecheEmpty(RechercheRestaurantDTO rechercheRestaurants, Model model) throws Exception {
         model.addAttribute("rechercheRestaurants", rechercheRestaurants);
         model.addAttribute("restaurants", emptyList());
         model.addAttribute("recherchevide", "Aucun restaurant trouvé");
@@ -196,8 +206,8 @@ public class RestaurantController {
     }
 
     @ModelAttribute(value = "rechercheRestaurants")
-    private RechercheRestaurant getrechercheRestaurant() {
-        return new RechercheRestaurant();
+    private RechercheRestaurantDTO getrechercheRestaurant() {
+        return new RechercheRestaurantDTO();
     }
 
     @ModelAttribute(value = "restaurantDTO")
@@ -220,7 +230,7 @@ public class RestaurantController {
     }
 
     @ModelAttribute(value = "rechercheAffectationDuRestaurant")
-    private RechercheAffectationDetailsRestaurant getRechercheAffectationDuRestaurant() {
-        return new RechercheAffectationDetailsRestaurant();
+    private RechercheAffectationDetailsRestaurantDTO getRechercheAffectationDuRestaurant() {
+        return new RechercheAffectationDetailsRestaurantDTO();
     }
 }

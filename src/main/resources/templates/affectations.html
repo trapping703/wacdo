@@ -14,7 +14,7 @@
             <div class="card search-form">
                 <div class="card-body">
                     <form action="#" method="post" th:action="@{/rechercheAffectations}"
-                          th:object="${rechercheAffectation}">
+                          th:object="${rechercheAffectations}">
                         <div class="row">
                             <div>
                                 <div class="row no-gutters">
@@ -38,7 +38,7 @@
                                             <option th:each="restaurant : ${restaurants}"
                                                     th:value="${restaurant.ville}"
                                                     th:text="${restaurant.ville}"
-                                                    th:selected="${restaurant.ville eq rechercheAffectation.ville}"/>
+                                                    th:selected="${restaurant.ville eq rechercheAffectations.ville}"/>
                                         </select>
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-sm-12 ">
@@ -48,7 +48,7 @@
                                             <option th:each="fonction : ${fonctions}"
                                                     th:value="${fonction.id}"
                                                     th:text="${fonction.libelle}"
-                                                    th:selected="${fonction.id eq rechercheAffectation.fonction_id}"/>
+                                                    th:selected="${fonction.id eq rechercheAffectations.fonction_id}"/>
                                         </select>
                                     </div>
                                     <div class="col-lg-1 col-md-3 col-sm-12">

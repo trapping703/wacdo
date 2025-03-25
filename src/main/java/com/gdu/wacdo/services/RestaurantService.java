@@ -1,6 +1,6 @@
 package com.gdu.wacdo.services;
 
-import com.gdu.wacdo.dto.form.RechercheRestaurant;
+import com.gdu.wacdo.dto.form.RechercheRestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.repositories.RestaurantRepository;
@@ -52,7 +52,7 @@ public class RestaurantService {
     /**
      * Utilisé pour la recherche des restaurants pour la vue /restaurants
      */
-    public ReponseService<List<Restaurant>> findByRechercheRestaurant(RechercheRestaurant rechercheRestaurant) {
+    public ReponseService<List<Restaurant>> findByRechercheRestaurant(RechercheRestaurantDTO rechercheRestaurant) {
         try {
             List<Restaurant> restaurants = getRestaurantsPourRecherche(rechercheRestaurant);
             if (!restaurants.isEmpty()) {
@@ -68,7 +68,7 @@ public class RestaurantService {
     /**
      * Appelle le repository avec null pour le code postal si le string est vide, sinon il est convertit.
      */
-    private List<Restaurant> getRestaurantsPourRecherche(RechercheRestaurant rechercheRestaurant) {
+    private List<Restaurant> getRestaurantsPourRecherche(RechercheRestaurantDTO rechercheRestaurant) {
         if (rechercheRestaurant.getCodePostal().isEmpty()) {
             return restaurantRepository.getRestaurantsPourRecherche(rechercheRestaurant.getNom(), rechercheRestaurant.getVille(), null);
         } else {

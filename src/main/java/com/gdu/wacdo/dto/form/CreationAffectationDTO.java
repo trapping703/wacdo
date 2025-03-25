@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 @Data
-public class CreationAffectation {
+public class CreationAffectationDTO {
 
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -29,7 +29,7 @@ public class CreationAffectation {
     @NotNull(message = "fonction incompatible")
     private Integer fonction;
 
-    public CreationAffectation(Integer id, LocalDate dateDebut, LocalDate dateFin, Integer employe, Integer restaurant, Integer fonction) {
+    public CreationAffectationDTO(Integer id, LocalDate dateDebut, LocalDate dateFin, Integer employe, Integer restaurant, Integer fonction) {
         this.id = id;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
@@ -38,7 +38,7 @@ public class CreationAffectation {
         this.fonction = fonction;
     }
 
-    public CreationAffectation(Affectation affectation) {
+    public CreationAffectationDTO(Affectation affectation) {
         this.id = affectation.getId();
         this.dateDebut = affectation.getDateDebut();
         this.dateFin = affectation.getDateFin();
@@ -47,17 +47,17 @@ public class CreationAffectation {
         this.fonction = affectation.getFonction().getId();
     }
 
-    public CreationAffectation() {
+    public CreationAffectationDTO() {
 
     }
 
-    public CreationAffectation creationDepuisEmploye(Integer employee) {
+    public CreationAffectationDTO creationDepuisEmploye(Integer employee) {
         this.depuisEmploye = true;
         this.employe = employee;
         return this;
     }
 
-    public CreationAffectation creationDepuisRestaurant(Integer restaurant) {
+    public CreationAffectationDTO creationDepuisRestaurant(Integer restaurant) {
         this.depuisRestaurant = true;
         this.restaurant = restaurant;
         return this;

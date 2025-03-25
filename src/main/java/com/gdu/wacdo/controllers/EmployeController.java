@@ -1,7 +1,7 @@
 package com.gdu.wacdo.controllers;
 
-import com.gdu.wacdo.dto.form.RechercheAffectationDetailsEmploye;
-import com.gdu.wacdo.dto.form.RechercheEmploye;
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailsEmployeDTO;
+import com.gdu.wacdo.dto.form.RechercheEmployeDTO;
 import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.model.FonctionDTO;
@@ -69,7 +69,7 @@ public class EmployeController {
     }
 
     @PostMapping("/detailEmploye/{id}")
-    public String detailEmployeAvecFiltreAffectation(RechercheAffectationDetailsEmploye rechercheAffectation, Model model, @PathVariable int id) throws Exception {
+    public String detailEmployeAvecFiltreAffectation(RechercheAffectationDetailsEmployeDTO rechercheAffectation, Model model, @PathVariable int id) throws Exception {
         EmployeDTO employeDTO = modelMapper.map(employeService.findById(id).getData(), EmployeDTO.class);
         ReponseService<List<Affectation>> reponseService = affectationService.findAffectationsPourRechercheDetailsEmploye(rechercheAffectation, id);
         employeDTO.setAffectations(mappingListeAffectation(reponseService));
@@ -90,7 +90,7 @@ public class EmployeController {
     }
 
     @PostMapping("/rechercheEmployes")
-    public String rechercheEmployes(RechercheEmploye rechercheEmployes, Model model) throws Exception {
+    public String rechercheEmployes(RechercheEmployeDTO rechercheEmployes, Model model) throws Exception {
         ReponseService<List<Employe>> reponseService = employeService.findByRechercheEmploye(rechercheEmployes);
         return switch (reponseService.getStatus()) {
             case OK -> {
@@ -158,7 +158,7 @@ public class EmployeController {
     /**
      * Réattribut l'objet de recherche d'employé, fournit la liste d'employé trouvé par la recherche.
      */
-    private void mappingListeEmployeQuandRechercheOK(RechercheEmploye rechercheEmployes, Model model, ReponseService<List<Employe>> reponseService) {
+    private void mappingListeEmployeQuandRechercheOK(RechercheEmployeDTO rechercheEmployes, Model model, ReponseService<List<Employe>> reponseService) {
         List<EmployeDTO> employeDTOS = reponseService.getObjetRetour().stream()
                 .map(employe -> modelMapper.map(employe, EmployeDTO.class))
                 .toList();
@@ -169,7 +169,7 @@ public class EmployeController {
     /**
      * Réattribut l'objet de recherche d'employé, fournit une liste vide d'employé et passe le message d'erreur.
      */
-    private void mappingQuandRechecheEmpty(RechercheEmploye rechercheEmployes, Model model) {
+    private void mappingQuandRechecheEmpty(RechercheEmployeDTO rechercheEmployes, Model model) {
         model.addAttribute("rechercheEmployes", rechercheEmployes);
         model.addAttribute("employes", emptyList());
         model.addAttribute("recherchevide", "Aucun employé trouvé");
@@ -200,8 +200,8 @@ public class EmployeController {
     }
 
     @ModelAttribute(value = "rechercheEmployes")
-    private RechercheEmploye getRechercheEmploye() {
-        return new RechercheEmploye();
+    private RechercheEmployeDTO getRechercheEmploye() {
+        return new RechercheEmployeDTO();
     }
 
     @ModelAttribute(value = "employeDTO")
@@ -210,8 +210,8 @@ public class EmployeController {
     }
 
     @ModelAttribute(value = "rechercheAffectation")
-    private RechercheAffectationDetailsEmploye getRechercheAffectation() {
-        return new RechercheAffectationDetailsEmploye();
+    private RechercheAffectationDetailsEmployeDTO getRechercheAffectation() {
+        return new RechercheAffectationDetailsEmployeDTO();
     }
 
 

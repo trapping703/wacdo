@@ -1,6 +1,6 @@
 package com.gdu.wacdo.services;
 
-import com.gdu.wacdo.dto.form.RechercheAffectation;
+import com.gdu.wacdo.dto.form.RechercheAffectationDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.repositories.AffectationRepository;
@@ -137,7 +137,7 @@ class AffectationServiceTest {
     void givenAffectationsExistante_whenFindByRechercheAffectation_VueListeAffection_thenReturnAffectationsEtReponseOK() {
         //given
         List<Affectation> affectations = List.of(new Affectation(), new Affectation());
-        RechercheAffectation rechercheAffectation = new RechercheAffectation("ville", LocalDate.now(), LocalDate.now(), 1);
+        RechercheAffectationDTO rechercheAffectation = new RechercheAffectationDTO("ville", LocalDate.now(), LocalDate.now(), 1);
         doReturn(affectations).when(affectationRepository).findAffectationsPourRechercheListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
         //when
         ReponseService<List<Affectation>> reponse = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);
@@ -151,7 +151,7 @@ class AffectationServiceTest {
     @Test
     void givenAffectationsNonExistante_whenFindByRechercheAffectation_thenReturnRechercheAffectationVueListeAffectionEtReponseEmpty() {
         //given
-        RechercheAffectation rechercheAffectation = new RechercheAffectation("ville", LocalDate.now(), LocalDate.now(), 1);
+        RechercheAffectationDTO rechercheAffectation = new RechercheAffectationDTO("ville", LocalDate.now(), LocalDate.now(), 1);
         doReturn(List.of()).when(affectationRepository).findAffectationsPourRechercheListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
         //when
         ReponseService reponse = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);
@@ -166,7 +166,7 @@ class AffectationServiceTest {
     void givenException_whenFindByRechercheAffectation_VueListeAffection_thenReturnExceptionEtReponseError() {
         //given
         Exception exception = new RuntimeException();
-        RechercheAffectation rechercheAffectation = new RechercheAffectation("ville", LocalDate.now(), LocalDate.now(), 1);
+        RechercheAffectationDTO rechercheAffectation = new RechercheAffectationDTO("ville", LocalDate.now(), LocalDate.now(), 1);
         doThrow(exception).when(affectationRepository).findAffectationsPourRechercheListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
         //when
         ReponseService reponse = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);

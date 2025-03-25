@@ -126,7 +126,7 @@
 
         <td th:text="${affectation.dateFin}"/>
         <td>
-            <a role="button" class="btn btn-secondary rounded" th:href="@{/affectation/{id}(id=${affectation.id})}"
+            <a role="button" class="btn btn-secondary rounded" th:href="@{/detailAffectation/{id}(id=${affectation.id})}"
                th:if="${affectation.dateFin == null}">
                 Edit
             </a>

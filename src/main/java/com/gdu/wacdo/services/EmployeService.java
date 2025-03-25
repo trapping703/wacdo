@@ -1,6 +1,6 @@
 package com.gdu.wacdo.services;
 
-import com.gdu.wacdo.dto.form.RechercheEmploye;
+import com.gdu.wacdo.dto.form.RechercheEmployeDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Employe;
 import com.gdu.wacdo.repositories.EmployeRepository;
@@ -55,7 +55,7 @@ public class EmployeService {
     /**
      * Utilisé pour la recherche des Employées pour la vue /employes
      */
-    public ReponseService<List<Employe>> findByRechercheEmploye(RechercheEmploye rechercheEmploye) {
+    public ReponseService<List<Employe>> findByRechercheEmploye(RechercheEmployeDTO rechercheEmploye) {
         try {
             List<Employe> employes = employeRepository.getEmployesPourRecherche(rechercheEmploye.getNom(), rechercheEmploye.getPrenom(), rechercheEmploye.getEmail());
             if (!employes.isEmpty()) {

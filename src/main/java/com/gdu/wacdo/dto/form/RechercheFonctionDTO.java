@@ -3,7 +3,7 @@ package com.gdu.wacdo.dto.form;
 import lombok.Data;
 
 @Data
-public class RechercheFonction {
+public class RechercheFonctionDTO {
 
     private String libelle;
 }

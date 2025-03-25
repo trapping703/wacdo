@@ -1,6 +1,6 @@
 package com.gdu.wacdo.controllers;
 
-import com.gdu.wacdo.dto.form.RechercheFonction;
+import com.gdu.wacdo.dto.form.RechercheFonctionDTO;
 import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Fonction;
@@ -53,7 +53,7 @@ public class FonctionController {
     }
 
     @PostMapping("/rechercheFonctions")
-    public String rechercheFonctions(RechercheFonction rechercheFonctions, Model model) throws Exception {
+    public String rechercheFonctions(RechercheFonctionDTO rechercheFonctions, Model model) throws Exception {
         ReponseService<List<Fonction>> reponseService = fonctionService.findByLibelle(rechercheFonctions.getLibelle());
         return switch (reponseService.getStatus()) {
             case OK -> {
@@ -118,7 +118,7 @@ public class FonctionController {
     /**
      * Réattribut l'objet de recherche de fonction, fournit la liste de fonction trouvé par la recherche.
      */
-    private void mappingListeFonctionQuandRechercheOK(RechercheFonction rechercheFonctions, Model model, ReponseService<List<Fonction>> reponseService) {
+    private void mappingListeFonctionQuandRechercheOK(RechercheFonctionDTO rechercheFonctions, Model model, ReponseService<List<Fonction>> reponseService) {
         List<FonctionDTO> fonctionDTOS = reponseService.getObjetRetour().stream()
                 .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
                 .toList();
@@ -129,7 +129,7 @@ public class FonctionController {
     /**
      * Réattribut l'objet de recherche de fonction, fournit une liste vide de fonction et passe le message d'erreur.
      */
-    private void mappingRechecheVide(RechercheFonction rechercheFonctions, Model model) throws Exception {
+    private void mappingRechecheVide(RechercheFonctionDTO rechercheFonctions, Model model) throws Exception {
         model.addAttribute("rechercheFonctions", rechercheFonctions);
         model.addAttribute("fonctions", emptyList());
         model.addAttribute("recherchevide", "Aucune fonction trouvée");
@@ -160,8 +160,8 @@ public class FonctionController {
     }
 
     @ModelAttribute(value = "rechercheFonctions")
-    private RechercheFonction getrechercheFonction() {
-        return new RechercheFonction();
+    private RechercheFonctionDTO getrechercheFonction() {
+        return new RechercheFonctionDTO();
     }
 
     @ModelAttribute(value = "fonctionDTO")

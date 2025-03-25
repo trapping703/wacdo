@@ -49,22 +49,24 @@
     </div>
 
 </div>
+<hr>
+
 <!-- Formulaire recherche affectation -->
 
 <form action="#" method="post" th:action="@{/detailRestaurant/{id}(id=${restaurant.id})}"
       th:object="${rechercheAffectationDuRestaurant}">
     <div class="container pt-4">
-        <div class="card mx-auto" style="width: 45rem;">
+        <div class="card w-75 mx-auto">
             <div class="card-body">
-                <div class="row">
-                    <div class="col col-lg-4 pl-2 pr-1">
+                <div class="row justify-content-around">
+                    <div class="col col-lg-4">
                         <div class="form-outline">
                             <label class="form-label" for="dateDebut">Date debut</label>
                             <input type="date" id="dateDebut" class="form-control"
                                    th:field="*{dateDebut}"/>
                         </div>
                     </div>
-                    <div class="col col-lg-2 pl-2 pr-1">
+                    <div class="col col-lg-2 ">
                         <div class="form-outline">
                             <label class="form-label" for="fonction_id">Fonction</label>
                             <select id="fonction_id" name="fonction_id">
@@ -76,22 +78,22 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col col-lg-2 pl-2 pr-1">
+                    <div class="col col-lg-2">
                         <div class="form-outline">
                             <label class="form-label" for="employe_id">Employe</label>
                             <select id="employe_id" name="employe_id">
                                 <option value="0"></option>
                                 <option th:each="employe : ${employes}"
                                         th:value="${employe.id}"
-                                        th:text="${employe.nom + ''+ employe.prenom}"
+                                        th:text="${employe.nom + ' '+ employe.prenom}"
                                         th:selected="${employe.id eq rechercheAffectationDuRestaurant.employe_id}"/>
                             </select>
                         </div>
                     </div>
-                    <div class="col col-lg-2 pl-5 pr-2">
+                    <div class="col col-lg-2">
                         <label class="form-label"></label>
                         <button type="submit" class="btn btn-secondary rounded">
-                            rechercher
+                            Rechercher
                         </button>
                     </div>
                 </div>
@@ -101,7 +103,6 @@
 
 </form>
 <!--    Liste affectations-->
-<hr>
 <div class="container">
     <table class="table align-middle bg-white">
         <thead>
@@ -110,12 +111,12 @@
             <th scope="col">Prenom</th>
             <th scope="col">Date debut</th>
             <th scope="col">Fonction</th>
-            <th scope="col"><a role="button" class="btn btn-secondary rounded"
-                               th:href="@{'/creerAffectation?restaurant='+${restaurant.id}}">créer</a></th>
+            <th scope="col"><a role="button" class="btn bg-success text-white rounded"
+                               th:href="@{'/creerAffectation?restaurant='+${restaurant.id}}">Créer</a></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="affectation: ${affectationsDuRestaurant}">
+        <tr  th:each="affectation: ${affectationsDuRestaurant}">
             <td th:text="${affectation.employe.nom}"/>
 
             <td th:text="${affectation.employe.prenom}"/>
@@ -126,7 +127,7 @@
             <td>
                 <a role="button" class="btn btn-secondary rounded"
                    th:href="@{/detailAffectation/{id}(id=${affectation.id})}">
-                    details
+                    Détails
                 </a>
             </td>
         </tr>
@@ -136,8 +137,8 @@
 <div class="row">
     <div class="col">
         <div class="form-outline pb-3 text-center">
-            <a role="button" class="btn btn-secondary rounded text-center"
-               th:href="@{/editerRestaurant/{id}(id=${restaurant.id})}">modifier
+            <a role="button" class="btn btn-primary rounded text-center"
+               th:href="@{/editerRestaurant/{id}(id=${restaurant.id})}">Modifier le restaurant
             </a>
         </div>
     </div>

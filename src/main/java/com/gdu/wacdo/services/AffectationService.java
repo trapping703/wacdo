@@ -1,8 +1,8 @@
 package com.gdu.wacdo.services;
 
-import com.gdu.wacdo.dto.form.RechercheAffectation;
-import com.gdu.wacdo.dto.form.RechercheAffectationDetailsEmploye;
-import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurant;
+import com.gdu.wacdo.dto.form.RechercheAffectationDTO;
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailsEmployeDTO;
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.model.Restaurant;
@@ -55,7 +55,7 @@ public class AffectationService {
     /**
      * Utilisé pour la recherche des affectations pour la vue /affectations
      */
-    public ReponseService<List<Affectation>> findAffectationsPourRechercheListeAffection(RechercheAffectation rechercheAffectation) {
+    public ReponseService<List<Affectation>> findAffectationsPourRechercheListeAffection(RechercheAffectationDTO rechercheAffectation) {
         try {
             List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheListeAffection(rechercheAffectation.getVille(), rechercheAffectation.getDateDebut(), rechercheAffectation.getDateFin(), rechercheAffectation.getFonction_id());
             if (!affectations.isEmpty()) {
@@ -71,7 +71,7 @@ public class AffectationService {
     /**
      * Utilisé pour la recherche des affectations pour la vue /affectations
      */
-    public ReponseService<List<Affectation>> findAffectationsPourRechercheDetailsEmploye(RechercheAffectationDetailsEmploye rechercheAffectation, Integer idEmploye) {
+    public ReponseService<List<Affectation>> findAffectationsPourRechercheDetailsEmploye(RechercheAffectationDetailsEmployeDTO rechercheAffectation, Integer idEmploye) {
         try {
             List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheDetailsEmploye(rechercheAffectation.getDateDebut(), rechercheAffectation.getFonction_id(), idEmploye);
             if (!affectations.isEmpty()) {
@@ -86,9 +86,9 @@ public class AffectationService {
 
 
     /**
-     * Retourne la liste d'affectation en cours filtré par le forumulaire {@link RechercheAffectationDetailsRestaurant}
+     * Retourne la liste d'affectation en cours filtré par le forumulaire {@link RechercheAffectationDetailsRestaurantDTO}
      */
-    public ReponseService<List<Affectation>> findAffectationsPourRechercheDetailsRestaurant(RechercheAffectationDetailsRestaurant rechercheAffectation, Integer idRestaurant) {
+    public ReponseService<List<Affectation>> findAffectationsPourRechercheDetailsRestaurant(RechercheAffectationDetailsRestaurantDTO rechercheAffectation, Integer idRestaurant) {
         try {
             List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheDetailsRestaurant(rechercheAffectation.getDateDebut(), rechercheAffectation.getFonction_id(), rechercheAffectation.getEmploye_id(), idRestaurant);
             if (!affectations.isEmpty()) {
