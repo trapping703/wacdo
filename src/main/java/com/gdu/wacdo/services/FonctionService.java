@@ -23,7 +23,7 @@ public class FonctionService {
         this.fonctionRepository = fonctionRepository;
     }
 
-    public ReponseService save(Fonction fonction) {
+    public ReponseService<Fonction> save(Fonction fonction) {
         try {
             fonctionRepository.save(fonction);
             if (fonction.getId() != null) {
@@ -36,11 +36,11 @@ public class FonctionService {
         }
     }
 
-    public ReponseService findAll() {
+    public ReponseService<List<Fonction>> findAll() {
         return reponse(OK, fonctionRepository.findAll());
     }
 
-    public ReponseService findById(int id) {
+    public ReponseService<Fonction> findById(int id) {
         try {
             Optional<Fonction> fonction = fonctionRepository.findById(id);
             return fonction.map(value -> reponse(OK, value)).orElseGet(() -> reponse(EMPTY, id));
@@ -61,7 +61,7 @@ public class FonctionService {
     /**
      * Utilisé pour la recherche des fonctions pour la vue /fonctions
      */
-    public ReponseService findByLibelle(String libelle) {
+    public ReponseService<List<Fonction>> findByLibelle(String libelle) {
         try {
             List<Fonction> fonctions = fonctionRepository.findByLibelleContaining(libelle);
             if (fonctions.isEmpty()) {

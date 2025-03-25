@@ -8,7 +8,6 @@ import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.model.Employe;
-import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.EmployeNonAffecteService;
 import com.gdu.wacdo.services.EmployeService;
@@ -47,7 +46,7 @@ public class EmployeController {
 
     @GetMapping("/listeEmployes")
     public String employes(Model model) throws Exception {
-        List<EmployeDTO> employeDTOs = ((List<Employe>) employeService.findAll().getData()).stream()
+        List<EmployeDTO> employeDTOs = employeService.findAll().getObjetRetour().stream()
                 .map(employe -> modelMapper.map(employe, EmployeDTO.class))
                 .toList();
         model.addAttribute("employes", employeDTOs);
@@ -56,7 +55,7 @@ public class EmployeController {
 
     @GetMapping("/listeEmployesNA")
     public String getListeEmployesNonAffectes(Model model) throws Exception {
-        List<EmployeDTO> employeDTOs = employeNonAffecteService.filtrerEmployesNonAffecte((List<Employe>) employeService.findAll().getData()).stream()
+        List<EmployeDTO> employeDTOs = employeNonAffecteService.filtrerEmployesNonAffecte(employeService.findAll().getObjetRetour()).stream()
                 .map(employe -> modelMapper.map(employe, EmployeDTO.class))
                 .toList();
         model.addAttribute("employes", employeDTOs);
@@ -72,16 +71,16 @@ public class EmployeController {
     @PostMapping("/detailEmploye/{id}")
     public String detailEmployeAvecFiltreAffectation(RechercheAffectationDetailsEmploye rechercheAffectation, Model model, @PathVariable int id) throws Exception {
         EmployeDTO employeDTO = modelMapper.map(employeService.findById(id).getData(), EmployeDTO.class);
-        ReponseService reponseService = affectationService.findAffectationsPourRechercheDetailsEmploye(rechercheAffectation, id);
+        ReponseService<List<Affectation>> reponseService = affectationService.findAffectationsPourRechercheDetailsEmploye(rechercheAffectation, id);
         employeDTO.setAffectations(mappingListeAffectation(reponseService));
         model.addAttribute("employe", employeDTO);
         model.addAttribute("rechercheAffectation", rechercheAffectation);
         return "employe";
     }
 
-    private List<AffectationDTO> mappingListeAffectation(ReponseService reponseService) throws Exception {
+    private List<AffectationDTO> mappingListeAffectation(ReponseService<List<Affectation>> reponseService) throws Exception {
         return switch (reponseService.getStatus()) {
-            case OK -> ((List<Affectation>) reponseService.getData()).stream()
+            case OK -> reponseService.getObjetRetour().stream()
                     .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
                     .toList();
             case EMPTY -> new ArrayList<>();
@@ -92,7 +91,7 @@ public class EmployeController {
 
     @PostMapping("/rechercheEmployes")
     public String rechercheEmployes(RechercheEmploye rechercheEmployes, Model model) throws Exception {
-        ReponseService reponseService = employeService.findByRechercheEmploye(rechercheEmployes);
+        ReponseService<List<Employe>> reponseService = employeService.findByRechercheEmploye(rechercheEmployes);
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingListeEmployeQuandRechercheOK(rechercheEmployes, model, reponseService);
@@ -116,10 +115,10 @@ public class EmployeController {
         if (result.hasErrors()) {
             return "creationEmploye";
         }
-        ReponseService reponseService = employeService.save(modelMapper.map(employeDTO, Employe.class));
+        ReponseService<Employe> reponseService = employeService.save(modelMapper.map(employeDTO, Employe.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
-                mappingEmployeEnregistree((Employe) reponseService.getData(), model);
+                mappingEmployeEnregistree(reponseService.getObjetRetour(), model);
                 yield "employe";
             }
             case EMPTY -> {
@@ -142,7 +141,7 @@ public class EmployeController {
         if (result.hasErrors()) {
             return "editionEmploye";
         }
-        ReponseService reponseService = employeService.save(modelMapper.map(employeDTO.pourEdition((Employe) employeService.findById(employeDTO.getId()).getData()), Employe.class));
+        ReponseService<Employe> reponseService = employeService.save(modelMapper.map(employeDTO.pourEdition(employeService.findById(employeDTO.getId()).getObjetRetour()), Employe.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingEmployeEnregistree((Employe) reponseService.getData(), model);
@@ -159,8 +158,8 @@ public class EmployeController {
     /**
      * Réattribut l'objet de recherche d'employé, fournit la liste d'employé trouvé par la recherche.
      */
-    private void mappingListeEmployeQuandRechercheOK(RechercheEmploye rechercheEmployes, Model model, ReponseService reponseService) {
-        List<EmployeDTO> employeDTOS = ((List<Employe>) reponseService.getData()).stream()
+    private void mappingListeEmployeQuandRechercheOK(RechercheEmploye rechercheEmployes, Model model, ReponseService<List<Employe>> reponseService) {
+        List<EmployeDTO> employeDTOS = reponseService.getObjetRetour().stream()
                 .map(employe -> modelMapper.map(employe, EmployeDTO.class))
                 .toList();
         model.addAttribute("rechercheEmployes", rechercheEmployes);
@@ -218,7 +217,7 @@ public class EmployeController {
 
     @ModelAttribute(value = "fonctions")
     private List<FonctionDTO> getAllFonctions() {
-        return ((List<Fonction>) fonctionService.findAll().getData()).stream()
+        return fonctionService.findAll().getObjetRetour().stream()
                 .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
                 .toList();
     }

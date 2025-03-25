@@ -34,9 +34,9 @@ public class FonctionController {
 
     @GetMapping("/listeFonctions")
     public String getAllFonctions(Model model) throws Exception {
-        ReponseService reponse = fonctionService.findAll();
+        ReponseService<List<Fonction>> reponse = fonctionService.findAll();
         if (reponse.isOk()) {
-            List<FonctionDTO> fonctionDTOS = ((List<Fonction>) reponse.getData()).stream()
+            List<FonctionDTO> fonctionDTOS = reponse.getObjetRetour().stream()
                     .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
                     .toList();
             model.addAttribute("fonctions", fonctionDTOS);
@@ -47,14 +47,14 @@ public class FonctionController {
 
     @GetMapping("/detailFonction/{id}")
     public String getFonctionById(Model model, @PathVariable int id) {
-        ReponseService reponse = fonctionService.findById(id);
+        ReponseService<Fonction> reponse = fonctionService.findById(id);
         model.addAttribute("fonction", modelMapper.map(reponse.getData(), FonctionDTO.class));
         return "fonction";
     }
 
     @PostMapping("/rechercheFonctions")
     public String rechercheFonctions(RechercheFonction rechercheFonctions, Model model) throws Exception {
-        ReponseService reponseService = fonctionService.findByLibelle(rechercheFonctions.getLibelle());
+        ReponseService<List<Fonction>> reponseService = fonctionService.findByLibelle(rechercheFonctions.getLibelle());
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingListeFonctionQuandRechercheOK(rechercheFonctions, model, reponseService);
@@ -75,10 +75,10 @@ public class FonctionController {
 
     @PostMapping("/creerFonction")
     public String enregistrementFonction(FonctionDTO fonctionDTO, Model model) throws Exception {
-        ReponseService reponseService = fonctionService.save(modelMapper.map(fonctionDTO, Fonction.class));
+        ReponseService<Fonction> reponseService = fonctionService.save(modelMapper.map(fonctionDTO, Fonction.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
-                mappingFonctionEnregistree((Fonction) reponseService.getData(), model);
+                mappingFonctionEnregistree(reponseService.getObjetRetour(), model);
                 yield "fonction";
             }
             case EMPTY -> {
@@ -91,7 +91,7 @@ public class FonctionController {
 
     @GetMapping("/editerFonction/{id}")
     public String editerFonction(Model model, @PathVariable int id) {
-        ReponseService reponse = fonctionService.findById(id);
+        ReponseService<Fonction> reponse = fonctionService.findById(id);
         model.addAttribute("fonction", modelMapper.map(reponse.getData(), FonctionDTO.class));
         return "editionFonction";
     }
@@ -101,10 +101,10 @@ public class FonctionController {
         if (result.hasErrors()) {
             return "editionFonction";
         }
-        ReponseService reponseService = fonctionService.save(modelMapper.map(fonction, Fonction.class));
+        ReponseService<Fonction> reponseService = fonctionService.save(modelMapper.map(fonction, Fonction.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
-                mappingFonctionEnregistree((Fonction) reponseService.getData(), model);
+                mappingFonctionEnregistree(reponseService.getObjetRetour(), model);
                 yield "fonction";
             }
             case EMPTY -> {
@@ -118,8 +118,8 @@ public class FonctionController {
     /**
      * Réattribut l'objet de recherche de fonction, fournit la liste de fonction trouvé par la recherche.
      */
-    private void mappingListeFonctionQuandRechercheOK(RechercheFonction rechercheFonctions, Model model, ReponseService reponseService) {
-        List<FonctionDTO> fonctionDTOS = ((List<Fonction>) reponseService.getData()).stream()
+    private void mappingListeFonctionQuandRechercheOK(RechercheFonction rechercheFonctions, Model model, ReponseService<List<Fonction>> reponseService) {
+        List<FonctionDTO> fonctionDTOS = reponseService.getObjetRetour().stream()
                 .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
                 .toList();
         model.addAttribute("rechercheFonctions", rechercheFonctions);

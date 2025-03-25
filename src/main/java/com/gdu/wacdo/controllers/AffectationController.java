@@ -8,9 +8,6 @@ import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
-import com.gdu.wacdo.model.Employe;
-import com.gdu.wacdo.model.Fonction;
-import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.EmployeService;
 import com.gdu.wacdo.services.FonctionService;
@@ -48,9 +45,9 @@ public class AffectationController {
 
     @GetMapping("/listeAffectations")
     public String getAllAffectations(Model model) throws Exception {
-        ReponseService reponseService = affectationService.findAll();
+        ReponseService<List<Affectation>> reponseService = affectationService.findAll();
         if (reponseService.isOk()) {
-            List<AffectationDTO> affectationDTOS = ((List<Affectation>) reponseService.getData()).stream()
+            List<AffectationDTO> affectationDTOS = reponseService.getObjetRetour().stream()
                     .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
                     .toList();
             model.addAttribute("affectations", affectationDTOS);
@@ -62,8 +59,8 @@ public class AffectationController {
     }
 
     @GetMapping("/detailAffectation/{id}")
-    public String getFonctionById(Model model, @PathVariable int id) throws Exception {
-        ReponseService reponse = affectationService.findById(id);
+    public String getAffectationById(Model model, @PathVariable int id) throws Exception {
+        ReponseService<Affectation> reponse = affectationService.findById(id);
         if (reponse.isOk()) {
             model.addAttribute("affectation", modelMapper.map(reponse.getData(), AffectationDTO.class));
             return "affectation";
@@ -74,7 +71,7 @@ public class AffectationController {
 
     @PostMapping("/rechercheAffectations")
     public String rechercheAffectations(RechercheAffectation rechercheAffectation, Model model) throws Exception {
-        ReponseService reponseService = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);
+        ReponseService<List<Affectation>> reponseService = affectationService.findAffectationsPourRechercheListeAffection(rechercheAffectation);
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingListeAffectationsQuandRechercheOK(rechercheAffectation, model, reponseService);
@@ -106,7 +103,7 @@ public class AffectationController {
             return "creationAffectation";
         }
 
-        ReponseService reponseService = affectationService.save(creationAffectation.toAffectation((Employe) employeService.findById(creationAffectation.getEmploye()).getData(), (Restaurant) restaurantService.findById(creationAffectation.getRestaurant()).getData(), (Fonction) fonctionService.findById(creationAffectation.getFonction()).getData()));
+        ReponseService<Affectation> reponseService = affectationService.save(creationAffectation.toAffectation(employeService.findById(creationAffectation.getEmploye()).getObjetRetour(), restaurantService.findById(creationAffectation.getRestaurant()).getObjetRetour(), fonctionService.findById(creationAffectation.getFonction()).getObjetRetour()));
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingAffectationEnregistree((Affectation) reponseService.getData(), model);
@@ -122,7 +119,7 @@ public class AffectationController {
 
     @GetMapping("/editerAffectation/{id}")
     public String getAffectationPourEdition(Model model, @PathVariable int id) throws Exception {
-        model.addAttribute("affectationDTO", new CreationAffectation((Affectation) affectationService.findById(id).getData()));
+        model.addAttribute("affectationDTO", new CreationAffectation(affectationService.findById(id).getObjetRetour()));
         return "editionAffectation";
     }
 
@@ -131,7 +128,7 @@ public class AffectationController {
         if (result.hasErrors()) {
             return "editionAffectation";
         }
-        ReponseService reponseService = affectationService.save(creationAffectation.pourEdition((Affectation) affectationService.findById(creationAffectation.getId()).getData(), (Employe) employeService.findById(creationAffectation.getEmploye()).getData(), (Restaurant) restaurantService.findById(creationAffectation.getRestaurant()).getData(), (Fonction) fonctionService.findById(creationAffectation.getFonction()).getData()));
+        ReponseService<Affectation> reponseService = affectationService.save(creationAffectation.pourEdition(affectationService.findById(creationAffectation.getId()).getObjetRetour(), employeService.findById(creationAffectation.getEmploye()).getObjetRetour(), restaurantService.findById(creationAffectation.getRestaurant()).getObjetRetour(), fonctionService.findById(creationAffectation.getFonction()).getObjetRetour()));
         return switch (reponseService.getStatus()) {
             case OK -> {
                 mappingAffectationEnregistree((Affectation) reponseService.getData(), model);
@@ -164,8 +161,8 @@ public class AffectationController {
     /**
      * Réattribut l'objet de recherche d'affectation , fournit la liste d'affectaion trouvé par la recherche.
      */
-    private void mappingListeAffectationsQuandRechercheOK(RechercheAffectation rechercheAffectation, Model model, ReponseService reponseService) {
-        List<AffectationDTO> affectationDTOS = ((List<Affectation>) reponseService.getData()).stream()
+    private void mappingListeAffectationsQuandRechercheOK(RechercheAffectation rechercheAffectation, Model model, ReponseService<List<Affectation>> reponseService) {
+        List<AffectationDTO> affectationDTOS = reponseService.getObjetRetour().stream()
                 .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
                 .toList();
         model.addAttribute("rechercheAffectations", rechercheAffectation);
@@ -183,21 +180,21 @@ public class AffectationController {
 
     @ModelAttribute(value = "restaurants")
     private List<RestaurantDTO> getAllRestaurants() {
-        return ((List<Restaurant>) restaurantService.findAll().getData()).stream()
+        return restaurantService.findAll().getObjetRetour().stream()
                 .map(fonction -> modelMapper.map(fonction, RestaurantDTO.class))
                 .toList();
     }
 
     @ModelAttribute(value = "fonctions")
     private List<FonctionDTO> getAllFonctions() {
-        return ((List<Fonction>) fonctionService.findAll().getData()).stream()
+        return fonctionService.findAll().getObjetRetour().stream()
                 .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
                 .toList();
     }
 
     @ModelAttribute(value = "employes")
     private List<EmployeDTO> getAllEmployes() {
-        return ((List<Employe>) employeService.findAll().getData()).stream()
+        return employeService.findAll().getObjetRetour().stream()
                 .map(fonction -> modelMapper.map(fonction, EmployeDTO.class))
                 .toList();
     }

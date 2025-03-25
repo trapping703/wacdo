@@ -25,7 +25,7 @@ public class EmployeService {
         this.passwordEncodeur = passwordEncodeur;
     }
 
-    public ReponseService save(Employe employe) {
+    public ReponseService<Employe> save(Employe employe) {
         try {
             passwordEncodeur.encrypte(employe);
             employeRepository.save(employe);
@@ -39,11 +39,11 @@ public class EmployeService {
         }
     }
 
-    public ReponseService findAll() {
+    public ReponseService<List<Employe>> findAll() {
         return reponse(OK, employeRepository.findAll());
     }
 
-    public ReponseService findById(int id) {
+    public ReponseService<Employe> findById(int id) {
         try {
             Optional<Employe> employe = employeRepository.findById(id);
             return employe.map(value -> reponse(OK, value)).orElseGet(() -> reponse(EMPTY, id));
@@ -55,7 +55,7 @@ public class EmployeService {
     /**
      * Utilisé pour la recherche des Employées pour la vue /employes
      */
-    public ReponseService findByRechercheEmploye(RechercheEmploye rechercheEmploye) {
+    public ReponseService<List<Employe>> findByRechercheEmploye(RechercheEmploye rechercheEmploye) {
         try {
             List<Employe> employes = employeRepository.getEmployesPourRecherche(rechercheEmploye.getNom(), rechercheEmploye.getPrenom(), rechercheEmploye.getEmail());
             if (!employes.isEmpty()) {
