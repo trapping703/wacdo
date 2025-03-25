@@ -109,7 +109,7 @@ class FonctionServiceTest {
         //given
         doReturn(Optional.empty()).when(fonctionRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = fonctionService.findById(1);
+        ReponseService reponse = fonctionService.findById(1);
         //then
         assertThat(reponse.isEmpty()).isTrue();
         assertThat(reponse.getData()).isEqualTo(1);
@@ -123,7 +123,7 @@ class FonctionServiceTest {
         Exception exception = new RuntimeException();
         Mockito.doThrow(exception).when(fonctionRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = fonctionService.findById(1);
+        ReponseService reponse = fonctionService.findById(1);
         //then
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getException()).isEqualTo(exception);

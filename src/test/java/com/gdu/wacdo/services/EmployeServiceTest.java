@@ -114,7 +114,7 @@ class EmployeServiceTest {
         //given
         doReturn(Optional.empty()).when(employeRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = employeService.findById(1);
+        ReponseService reponse = employeService.findById(1);
         //then
         assertThat(reponse.isEmpty()).isTrue();
         assertThat(reponse.getData()).isEqualTo(1);
@@ -128,7 +128,7 @@ class EmployeServiceTest {
         Exception exception = new RuntimeException();
         Mockito.doThrow(exception).when(employeRepository).findById(1);
         //when
-        ReponseService<Integer> reponse = employeService.findById(1);
+        ReponseService reponse = employeService.findById(1);
         //then
         assertThat(reponse.isError()).isTrue();
         assertThat(reponse.getException()).isEqualTo(exception);
