@@ -6,10 +6,9 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
 
-<hr>
 <div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
 <form action="#" method="post" th:action="@{/creerEmploye}" th:object="${employeDTO}">
-    <div class="container">
+    <div class="container pt-4">
         <!-- Affichage des erreurs du formulaire-->
         <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
             <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
@@ -60,11 +59,10 @@
                 </div>
             </div>
         </div>
-        <hr>
-        <div class="row">
+        <div class="row pt-4 pb-4">
             <div class="col">
                 <div class="form-outline text-center">
-                    <button type="submit" class="btn btn-secondary rounded">Créer</button>
+                    <button type="submit" class="btn bg-success text-white rounded">Créer</button>
                 </div>
             </div>
         </div>

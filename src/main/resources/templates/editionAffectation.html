@@ -6,8 +6,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
 
-<hr>
-<div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
 <form method="post" th:action="@{/editerAffectation}" th:object="${affectationDTO}">
     <!-- Affichage des erreurs du formulaire-->
     <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
@@ -17,7 +15,8 @@
     <input th:type="hidden" id="depuisEmploye" th:field="*{depuisEmploye}">
     <input th:type="hidden" id="id" th:field="*{id}">
     <!-- fonction  employe Restaurant -->
-    <div class="container">
+    <div class="container pt-4">
+        <div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
         <div class="row">
             <div class="col">
                 <div class="form-outline">
@@ -69,13 +68,10 @@
                 </div>
             </div>
         </div>
-        <hr>
-        <div class="row">
-            <div class="col">
+        <div class="row pt-4 pb-4">
                 <div class="form-outline text-center">
-                    <button type="submit" class="btn btn-secondary rounded">Créer</button>
+                    <button type="submit" class="btn text-white bg-success rounded">Éditer</button>
                 </div>
-            </div>
         </div>
     </div>
 </form>

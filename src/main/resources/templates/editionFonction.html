@@ -6,32 +6,28 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
 
-<hr>
 <div th:replace="~{messageEnregistrement :: message_non_enregistrement}"></div>
 <form action="#" method="post" th:action="@{/editerFonction}" th:object="${fonction}">
     <input type="hidden" id="id" th:field="*{id}">
-    <!-- Affichage des erreurs du formulaire-->
-    <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
-        <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
-    </div>
     <!-- Libelle -->
-    <div class="container">
-        <div class="row ">
-            <div class="col">
+    <div class="container pt-4">
+        <!-- Affichage des erreurs du formulaire-->
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
+        <div class="row justify-content-around">
+            <div class="col col-lg-3">
                 <div class="form-outline">
-                    <label class="form-label" for="libelle">Libelle</label>
+                    <label class="form-label" for="libelle">Libelle de la fonction</label>
                     <input type="text" id="libelle" class="form-control" th:field="*{libelle}"/>
                 </div>
             </div>
         </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col">
+    <div class="row pt-4 pb-4">
             <div class="form-outline text-center">
-                <button type="submit" class="btn btn-secondary rounded">éditer</button>
+                <button type="submit" class="btn text-white bg-success rounded">Éditer</button>
             </div>
-        </div>
     </div>
 
 
