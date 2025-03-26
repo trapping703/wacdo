@@ -47,7 +47,7 @@ public class GestionRestaurantController {
      * @return
      */
     @GetMapping("/creerRestaurant")
-    public String getCreerRestaurant() {*
+    public String getCreerRestaurant() {
         return "restaurant/creationRestaurant";
     }
 
