@@ -5,73 +5,61 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" th:replace="~{layout :: page_navbar}">
 </nav>
-
+<div th:replace="~{erreurRecherche :: erreur_recherche}"></div>
 <!--recherche de restaurant-->
-<div class="container">
-    <div class="row">
-        <hr>
-        <div th:replace="~{erreurRecherche :: erreur_recherche}"></div>
-        <div class="col-lg-12">
-            <div class="card search-form">
-                <div class="card-body">
-                    <form action="#" method="post" th:action="@{/rechercheFonctions}" th:object="${rechercheFonctions}">
-                        <div class="row">
-                            <div>
-                                <div class="row no-gutters">
-                                    <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <div class="form-outline">
-                                            <label class="form-label" for="libelle">Libelle:</label>
-                                            <input type="text" id="libelle" class="form-control" th:field="*{libelle}"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 col-md-3 col-sm-12">
-                                        <button type="submit" class="btn btn-base">
-                                            <label class="form-label"></label>
-                                            <button type="submit" class="btn btn-secondary rounded">
-                                                rechercher
-                                            </button>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+<div class="container pt-4">
+    <form action="#" method="post" th:action="@{/rechercheFonctions}" th:object="${rechercheFonctions}">
+
+        <div class="card mx-auto" style="width: 35rem;">
+            <div class="card-body ">
+                <div class="row justify-content-around">
+                    <div class="col col-lg-4">
+                        <div class="form-outline">
+                            <label class="form-label" for="libelle">Libelle:</label>
+                            <input type="text" id="libelle" class="form-control" th:field="*{libelle}"/>
                         </div>
-                    </form>
+                    </div>
+                    <div class="col col-lg-3">
+                        <button type="submit" class="btn btn-base">
+                            <label class="form-label"></label>
+                            <button type="submit" class="btn btn-secondary rounded ">
+                                rechercher
+                            </button>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    </form>
 </div>
 
 
+<hr>
 <!-- Liste des employées-->
 <div class="container">
-    <div class="row">
 
-    </div>
-
-    <hr>
-    <div class="row">
-        <table class="table align-middle bg-white">
-            <thead>
-            <tr>
-                <th scope="col">Poste</th>
-                <th scope="col"><a role="button" class="btn btn-secondary rounded" th:href="@{/creerFonction}">créer</a>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="fonction: ${fonctions}">
-                <td th:text="${fonction.libelle}"/>
-                <td>
-                    <a role="button" class="btn btn-secondary rounded"
-                       th:href="@{/detailFonction/{id}(id=${fonction.id})}">
-                        détails
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="table mx-auto bg-white" style="width: 40rem;">
+        <thead>
+        <tr>
+            <th scope="col">Poste</th>
+            <th scope="col"><p class="text-end"><a role="button" class="btn bg-success text-white rounded "
+                                                   th:href="@{/creerFonction}">créer</a></p>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fonction: ${fonctions}">
+            <td th:text="${fonction.libelle}"/>
+            <td class="text-end">
+                <a role="button" class="btn btn-secondary rounded"
+                   th:href="@{/detailFonction/{id}(id=${fonction.id})}">
+                    détails
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
