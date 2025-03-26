@@ -39,6 +39,9 @@ public class GestionAffectation {
     }
 
 
+    /**
+     * Page vide de création d'affectation
+     */
     @GetMapping("/creerAffectation")
     public String getCreerAffectation(@RequestParam(value = "restaurant", required = false) Integer idRestaurant, @RequestParam(value = "employe", required = false) Integer idEmploye, Model model) throws Exception {
         if (idRestaurant != null) {
@@ -51,6 +54,9 @@ public class GestionAffectation {
     }
 
 
+    /**
+     * Gestion de la création d'affectation
+     */
     @PostMapping("/creerAffectation")
     public String enregistrementAffectation(@Valid @ModelAttribute("affectationDTO") CreationAffectationDTO creationAffectation, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {
@@ -71,12 +77,18 @@ public class GestionAffectation {
         };
     }
 
+    /**
+     * Page vide de l'édition d'affectation
+     */
     @GetMapping("/editerAffectation/{id}")
     public String getAffectationPourEdition(Model model, @PathVariable int id) throws Exception {
         model.addAttribute("affectationDTO", new CreationAffectationDTO(affectationService.findById(id).getObjetRetour()));
         return "affectation/editionAffectation";
     }
 
+    /**
+     * Gestion de l'édition de l'affectation
+     */
     @PostMapping("/editerAffectation")
     public String editionAffectation(@Valid @ModelAttribute("affectationDTO") CreationAffectationDTO creationAffectation, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {
@@ -96,17 +108,11 @@ public class GestionAffectation {
         };
     }
 
-    /**
-     * Réattribut l'objet affectation enregistrée et un message de validation.
-     */
     private void mappingAffectationEnregistree(Affectation affectation, Model model) {
         model.addAttribute("affectation", modelMapper.map(affectation, AffectationDTO.class));
         model.addAttribute("messageEnregistrement", "Affectation Enregistrée");
     }
 
-    /**
-     * Réattribut l'objet affectationDTO avec un message d'erreur
-     */
     private void mappingAffectationNonEnregistree(CreationAffectationDTO affectationDTO, Model model) throws Exception {
         model.addAttribute("affectationDTO", affectationDTO);
         model.addAttribute("messageNonEnregistrement", "Affectation non enregistrée");

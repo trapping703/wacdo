@@ -77,9 +77,6 @@ public class ListeAffectationController {
         };
     }
 
-    /**
-     * Réattribut l'objet de recherche d'affectation , fournit la liste d'affectaion trouvé par la recherche.
-     */
     private void mappingListeAffectationsQuandRechercheOK(RechercheAffectationDTO rechercheAffectation, Model model, ReponseService<List<Affectation>> reponseService) {
         List<AffectationDTO> affectationDTOS = reponseService.getObjetRetour().stream()
                 .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
@@ -88,9 +85,6 @@ public class ListeAffectationController {
         model.addAttribute("affectations", affectationDTOS);
     }
 
-    /**
-     * Réattribut l'objet de recherche de affectation, fournit une liste vide d'affectation et passe le message d'erreur.
-     */
     private void mappingQuandRechecheEmpty(RechercheAffectationDTO rechercheAffectations, Model model) throws Exception {
         model.addAttribute("rechercheAffectations", rechercheAffectations);
         model.addAttribute("affectations", emptyList());
