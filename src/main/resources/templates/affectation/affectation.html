@@ -14,34 +14,19 @@
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="fonction">Fonction</label>
-                        <select th:disabled="${affectation.id != null}" id="fonction" name="fonction">
-                            <option th:each="fonction : ${fonctions}"
-                                    th:value="${fonction.id}"
-                                    th:text="${fonction.libelle}"
-                                    th:selected="${fonction.id eq affectation.fonction.id}"/>
-                        </select>
+                        <input th:disabled="true" type="text" id="fonction" th:value="${affectation.fonction.libelle}">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
-                        <label class="form-label">Employe</label>
-                        <select th:disabled="${affectation.id != null}" id="employe" name="employe">
-                            <option th:each="employe : ${employes}"
-                                    th:value="${employe.id}"
-                                    th:text="${employe.nom + ''+ employe.prenom}"
-                                    th:selected="${employe.id eq affectation.employe.id}"/>
-                        </select>
+                        <label class="form-label" for="employe">Employe</label>
+                        <input th:disabled="true" type="text" id="employe" th:value="${affectation.employe.nom + ' ' + affectation.employe.prenom}">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-check-label" for="restaurant">Restaurant</label>
-                        <select th:disabled="${affectation.id != null}" id="restaurant" name="restaurant">
-                            <option th:each="restaurant : ${restaurants}"
-                                    th:value="${restaurant.id}"
-                                    th:text="${restaurant.nom}"
-                                    th:selected="${restaurant.id eq affectation.restaurant.id}"/>
-                        </select>
+                        <input th:disabled="true"  type="text" id="restaurant" th:value="${affectation.restaurant.nom}">
                     </div>
                 </div>
             </div>
