@@ -19,12 +19,12 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 @Controller
-public class ListRestaurantController {
+public class ListeRestaurantController {
 
     private final RestaurantService restaurantService;
     private final ModelMapper modelMapper;
 
-    public ListRestaurantController(RestaurantService restaurantService, ModelMapper modelMapper) {
+    public ListeRestaurantController(RestaurantService restaurantService, ModelMapper modelMapper) {
         this.restaurantService = restaurantService;
         this.modelMapper = modelMapper;
     }

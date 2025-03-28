@@ -27,11 +27,7 @@ public class DetailsAffectationController {
     @GetMapping("/detailAffectation/{id}")
     public String getAffectationById(Model model, @PathVariable int id) throws Exception {
         ReponseService<Affectation> reponse = affectationService.findById(id);
-        if (reponse.isOk()) {
-            model.addAttribute("affectation", modelMapper.map(reponse.getData(), AffectationDTO.class));
-            return "affectation/affectation";
-        } else {
-            throw reponse.getException();
-        }
+        model.addAttribute("affectation", modelMapper.map(reponse.getData(), AffectationDTO.class));
+        return "affectation/affectation";
     }
 }

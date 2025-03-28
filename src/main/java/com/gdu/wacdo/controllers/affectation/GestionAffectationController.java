@@ -1,7 +1,6 @@
 package com.gdu.wacdo.controllers.affectation;
 
 import com.gdu.wacdo.dto.form.CreationAffectationDTO;
-import com.gdu.wacdo.dto.form.RechercheAffectationDTO;
 import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.model.FonctionDTO;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class GestionAffectation {
+public class GestionAffectationController {
 
     private final AffectationService affectationService;
     private final RestaurantService restaurantService;
@@ -30,7 +29,7 @@ public class GestionAffectation {
     private final EmployeService employeService;
     private final ModelMapper modelMapper;
 
-    public GestionAffectation(AffectationService affectationService, RestaurantService restaurantService, FonctionService fonctionService, EmployeService employeService, ModelMapper modelMapper) {
+    public GestionAffectationController(AffectationService affectationService, RestaurantService restaurantService, FonctionService fonctionService, EmployeService employeService, ModelMapper modelMapper) {
         this.affectationService = affectationService;
         this.restaurantService = restaurantService;
         this.fonctionService = fonctionService;

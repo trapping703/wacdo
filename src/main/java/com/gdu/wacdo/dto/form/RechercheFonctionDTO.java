@@ -6,4 +6,12 @@ import lombok.Data;
 public class RechercheFonctionDTO {
 
     private String libelle;
+
+    public RechercheFonctionDTO(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public RechercheFonctionDTO(){
+
+    }
 }

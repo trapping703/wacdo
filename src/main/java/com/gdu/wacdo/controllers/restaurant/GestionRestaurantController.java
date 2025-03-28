@@ -1,5 +1,6 @@
 package com.gdu.wacdo.controllers.restaurant;
 
+import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurantDTO;
 import com.gdu.wacdo.dto.model.AffectationDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.model.FonctionDTO;
@@ -135,5 +136,10 @@ public class GestionRestaurantController {
         return employeService.findAll().getObjetRetour().stream()
                 .map(fonction -> modelMapper.map(fonction, EmployeDTO.class))
                 .toList();
+    }
+
+    @ModelAttribute(value = "rechercheAffectationDuRestaurant")
+    private RechercheAffectationDetailsRestaurantDTO getRechercheAffectationDuRestaurant() {
+        return new RechercheAffectationDetailsRestaurantDTO();
     }
 }

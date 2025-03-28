@@ -88,6 +88,12 @@
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -124,9 +130,9 @@
                     <excludes>
                         <exclude>com/gdu/wacdo/configuration/**</exclude>
                         <exclude>com/gdu/wacdo/controllers/rest/**</exclude>
-                        <exclude>com/gdu/wacdo/controllers/dto/reponse/**</exclude>
-                        <exclude>com/gdu/wacdo/controllers/dto/form/**</exclude>
-                        <exclude>com/gdu/wacdo/controllers/dto/model/**</exclude>
+                        <exclude>com/gdu/wacdo/dto/reponse/**</exclude>
+                        <exclude>com/gdu/wacdo/dto/form/**</exclude>
+                        <exclude>com/gdu/wacdo/dto/model/**</exclude>
                         <exclude>com/gdu/wacdo/status/**</exclude>
                         <exclude>com/gdu/wacdo/WacdoApplication.java</exclude>
                     </excludes>

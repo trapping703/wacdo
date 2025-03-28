@@ -1,6 +1,7 @@
 package com.gdu.wacdo.controllers.employe;
 
 import com.gdu.wacdo.dto.form.RechercheAffectationDetailsEmployeDTO;
+import com.gdu.wacdo.dto.form.RechercheEmployeDTO;
 import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Employe;
@@ -102,6 +103,11 @@ public class GestionEmployeController {
     @ModelAttribute(value = "employeDTO")
     private EmployeDTO getEmployeDTO() {
         return new EmployeDTO();
+    }
+
+    @ModelAttribute(value = "rechercheAffectation")
+    private RechercheAffectationDetailsEmployeDTO getRechercheAffectation() {
+        return new RechercheAffectationDetailsEmployeDTO();
     }
 
 }
