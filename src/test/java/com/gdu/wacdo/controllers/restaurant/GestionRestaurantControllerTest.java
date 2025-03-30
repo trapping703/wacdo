@@ -148,6 +148,7 @@ class GestionRestaurantControllerTest {
         //given
         ReponseService<List<Restaurant>> reponse = new ReponseService(CodeReponse.OK, new Restaurant());
         doReturn(reponse).when(restaurantService).findById(1);
+        doReturn(new ReponseService<>(CodeReponse.OK, List.of(new Affectation(LocalDate.now(), LocalDate.now(), new Employe(), new Restaurant(), new Fonction())))).when(affectationService).findByRestaurantIs(any(Restaurant.class));
         //when + then
         mvc.perform(get("/editerRestaurant/1")
                 .contentType(MediaType.TEXT_HTML)).andExpect(MockMvcResultMatchers.status()
@@ -203,6 +204,7 @@ class GestionRestaurantControllerTest {
         ReponseService<List<Restaurant>> reponse = new ReponseService(CodeReponse.EMPTY, new Restaurant());
         doReturn(reponse).when(restaurantService).save(any(Restaurant.class));
         doReturn(new ReponseService(CodeReponse.OK, new Restaurant())).when(restaurantService).findById(1);
+        doReturn(new ReponseService<>(CodeReponse.OK, List.of(new Affectation(LocalDate.now(), LocalDate.now(), new Employe(), new Restaurant(), new Fonction())))).when(affectationService).findByRestaurantIs(any(Restaurant.class));
         //when + then
         mvc.perform(post("/editerRestaurant")
                         .param("id", "1")
@@ -222,6 +224,7 @@ class GestionRestaurantControllerTest {
         //given
         ReponseService<List<Restaurant>> reponse = new ReponseService(CodeReponse.ERROR, new Restaurant());
         doReturn(reponse).when(restaurantService).save(any(Restaurant.class));
+        doReturn(new ReponseService<>(CodeReponse.OK, List.of(new Affectation(LocalDate.now(), LocalDate.now(), new Employe(), new Restaurant(), new Fonction())))).when(affectationService).findByRestaurantIs(any(Restaurant.class));
         //when + then
         Assertions.assertThrows(ServletException.class, () -> mvc.perform(post("/editerRestaurant")
                 .param("nom", "1")

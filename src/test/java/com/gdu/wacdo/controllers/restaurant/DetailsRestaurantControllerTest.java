@@ -1,16 +1,19 @@
 package com.gdu.wacdo.controllers.restaurant;
 
-import com.gdu.wacdo.controllers.restaurant.DetailRestaurantController;
 import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
-import com.gdu.wacdo.model.*;
+import com.gdu.wacdo.model.Affectation;
+import com.gdu.wacdo.model.Employe;
+import com.gdu.wacdo.model.Fonction;
 import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.AffectationService;
-import com.gdu.wacdo.services.RestaurantService;
+import com.gdu.wacdo.services.EmployeService;
 import com.gdu.wacdo.services.FonctionService;
+import com.gdu.wacdo.services.RestaurantService;
 import com.gdu.wacdo.status.CodeReponse;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +47,18 @@ public class DetailsRestaurantControllerTest {
     @MockitoBean
     private AffectationService affectationService;
     @MockitoBean
+    private EmployeService employeService;
+    @MockitoBean
     private FonctionService fonctionService;
 
     static ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @BeforeEach
+    void setUp() {
+        doReturn(new ReponseService(CodeReponse.OK, List.of(new Fonction()))).when(fonctionService).findAll();
+        doReturn(new ReponseService(CodeReponse.OK, List.of(new Employe()))).when(employeService).findAll();
     }
 
     @Test

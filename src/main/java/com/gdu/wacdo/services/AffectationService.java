@@ -102,11 +102,43 @@ public class AffectationService {
     }
 
     /**
+     * Retourne la liste d'affectation en cours filtré par le forumulaire {@link RechercheAffectationDetailsRestaurantDTO}
+     */
+    public ReponseService<List<Affectation>> findAffectationsPourRechercheEditionRestaurant(RechercheAffectationDetailsRestaurantDTO rechercheAffectation, Integer idRestaurant) {
+        try {
+            List<Affectation> affectations = affectationRepository.findAffectationsPourRechercheEditionRestaurant(rechercheAffectation.getDateDebut(), rechercheAffectation.getFonction_id(), rechercheAffectation.getEmploye_id(), idRestaurant);
+            if (!affectations.isEmpty()) {
+                return reponse(OK, affectations);
+            } else {
+                return reponse(EMPTY, rechercheAffectation);
+            }
+        } catch (Exception e) {
+            return reponse(ERROR, rechercheAffectation, e);
+        }
+    }
+
+    /**
      * Retourne la liste d'affectation en cours d'un restaurant.
      */
     public ReponseService<List<Affectation>> findByDateFinIsNullAndRestaurantIs(Restaurant restaurant) {
         try {
             List<Affectation> affectations = affectationRepository.findByDateFinIsNullAndRestaurantIs(restaurant);
+            if (!affectations.isEmpty()) {
+                return reponse(OK, affectations);
+            } else {
+                return reponse(EMPTY, restaurant);
+            }
+        } catch (Exception e) {
+            return reponse(ERROR, restaurant, e);
+        }
+    }
+
+    /**
+     * Retourne la liste d'affectation en cours d'un restaurant.
+     */
+    public ReponseService<List<Affectation>> findByRestaurantIs(Restaurant restaurant) {
+        try {
+            List<Affectation> affectations = affectationRepository.findByRestaurantIs(restaurant);
             if (!affectations.isEmpty()) {
                 return reponse(OK, affectations);
             } else {

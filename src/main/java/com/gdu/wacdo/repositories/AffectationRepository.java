@@ -31,5 +31,13 @@ public interface AffectationRepository extends JpaRepository<Affectation, Intege
             "and (:employe_id is null  or :employe_id = 0 or a.employe.id = :employe_id)")
     List<Affectation> findAffectationsPourRechercheDetailsRestaurant(LocalDate dateDebut, int fonction_id, int employe_id, int restaurant_id);
 
+    @Query("select a from Affectation a " +
+            "where a.restaurant.id = :restaurant_id " +
+            "and (cast(:dateDebut as date) is null or a.dateDebut=:dateDebut) " +
+            "and (:fonction_id is null or :fonction_id = 0 or a.fonction.id = :fonction_id) "+
+            "and (:employe_id is null  or :employe_id = 0 or a.employe.id = :employe_id)")
+    List<Affectation> findAffectationsPourRechercheEditionRestaurant(LocalDate dateDebut, int fonction_id, int employe_id, int restaurant_id);
+
     List<Affectation> findByDateFinIsNullAndRestaurantIs(Restaurant restaurant);
+    List<Affectation> findByRestaurantIs(Restaurant restaurant);
 }

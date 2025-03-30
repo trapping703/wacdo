@@ -6,6 +6,7 @@ import com.gdu.wacdo.dto.model.EmployeDTO;
 import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
+import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.AffectationService;
 import com.gdu.wacdo.services.EmployeService;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 @Controller
 @Slf4j
@@ -79,7 +82,28 @@ public class GestionRestaurantController {
      */
     @GetMapping("/editerRestaurant/{id}")
     public String getEditerRestaurant(Model model, @PathVariable int id) {
-        model.addAttribute("restaurantDTO", modelMapper.map(restaurantService.findById(id).getData(), RestaurantDTO.class));
+        Restaurant restaurant = restaurantService.findById(id).getObjetRetour();
+        model.addAttribute("restaurantDTO", modelMapper.map(restaurant, RestaurantDTO.class));
+        mappingAffectation(affectationService.findByRestaurantIs(restaurant), model);
+        return "restaurant/editionRestaurant";
+    }
+
+    /**
+     * Page d'édition du restaurant avec un la liste d'affectation filtré
+     */
+    @PostMapping("/editerRestaurantAllAffectation/{id}")
+    public String getEditerRestaurant(RechercheAffectationDetailsRestaurantDTO rechercheAffectation,Model model, @PathVariable int id) {
+        Restaurant restaurant = restaurantService.findById(id).getObjetRetour();
+        model.addAttribute("restaurantDTO", modelMapper.map(restaurant, RestaurantDTO.class));
+        ReponseService<List<Affectation>> reponseService = affectationService.findAffectationsPourRechercheEditionRestaurant(rechercheAffectation, id);
+        if (!reponseService.isEmpty()) {
+            model.addAttribute("affectationsDuRestaurant", reponseService.getObjetRetour().stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList());
+        } else {
+            model.addAttribute("affectationsDuRestaurant", emptyList());
+        }
+        model.addAttribute("rechercheAffectationDuRestaurant", rechercheAffectation);
         return "restaurant/editionRestaurant";
     }
 
@@ -99,6 +123,7 @@ public class GestionRestaurantController {
             }
             case EMPTY -> {
                 mappingRestaurantNonEnregistree(restaurantDTO, model);
+                mappingAffectation(affectationService.findByRestaurantIs(reponseService.getObjetRetour()), model);
                 yield "restaurant/editionRestaurant";
             }
             case ERROR -> throw reponseService.getException();
@@ -117,6 +142,14 @@ public class GestionRestaurantController {
     private void mappingRestaurantNonEnregistree(RestaurantDTO restaurantDTO, Model model) throws Exception {
         model.addAttribute("restaurantDTO", restaurantDTO);
         model.addAttribute("messageNonEnregistrement", "Restaurant non enregistrée");
+    }
+
+    private void mappingAffectation(ReponseService<List<Affectation>> affectationsReponse, Model model) {
+        if (affectationsReponse.isOk()) {
+            model.addAttribute("affectationsDuRestaurant", affectationsReponse.getObjetRetour().stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList());
+        }
     }
 
     @ModelAttribute(value = "restaurantDTO")

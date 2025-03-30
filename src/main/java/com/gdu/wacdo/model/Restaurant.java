@@ -13,7 +13,7 @@ public class Restaurant extends AbstractPersistentEntity<Integer> {
 
     private String nom;
     private String adresse;
-    @Size(min = 0, max = 5, message = "code postal incompatible")
+    @Size(min = 5, max = 5, message = "code postal incompatible")
     @Pattern(regexp = "^(\\s*|\\d+)$", message = "code postal incompatible")
     private String codePostal;
     private String ville;

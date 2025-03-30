@@ -2,11 +2,15 @@ package com.gdu.wacdo.controllers.restaurant;
 
 import com.gdu.wacdo.dto.form.RechercheAffectationDetailsRestaurantDTO;
 import com.gdu.wacdo.dto.model.AffectationDTO;
+import com.gdu.wacdo.dto.model.EmployeDTO;
+import com.gdu.wacdo.dto.model.FonctionDTO;
 import com.gdu.wacdo.dto.model.RestaurantDTO;
 import com.gdu.wacdo.dto.response.ReponseService;
 import com.gdu.wacdo.model.Affectation;
 import com.gdu.wacdo.model.Restaurant;
 import com.gdu.wacdo.services.AffectationService;
+import com.gdu.wacdo.services.EmployeService;
+import com.gdu.wacdo.services.FonctionService;
 import com.gdu.wacdo.services.RestaurantService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -25,11 +29,15 @@ public class DetailRestaurantController {
 
     private final RestaurantService restaurantService;
     private final AffectationService affectationService;
+    private final FonctionService fonctionService;
+    private final EmployeService employeService;
     private final ModelMapper modelMapper;
 
-    public DetailRestaurantController(RestaurantService restaurantService, AffectationService affectationService, ModelMapper modelMapper) {
+    public DetailRestaurantController(RestaurantService restaurantService, AffectationService affectationService, FonctionService fonctionService, EmployeService employeService, ModelMapper modelMapper) {
         this.restaurantService = restaurantService;
         this.affectationService = affectationService;
+        this.fonctionService = fonctionService;
+        this.employeService = employeService;
         this.modelMapper = modelMapper;
     }
 
@@ -77,5 +85,19 @@ public class DetailRestaurantController {
     @ModelAttribute(value = "rechercheAffectationDuRestaurant")
     private RechercheAffectationDetailsRestaurantDTO getRechercheAffectationDuRestaurant() {
         return new RechercheAffectationDetailsRestaurantDTO();
+    }
+
+    @ModelAttribute(value = "fonctions")
+    private List<FonctionDTO> getAllFonctions() {
+        return fonctionService.findAll().getObjetRetour().stream()
+                .map(fonction -> modelMapper.map(fonction, FonctionDTO.class))
+                .toList();
+    }
+
+    @ModelAttribute(value = "employes")
+    private List<EmployeDTO> getAllEmployes() {
+        return employeService.findAll().getObjetRetour().stream()
+                .map(fonction -> modelMapper.map(fonction, EmployeDTO.class))
+                .toList();
     }
 }

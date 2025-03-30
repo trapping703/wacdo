@@ -57,6 +57,94 @@
         </div>
     </div>
 </form>
+
+<!-- Formulaire recherche affectation -->
+
+<form action="#" method="post" th:action="@{/editerRestaurantAllAffectation/{id}(id=${restaurantDTO.id})}"
+      th:object="${rechercheAffectationDuRestaurant}">
+    <div class="container pt-4">
+        <div class="card w-75 mx-auto">
+            <div class="card-body">
+                <div class="row justify-content-around">
+                    <div class="col col-lg-4">
+                        <div class="form-outline">
+                            <label class="form-label" for="dateDebut">Date debut</label>
+                            <input type="date" id="dateDebut" class="form-control"
+                                   th:field="*{dateDebut}"/>
+                        </div>
+                    </div>
+                    <div class="col col-lg-2 ">
+                        <div class="form-outline">
+                            <label class="form-label" for="fonction_id">Fonction</label>
+                            <select id="fonction_id" name="fonction_id">
+                                <option value="0"></option>
+                                <option th:each="fonction : ${fonctions}"
+                                        th:value="${fonction.id}"
+                                        th:text="${fonction.libelle}"
+                                        th:selected="${fonction.id eq rechercheAffectationDuRestaurant.fonction_id}"/>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col col-lg-2">
+                        <div class="form-outline">
+                            <label class="form-label" for="employe_id">Employe</label>
+                            <select id="employe_id" name="employe_id">
+                                <option value="0"></option>
+                                <option th:each="employe : ${employes}"
+                                        th:value="${employe.id}"
+                                        th:text="${employe.nom + ' '+ employe.prenom}"
+                                        th:selected="${employe.id eq rechercheAffectationDuRestaurant.employe_id}"/>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col col-lg-2 pt-4">
+                        <label class="form-label"></label>
+                        <button type="submit" class="btn btn-secondary rounded">
+                            Rechercher
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<hr>
+<!--    Liste affectations-->
+<div class="container">
+    <table class="table align-middle bg-white">
+        <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prenom</th>
+            <th scope="col">Date debut</th>
+            <th scope="col">Date fin</th>
+            <th scope="col">Fonction</th>
+            <th scope="col"><a role="button" class="btn bg-success text-white rounded"
+                               th:href="@{'/creerAffectation?restaurant='+${restaurantDTO.id}}">Créer</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="affectation: ${affectationsDuRestaurant}">
+            <td th:text="${affectation.employe.nom}"/>
+
+            <td th:text="${affectation.employe.prenom}"/>
+
+            <td th:text="${affectation.dateDebut}"/>
+
+            <td th:text="${affectation.dateFin}"/>
+
+            <td th:text="${affectation.fonction.libelle}"/>
+            <td>
+                <a role="button" class="btn btn-secondary rounded"
+                   th:href="@{/detailAffectation/{id}(id=${affectation.id})}">
+                    Détails
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <footer class="border-top bg-light text-muted text-center" th:replace="~{layout :: page_footer}">
 </footer>
 </body>
