@@ -66,7 +66,7 @@ public class GestionRestaurantController {
         ReponseService<Restaurant> reponseService = restaurantService.save(modelMapper.map(restaurantDTO, Restaurant.class));
         return switch (reponseService.getStatus()) {
             case OK -> {
-                mappingRestaurantEnregistree(reponseService.getObjetRetour(), model);
+                mappingRestaurantCreer(reponseService.getObjetRetour(), model);
                 yield "restaurant/restaurant";
             }
             case EMPTY -> {
@@ -136,6 +136,12 @@ public class GestionRestaurantController {
                 .stream()
                 .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
                 .toList());
+        model.addAttribute("messageEnregistrement", "Restaurant Enregistrée");
+    }
+
+    private void mappingRestaurantCreer(Restaurant restaurant, Model model) {
+        model.addAttribute("restaurant", modelMapper.map(restaurant, RestaurantDTO.class));
+        model.addAttribute("affectationsDuRestaurant", emptyList());
         model.addAttribute("messageEnregistrement", "Restaurant Enregistrée");
     }
 
