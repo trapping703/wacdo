@@ -132,10 +132,15 @@ public class GestionRestaurantController {
 
     private void mappingRestaurantEnregistree(Restaurant restaurant, Model model) {
         model.addAttribute("restaurant", modelMapper.map(restaurant, RestaurantDTO.class));
-        model.addAttribute("affectationsDuRestaurant", affectationService.findByDateFinIsNullAndRestaurantIs(restaurant).getObjetRetour()
-                .stream()
-                .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
-                .toList());
+        ReponseService<List<Affectation>> affectationReponse = affectationService.findByDateFinIsNullAndRestaurantIs(restaurant);
+        if(affectationReponse.isOk()){
+            model.addAttribute("affectationsDuRestaurant", affectationService.findByDateFinIsNullAndRestaurantIs(restaurant).getObjetRetour()
+                    .stream()
+                    .map(affectation -> modelMapper.map(affectation, AffectationDTO.class))
+                    .toList());
+        } else {
+            model.addAttribute("affectationsDuRestaurant", emptyList());
+        }
         model.addAttribute("messageEnregistrement", "Restaurant Enregistrée");
     }
 
