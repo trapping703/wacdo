@@ -28,3 +28,14 @@ DATABASE_URL=jdbc:postgresql://localhost:5432/wacdo;DATABASE_USER=postgres;DATAB
 mail:victor-g@wacdo.fr
 mdp:test
 ```
+# Envrionnement déployé
+
+Vous pouvez accéder à l'application sur l'url ci-dessous, si l'instance était inactive, elle peut prendre jusqu'à une minute à être relancé.
+
+- [wacdo.onrender.com](https://wacdo.onrender.com)
+
+vous pouvez vous connecter avec le compte admin avec ces identifiants
+```
+mail:victor-g@wacdo.fr
+mdp:test
+```
